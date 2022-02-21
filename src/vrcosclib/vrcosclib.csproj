@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
 	<RootNamespace>BuildSoft.VRChat.Osc</RootNamespace>
     <LangVersion>10.0</LangVersion>
+    
+    <BaseOutputPath>..\..\bin</BaseOutputPath>
 
     <PackageId>VRCOscLib</PackageId>
     <Version>1.0.0</Version>
