@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32127.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vrcosclib", "src\vrcosclib\vrcosclib.csproj", "{3D5D91B8-5663-43AB-BD91-FD80502BDEF0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vrcosclib.Test", "src\vrcosclib.Test\vrcosclib.Test.csproj", "{905C0E65-4B84-40C9-9C6C-1A454BCB2D2A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D5D91B8-5663-43AB-BD91-FD80502BDEF0} = {3D5D91B8-5663-43AB-BD91-FD80502BDEF0}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{58F97A0F-9D53-4681-8ED2-E57AFC6941A5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogAvatarParametars", "Sample\LogAvatarParametars\LogAvatarParametars.csproj", "{5729DE08-F01E-4091-8031-3FAE649F7627}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{E2335844-9FA5-4574-B2CF-50E8C4C172C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuiController", "Sample\GuiController\GuiController.csproj", "{B214E3A8-C61B-4921-94A6-73CAAB358A14}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D5D91B8-5663-43AB-BD91-FD80502BDEF0} = {3D5D91B8-5663-43AB-BD91-FD80502BDEF0}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D5D91B8-5663-43AB-BD91-FD80502BDEF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D5D91B8-5663-43AB-BD91-FD80502BDEF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D5D91B8-5663-43AB-BD91-FD80502BDEF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D5D91B8-5663-43AB-BD91-FD80502BDEF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{905C0E65-4B84-40C9-9C6C-1A454BCB2D2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{905C0E65-4B84-40C9-9C6C-1A454BCB2D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{905C0E65-4B84-40C9-9C6C-1A454BCB2D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{905C0E65-4B84-40C9-9C6C-1A454BCB2D2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5729DE08-F01E-4091-8031-3FAE649F7627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5729DE08-F01E-4091-8031-3FAE649F7627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5729DE08-F01E-4091-8031-3FAE649F7627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5729DE08-F01E-4091-8031-3FAE649F7627}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B214E3A8-C61B-4921-94A6-73CAAB358A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B214E3A8-C61B-4921-94A6-73CAAB358A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B214E3A8-C61B-4921-94A6-73CAAB358A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B214E3A8-C61B-4921-94A6-73CAAB358A14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5729DE08-F01E-4091-8031-3FAE649F7627} = {E2335844-9FA5-4574-B2CF-50E8C4C172C5}
+		{B214E3A8-C61B-4921-94A6-73CAAB358A14} = {E2335844-9FA5-4574-B2CF-50E8C4C172C5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7ADDCAD0-5084-420D-96B4-54FD8F6A2FA5}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+	<RootNamespace>BuildSoft.VRChat.Osc</RootNamespace>
+    <LangVersion>10.0</LangVersion>
+
+    <PackageId>VRCOscLib</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>ChanyaKushima</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageDescription>A OSC library for VRChat</PackageDescription>
+    <RepositoryUrl>https://github.com/ChanyaVRC/VRCOscLib</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildSoft.OscCore" Version="1.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>

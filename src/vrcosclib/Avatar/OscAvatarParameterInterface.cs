@@ -1,0 +1,34 @@
+﻿using BlobHandles;
+using BuildSoft.OscCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace BuildSoft.VRChat.Osc;
+
+[JsonObject]
+public class OscAvatarParameterInterface
+{
+#pragma warning disable IDE0044 // Add readonly modifier
+    [JsonProperty("address", Required = Required.Always)]
+    private string _address = string.Empty;
+    private BlobString _addressBlob = default;
+    [JsonProperty("type", Required = Required.Always)]
+    private string _type = string.Empty;
+#pragma warning restore IDE0044 // Add readonly modifier
+
+    public string Address => _address;
+    public BlobString AddressBlob
+    {
+        get
+        {
+            if (_addressBlob.Handle.Length == 0)
+            {
+                _addressBlob = new BlobString(_address);
+            }
+            return _addressBlob;
+        }
+    }
+
+    public string Type => _type;
+
+}
