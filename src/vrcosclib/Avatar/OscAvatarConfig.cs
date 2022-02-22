@@ -20,7 +20,7 @@ public class OscAvatarConfig
     public string Name => _name;
 
     [JsonIgnore]
-    public OscAvatarParametorContainer? _paramaters;
+    private OscAvatarParametorContainer? _paramaters;
     [JsonIgnore]
     public OscAvatarParametorContainer Parameters => _paramaters ??= new OscAvatarParametorContainer(_parametersList);
 

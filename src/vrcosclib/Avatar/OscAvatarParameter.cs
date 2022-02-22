@@ -18,7 +18,7 @@ public record class OscAvatarParameter
     public OscAvatarParameterInterface? Input => _input;
     public OscAvatarParameterInterface? Output => _output;
 
-    private OscAvatarParameter()
+    public OscAvatarParameter()
     {
 
     }
