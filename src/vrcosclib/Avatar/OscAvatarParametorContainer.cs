@@ -75,11 +75,6 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object>
 
             values.ForEachElement((index, tag) =>
             {
-                if (index != values.ElementCount - 1)
-                {
-                    return;
-                }
-
                 var oldValue = ParameterValues[i];
 
                 ParameterValues[i] = tag switch
