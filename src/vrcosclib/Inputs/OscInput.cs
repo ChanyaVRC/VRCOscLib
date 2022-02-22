@@ -7,6 +7,9 @@ namespace BuildSoft.VRChat.Osc;
 
 public static class OscInput
 {
+    private static readonly Dictionary<OscAxisInput, string> _axisInputAddressCache = new();
+    private static readonly Dictionary<OscButtonInput, string> _buttonInputAddressCache = new();
+
     public static void Send(this OscButtonInput content, bool isOn = true)
     {
         var client = OscUtility.Client;
@@ -29,10 +32,36 @@ public static class OscInput
 
     public static string CreateAddress(this OscButtonInput content)
     {
-        return "/input/" + content.ToString();
+        if (_buttonInputAddressCache.TryGetValue(content, out var address))
+        {
+            return address;
+        }
+        lock (_buttonInputAddressCache)
+        {
+            if (_buttonInputAddressCache.TryGetValue(content, out address))
+            {
+                return address;
+            }
+            address = "/input/" + content.ToString();
+            _buttonInputAddressCache.Add(content, address);
+        }
+        return address;
     }
     public static string CreateAddress(this OscAxisInput content)
     {
-        return "/input/" + content.ToString();
+        if (_axisInputAddressCache.TryGetValue(content, out var address))
+        {
+            return address;
+        }
+        lock (_axisInputAddressCache)
+        {
+            if (_axisInputAddressCache.TryGetValue(content, out address))
+            {
+                return address;
+            }
+            address = "/input/" + content.ToString();
+            _axisInputAddressCache.Add(content, address);
+        }
+        return address;
     }
 }
