@@ -2,14 +2,15 @@
 
 OscUtility.Initialize();
 
-string myAvatarId = File.ReadAllText("AvatarId.txt").Trim();
-var avatarConfig = OscAvatarConfig.CreateOscAvatarConfigs().FirstOrDefault(x => x.Id == myAvatarId);
+OscAvatarConfig? avatarConfig = null;
 
-if (avatarConfig == null)
+Console.WriteLine("Reading now... Try to \"Reset Avatar.\"");
+while (avatarConfig == null)
 {
-    Console.WriteLine($"Id: \"{myAvatarId}\" is not active now.");
-    return;
+    avatarConfig =  OscAvatarConfig.CreateCurrentOscAvatarConfig();
+    await Task.Delay(1);
 }
+Console.WriteLine($"Read avatar config. Name: {avatarConfig.Name}");
 
 avatarConfig.Parameters.ParameterChanged += (parameter, e) =>
  {

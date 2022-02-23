@@ -11,10 +11,4 @@
     <ProjectReference Include="..\..\src\vrcosclib\vrcosclib.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="AvatarId.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
