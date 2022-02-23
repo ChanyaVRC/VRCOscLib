@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ public class OscAvatarConfig
     private string _name = string.Empty;
 
     [JsonProperty("parameters", Required = Required.Always)]
-    private List<OscAvatarParameter> _parametersList = new();
+    private readonly List<OscAvatarParameter> _parametersList = new();
 
     public string Id => _id;
     public string Name => _name;
@@ -22,15 +23,16 @@ public class OscAvatarConfig
     [JsonIgnore]
     private OscAvatarParametorContainer? _paramaters;
     [JsonIgnore]
-    public OscAvatarParametorContainer Parameters => _paramaters ??= new OscAvatarParametorContainer(_parametersList);
+    public OscAvatarParametorContainer Parameters
+        => _paramaters ??= new OscAvatarParametorContainer(_parametersList);
 
     [field: JsonExtensionData]
     public Dictionary<string, object> Extra { get; } = new();
 
     public static OscAvatarConfig[] CreateOscAvatarConfigs() =>
         OscUtility.GetOscAvatarConfigPathes()
-            .Select(path => JsonConvert.DeserializeObject<OscAvatarConfig>(File.ReadAllText(path))!)
-            .Where(config => config != null).ToArray();
+            .Select(GetAvatarConfig)
+            .Where(config => config != null).ToArray()!;
 
     public static OscAvatarConfig? CreateCurrentOscAvatarConfig()
     {
