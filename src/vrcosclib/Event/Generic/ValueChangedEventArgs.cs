@@ -5,8 +5,8 @@ using System.Text;
 namespace BuildSoft.VRChat.Osc;
 public class ValueChangedEventArgs<T> : EventArgs
 {
-    public T OldValue;
-    public T NewValue;
+    public T OldValue { get; }
+    public T NewValue { get; }
 
     public ValueChangedEventArgs(T oldValue, T newValue)
     {

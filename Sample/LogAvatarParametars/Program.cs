@@ -11,7 +11,7 @@ if (avatarConfig == null)
     return;
 }
 
-avatarConfig.Parameters.OnParameterChanged += (parameter, e) =>
+avatarConfig.Parameters.ParameterChanged += (parameter, e) =>
  {
      DateTime now = DateTime.Now;
      Console.WriteLine($"[{now.ToShortDateString()} {now.ToShortTimeString()}] " +

@@ -26,6 +26,8 @@ public class OscAvatarConfig
     public OscAvatarParametorContainer Parameters
         => _paramaters ??= new OscAvatarParametorContainer(_parametersList);
 
+    internal bool IsCreatedParameters => _paramaters != null;
+
     [field: JsonExtensionData]
     public Dictionary<string, object> Extra { get; } = new();
 
@@ -46,4 +48,9 @@ public class OscAvatarConfig
 
     private static OscAvatarConfig? GetAvatarConfig(string path)
         => JsonConvert.DeserializeObject<OscAvatarConfig>(File.ReadAllText(path));
+
+    public OscAvatarConfig()
+    {
+        OscAvatarUtility.RegisterAvaterConfig(this);
+    }
 }
