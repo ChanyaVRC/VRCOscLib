@@ -1,5 +1,7 @@
 ﻿using BuildSoft.VRChat.Osc;
 
+OscUtility.Initialize();
+
 string myAvatarId = File.ReadAllText("AvatarId.txt").Trim();
 var avatarConfig = OscAvatarConfig.CreateOscAvatarConfigs().FirstOrDefault(x => x.Id == myAvatarId);
 

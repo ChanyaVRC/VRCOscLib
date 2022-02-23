@@ -13,6 +13,11 @@ namespace BuildSoft.VRChat.Osc;
 
 public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object>
 {
+    internal static void Initialize()
+    {
+
+    }
+
     public OscAvatarParametorContainer(IEnumerable<OscAvatarParameter> parameters)
     {
         Parameters = parameters.ToImmutableArray();

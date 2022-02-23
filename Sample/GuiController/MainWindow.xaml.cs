@@ -25,6 +25,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        OscUtility.Initialize();
     }
 
     private void Forward_MouseEnter(object sender, MouseEventArgs e)

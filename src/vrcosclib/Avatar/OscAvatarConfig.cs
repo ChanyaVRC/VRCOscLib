@@ -31,4 +31,17 @@ public class OscAvatarConfig
         OscUtility.GetOscAvatarConfigPathes()
             .Select(path => JsonConvert.DeserializeObject<OscAvatarConfig>(File.ReadAllText(path))!)
             .Where(config => config != null).ToArray();
+
+    public static OscAvatarConfig? CreateCurrentOscAvatarConfig()
+    {
+        var path = OscUtility.GetCurrentOscAvatarConfigPath();
+        if (path == null)
+        {
+            return null;
+        }
+        return GetAvatarConfig(path);
+    }
+
+    private static OscAvatarConfig? GetAvatarConfig(string path)
+        => JsonConvert.DeserializeObject<OscAvatarConfig>(File.ReadAllText(path));
 }
