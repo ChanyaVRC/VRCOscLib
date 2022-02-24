@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BuildSoft.VRChat.Osc;
+﻿namespace BuildSoft.VRChat.Osc;
 public class ValueChangedEventArgs<T> : EventArgs
 {
     public T OldValue { get; }

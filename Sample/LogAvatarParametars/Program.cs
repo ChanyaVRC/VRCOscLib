@@ -7,7 +7,7 @@ OscAvatarConfig? avatarConfig = null;
 Console.WriteLine("Reading now... Try to \"Reset Avatar.\"");
 while (avatarConfig == null)
 {
-    avatarConfig =  OscAvatarConfig.CreateCurrentOscAvatarConfig();
+    avatarConfig = OscAvatarConfig.CreateCurrentOscAvatarConfig();
     await Task.Delay(1);
 }
 Console.WriteLine($"Read avatar config. Name: {avatarConfig.Name}");

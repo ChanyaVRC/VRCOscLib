@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using BlobHandles;
 using BuildSoft.OscCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace BuildSoft.VRChat.Osc;
 
-public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object>
+public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 {
+    #region Static methods(s)
     internal static void Initialize()
     {
 
     }
+    #endregion
 
+    #region Constructor(s)
     public OscAvatarParametorContainer(ImmutableArray<OscAvatarParameter> parameters)
     {
         Parameters = parameters;
@@ -43,39 +41,37 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object>
         _paramNameToUniqueParamValues = uniqueParamValues;
         OscUtility.Server.AddMonitorCallback(GetValueCallback);
     }
+
     public OscAvatarParametorContainer(IEnumerable<OscAvatarParameter> parameters)
         : this(parameters.ToImmutableArray())
     {
     }
+    #endregion
 
-    public ImmutableArray<OscAvatarParameter> Parameters { get; }
-
+    #region Datas
     private readonly ImmutableDictionary<BlobString, OscAvatarParameter> _addressToUniqueParam;
     private readonly Dictionary<string, object?> _paramNameToUniqueParamValues;
 
-    public ImmutableArray<OscAvatarParameter> UniqueParameters 
-        => _addressToUniqueParam.Values.ToImmutableArray();
-    public IEnumerable<object?> UniqueParameterValues
-        => _paramNameToUniqueParamValues.Values;
-    
-    public IEnumerable<object?> ParameterValues
-        => _paramNameToUniqueParamValues.Values.Concat(OscAvatarUtility.GetCommonParameterValues());
+    public ImmutableArray<OscAvatarParameter> Parameters { get; }
+    public OscAvatarParameter GetParameter(string name) => Parameters.First(p => p.Name == name);
+
+    public IEnumerable<OscAvatarParameter> UniqueParameters => _addressToUniqueParam.Values;
+    public IEnumerable<object?> UniqueParameterValues => _paramNameToUniqueParamValues.Values;
 
     public IEnumerable<string> Names => Parameters.Select(param => param.Name);
 
+    public IEnumerable<string> Keys => Names;
+    public IEnumerable<object?> Values => Parameters.Select(v => GetAs<object>(v.Name));
+
+    public int Count => Parameters.Length;
+    #endregion
+
+    #region Value accessor(s)
     public object this[string name]
     {
         get => GetAs<object>(name)!;
         set => SetAs<object>(name, value);
     }
-
-    public IEnumerable<string> Keys => Names;
-
-    public IEnumerable<object> Values => Names.Select(a => GetAs<object>(a)!);
-
-    public int Count => Parameters.Length;
-
-    public bool ContainsKey(string key) => Parameters.Any(param => param.Name == key);
 
     public T? GetAs<T>(string name) where T : notnull
     {
@@ -88,42 +84,6 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object>
             return (T?)value ?? default;
         }
         throw new ArgumentOutOfRangeException(nameof(name));
-    }
-
-    private void GetValueCallback(BlobString address, OscMessageValues values)
-    {
-        if (!_addressToUniqueParam.ContainsKey(address))
-        {
-            return;
-        }
-
-        var param = _addressToUniqueParam[address];
-        var paramName = param.Name;
-        var paramToValue = _paramNameToUniqueParamValues;
-
-        values.ForEachElement((index, tag) =>
-        {
-            var oldValue = paramToValue[paramName];
-            var newValue = (object?)(tag switch
-            {
-                TypeTag.Int32 => values.ReadIntElementUnchecked(index),
-                TypeTag.Float32 => values.ReadFloatElementUnchecked(index),
-                TypeTag.True => true,
-                TypeTag.False => false,
-                _ => null,
-            });
-            paramToValue[paramName] = newValue;
-
-            var eventArgs = new ValueChangedEventArgs(oldValue, newValue);
-            OnParameterChanged(param, eventArgs);
-        });
-    }
-
-    public event OscAvatarParameterChangedEventHandler? ParameterChanged;
-
-    protected internal void OnParameterChanged(OscAvatarParameter param, ValueChangedEventArgs e)
-    {
-        ParameterChanged?.Invoke(param, e);
     }
 
     public void SetAs<T>(string name, T value)
@@ -152,11 +112,9 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object>
         }
     }
 
-    public OscAvatarParameter GetParameter(string name) => Parameters.First(p => p.Name == name);
+    public bool ContainsKey(string key) => Parameters.Any(param => param.Name == key);
 
-#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
     public bool TryGetValue(string key, [NotNullWhen(true)] out object? value)
-#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
     {
         var param = Parameters.FirstOrDefault();
         if (param == null)
@@ -168,11 +126,45 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object>
         value = GetAs<object>(param.Name);
         return value != null;
     }
+    #endregion
 
-    public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
+    #region Events
+    private void GetValueCallback(BlobString address, OscMessageValues values)
+    {
+        if (!_addressToUniqueParam.ContainsKey(address))
+        {
+            return;
+        }
+
+        var param = _addressToUniqueParam[address];
+        var paramName = param.Name;
+        var paramToValue = _paramNameToUniqueParamValues;
+
+        for (int i = 0; i < values.ElementCount; i++)
+        {
+            var oldValue = paramToValue[paramName];
+            var newValue = values.ReadValue(i);
+            paramToValue[paramName] = newValue;
+
+            var eventArgs = new ValueChangedEventArgs(oldValue, newValue);
+            OnParameterChanged(param, eventArgs);
+        }
+    }
+
+    public event OscAvatarParameterChangedEventHandler? ParameterChanged;
+
+    protected internal void OnParameterChanged(OscAvatarParameter param, ValueChangedEventArgs e)
+    {
+        ParameterChanged?.Invoke(param, e);
+    }
+    #endregion
+
+    #region GetEnumerator method(s)
+    public IEnumerator<KeyValuePair<string, object?>> GetEnumerator()
         => Parameters
-            .Select(param => new KeyValuePair<string, object>(param.Name, GetAs<object>(param.Name)))
+            .Select(param => new KeyValuePair<string, object?>(param.Name, GetAs<object>(param.Name)))
             .GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    #endregion
 }

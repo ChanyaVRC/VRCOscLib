@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BuildSoft.VRChat.Osc;
+﻿namespace BuildSoft.VRChat.Osc;
 
 public class ValueChangedEventArgs : EventArgs
 {

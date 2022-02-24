@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BlobHandles;
-
-namespace BuildSoft.VRChat.Osc;
+﻿namespace BuildSoft.VRChat.Osc;
 
 public static class OscInput
 {

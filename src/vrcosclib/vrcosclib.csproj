@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
 	<RootNamespace>BuildSoft.VRChat.Osc</RootNamespace>
     <LangVersion>10.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
     
     <BaseOutputPath>..\..\bin</BaseOutputPath>
 
