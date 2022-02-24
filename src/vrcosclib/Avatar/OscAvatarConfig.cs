@@ -44,6 +44,17 @@ public class OscAvatarConfig
         return GetAvatarConfig(path);
     }
 
+    public static async ValueTask<OscAvatarConfig> WaitAndCreateCurrentOscAvatarConfigAsync()
+    {
+        var path = await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync();
+        var config = GetAvatarConfig(path);
+        if (config == null)
+        {
+            throw new JsonSerializationException("Json Serialization failed.");
+        }
+        return config;
+    }
+
     private static OscAvatarConfig? GetAvatarConfig(string path)
         => JsonConvert.DeserializeObject<OscAvatarConfig>(File.ReadAllText(path));
 
