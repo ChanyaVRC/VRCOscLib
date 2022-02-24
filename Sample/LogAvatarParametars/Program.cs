@@ -5,11 +5,7 @@ OscUtility.Initialize();
 OscAvatarConfig? avatarConfig = null;
 
 Console.WriteLine("Reading now... Try to \"Reset Avatar.\"");
-while (avatarConfig == null)
-{
-    avatarConfig = OscAvatarConfig.CreateCurrentOscAvatarConfig();
-    await Task.Delay(1);
-}
+avatarConfig = await OscAvatarConfig.WaitAndCreateCurrentOscAvatarConfigAsync();
 Console.WriteLine($"Read avatar config. Name: {avatarConfig.Name}");
 
 avatarConfig.Parameters.ParameterChanged += (parameter, e) =>
@@ -20,4 +16,3 @@ avatarConfig.Parameters.ParameterChanged += (parameter, e) =>
  };
 
 await Task.Delay(-1);
-
