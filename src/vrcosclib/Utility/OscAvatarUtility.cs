@@ -60,7 +60,7 @@ public class OscAvatarUtility
         server.AddMonitorCallback(ReadCommonParamsFromApp);
     }
 
-    public static void ReadCommonParamsFromApp(BlobString blobString, OscMessageValues message)
+    private static void ReadCommonParamsFromApp(BlobString blobString, OscMessageValues message)
     {
         string str = blobString.ToString();
         if (!str.StartsWith("/avatar/parameters/"))
@@ -101,7 +101,7 @@ public class OscAvatarUtility
         }
     }
 
-    public static void ReadAvatarIdFromApp(OscMessageValues message)
+    private static void ReadAvatarIdFromApp(OscMessageValues message)
     {
         _changedAvatar.AvatarId = message.ReadStringElement(message.ElementCount - 1)!;
         CallOnAvatarChanged();
