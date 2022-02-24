@@ -4,11 +4,13 @@ namespace BuildSoft.VRChat.Osc;
 
 public class OscAvatarConfig
 {
+#pragma warning disable IDE0044 // Add readonly modifier
     [JsonProperty("id", Required = Required.Always)]
     private string _id = string.Empty;
 
     [JsonProperty("name", Required = Required.Always)]
     private string _name = string.Empty;
+#pragma warning restore IDE0044 // Add readonly modifier
 
     [JsonProperty("parameters", Required = Required.Always)]
     private readonly List<OscAvatarParameter> _parametersList = new();
