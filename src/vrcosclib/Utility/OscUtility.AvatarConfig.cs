@@ -13,6 +13,18 @@ public static partial class OscUtility
         return GetOscAvatarConfigPath(avatarId);
     }
 
+    public static async ValueTask<string> WaitAndGetCurrentOscAvatarConfigPathAsync(CancellationToken token = default)
+    {
+        string? avatarId = OscAvatarUtility.CurrentAvatar.AvatarId;
+        while (avatarId == null)
+        {
+            await Task.Delay(1);
+            token.ThrowIfCancellationRequested();
+            avatarId = OscAvatarUtility.CurrentAvatar.AvatarId;
+        }
+        return GetOscAvatarConfigPath(avatarId);
+    }
+
     public static string GetOscAvatarConfigPath(string avatarId)
     {
         return Directory.EnumerateFiles(VRChatOscPath, $"*_{avatarId}.json", SearchOption.AllDirectories).First();
