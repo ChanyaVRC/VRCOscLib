@@ -11,6 +11,11 @@ public static partial class OscUtility
 
     public static void Initialize()
     {
+
+    }
+
+    static OscUtility()
+    {
         OscAvatarUtility.Initialize();
         OscAvatarParametorContainer.Initialize();
     }
