@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace BuildSoft.VRChat.Osc;
+namespace BuildSoft.VRChat.Osc.Avatar;
 
 public class OscAvatarConfig
 {
@@ -19,12 +19,12 @@ public class OscAvatarConfig
     public string Name => _name;
 
     [JsonIgnore]
-    private OscAvatarParametorContainer? _paramaters;
+    private OscAvatarParametorContainer? _parameters;
     [JsonIgnore]
     public OscAvatarParametorContainer Parameters
-        => _paramaters ??= new OscAvatarParametorContainer(_parametersList);
+        => _parameters ??= new OscAvatarParametorContainer(_parametersList);
 
-    internal bool IsCreatedParameters => _paramaters != null;
+    internal bool IsCreatedParameters => _parameters != null;
 
     [field: JsonExtensionData]
     public Dictionary<string, object> Extra { get; } = new();

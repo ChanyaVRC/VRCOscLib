@@ -10,7 +10,7 @@
     <BaseOutputPath>..\..\bin</BaseOutputPath>
 
     <PackageId>VRCOscLib</PackageId>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <Authors>ChanyaKushima</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageDescription>A OSC library for VRChat</PackageDescription>
@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="BuildSoft.OscCore" Version="1.0.5" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
   </ItemGroup>

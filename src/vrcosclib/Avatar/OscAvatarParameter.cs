@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace BuildSoft.VRChat.Osc;
+namespace BuildSoft.VRChat.Osc.Avatar;
 
 [JsonObject]
 public record class OscAvatarParameter
@@ -18,12 +18,18 @@ public record class OscAvatarParameter
     public OscAvatarParameterInterface? Input => _input;
     public OscAvatarParameterInterface? Output => _output;
 
+    public string ReadableAddress => (Output ?? Input)!.Address;
+
     public OscAvatarParameter()
     {
 
     }
     public OscAvatarParameter(string name, OscAvatarParameterInterface? input = null, OscAvatarParameterInterface? output = null)
     {
+        if (input == null && output == null)
+        {
+            throw new ArgumentException();
+        }
         _name = name;
         _input = input;
         _output = output;

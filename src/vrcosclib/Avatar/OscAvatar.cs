@@ -1,4 +1,4 @@
-﻿namespace BuildSoft.VRChat.Osc;
+﻿namespace BuildSoft.VRChat.Osc.Avatar;
 
 public struct OscAvatar
 {

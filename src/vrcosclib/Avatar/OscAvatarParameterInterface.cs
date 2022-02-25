@@ -1,7 +1,7 @@
 ﻿using BlobHandles;
 using Newtonsoft.Json;
 
-namespace BuildSoft.VRChat.Osc;
+namespace BuildSoft.VRChat.Osc.Avatar;
 
 [JsonObject]
 public class OscAvatarParameterInterface
@@ -28,5 +28,4 @@ public class OscAvatarParameterInterface
     }
 
     public string Type => _type;
-
 }

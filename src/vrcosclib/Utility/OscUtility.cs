@@ -1,4 +1,5 @@
 ﻿using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Avatar;
 
 namespace BuildSoft.VRChat.Osc;
 
@@ -9,6 +10,11 @@ public static partial class OscUtility
     public static readonly string VRChatOscPath = Path.Combine(VRChatAppDataPath, @"Osc");
 
     public static void Initialize()
+    {
+
+    }
+
+    static OscUtility()
     {
         OscAvatarUtility.Initialize();
         OscAvatarParametorContainer.Initialize();
@@ -37,4 +43,7 @@ public static partial class OscUtility
             _ => throw new InvalidOperationException(),
         };
     }
+
+    internal static bool AreEqual(object? left, object? right)
+        => left is null ? right is null : left.Equals(right);
 }
