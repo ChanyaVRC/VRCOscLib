@@ -43,4 +43,7 @@ public static partial class OscUtility
             _ => throw new InvalidOperationException(),
         };
     }
+
+    internal static bool AreEqual(object? left, object? right)
+        => left is null ? right is null : left.Equals(right);
 }

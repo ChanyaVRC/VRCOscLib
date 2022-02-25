@@ -20,7 +20,7 @@ public class OscParameterCollection : IDictionary<string, object?>
         set
         {
             bool containsValue = _items.TryGetValue(address, out var oldValue);
-            if (!containsValue || oldValue != value)
+            if (!containsValue || !OscUtility.AreEqual(oldValue, value))
             {
                 _items[address] = value;
                 OnValueChanged(new ParameterChangedEventArgs(oldValue, value, address));
