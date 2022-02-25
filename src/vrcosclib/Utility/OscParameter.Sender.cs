@@ -6,7 +6,7 @@ using BuildSoft.OscCore.UnityObjects;
 
 namespace BuildSoft.VRChat.Osc;
 
-public static class OscParameterSender
+public static partial class OscParameter
 {
     #region SendAvatarParameter
     public static void SendAvatarParameter(string name, float value)
@@ -79,65 +79,63 @@ public static class OscParameterSender
     #region SendValue
     public static void SendValue(string address, float value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, int value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, bool value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, string value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, double value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, long value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, Vector2 value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, Vector3 value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, Color32 value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, MidiMessage value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     public static void SendValue(string address, byte[] value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value, value.Length);
     }
     public static void SendValue(string address, char value)
     {
-        OscParameter.Parameters[address] = value;
+        Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
     #endregion
-
-
 }

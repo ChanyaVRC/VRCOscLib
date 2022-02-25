@@ -22,7 +22,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     /// </summary>
     static OscAvatarParametorContainer()
     {
-        OscParameterReceiver.Initialize();
+        OscParameter.Initialize();
     }
     #endregion
 

@@ -7,7 +7,7 @@ public static class OscInput
 
     public static void Send(this OscButtonInput content, bool isOn = true)
     {
-        OscParameterSender.SendValue(content.CreateAddress(), isOn ? 1 : 0);
+        OscParameter.SendValue(content.CreateAddress(), isOn ? 1 : 0);
     }
     public static void Press(this OscButtonInput content)
     {
@@ -20,7 +20,7 @@ public static class OscInput
 
     public static void Send(this OscAxisInput content, float value)
     {
-        OscParameterSender.SendValue(content.CreateAddress(), Math.Clamp(value, -1f, 1f));
+        OscParameter.SendValue(content.CreateAddress(), Math.Clamp(value, -1f, 1f));
     }
 
     public static string CreateAddress(this OscButtonInput content)

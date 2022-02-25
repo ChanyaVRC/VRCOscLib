@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace BuildSoft.VRChat.Osc;
-public static class OscParameter
+public static partial class OscParameter
 {
     private static OscParameterCollection? _parameters;
     internal static OscParameterCollection Parameters => _parameters ??= new();
 
     static OscParameter()
     {
-        OscParameterReceiver.Initialize();
+        OscUtility.Server.AddMonitorCallback(ReceiveMessage);
     }
 
+    internal static void Initialize()
+    {
+
+    }
 }

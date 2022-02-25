@@ -6,24 +6,20 @@ using BuildSoft.OscCore;
 
 namespace BuildSoft.VRChat.Osc;
 
-public static class OscParameterReceiver
+public static partial class OscParameter
 {
-    static OscParameterReceiver()
-    {
-        OscUtility.Server.AddMonitorCallback(ReceiveMessage);
-    }
-
-    internal static void Initialize()
-    {
-
-    }
-
     internal static void ReceiveMessage(BlobString address, OscMessageValues values)
     {
         var addressString = address.ToString();
         for (int i = 0; i < values.ElementCount; i++)
         {
-            OscParameter.Parameters[addressString] = values.ReadValue(i);
+            Parameters[addressString] = values.ReadValue(i);
         }
+    }
+
+    public static object? GetValue(string address)
+    {
+        Parameters.TryGetValue(address, out var value);
+        return value;
     }
 }
