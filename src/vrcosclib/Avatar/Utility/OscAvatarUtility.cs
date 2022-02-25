@@ -43,7 +43,7 @@ public static class OscAvatarUtility
     private static OscAvatar _currentAvatar;
     private static OscAvatar _changedAvatar;
 
-    public static event OscValueChangedEventHandler<OscAvatar, OscAvatar>? OnAvatarChanged;
+    public static event OscValueChangedEventHandler<OscAvatar, OscAvatar>? AvatarChanged;
 
     internal static void Initialize()
     {
@@ -73,6 +73,6 @@ public static class OscAvatarUtility
         _currentAvatar = newAvatar;
         _changedAvatar = default;
 
-        OnAvatarChanged?.Invoke(_currentAvatar, new ValueChangedEventArgs<OscAvatar>(oldAvatar, newAvatar));
+        AvatarChanged?.Invoke(_currentAvatar, new ValueChangedEventArgs<OscAvatar>(oldAvatar, newAvatar));
     }
 }
