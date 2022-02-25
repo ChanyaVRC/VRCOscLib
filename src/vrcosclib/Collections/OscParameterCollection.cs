@@ -11,8 +11,8 @@ public class OscParameterCollection : IDictionary<string, object?>
 {
     private readonly Dictionary<string, object?> _items = new();
 
-    private Dictionary<string, List<ParamChangedHandler>>? _values;
-    private Dictionary<string, List<ParamChangedHandler>> HandlersPerAddress => _values ??= new();
+    private Dictionary<string, List<ParamChangedHandler>>? _handlersPerAddress;
+    private Dictionary<string, List<ParamChangedHandler>> HandlersPerAddress => _handlersPerAddress ??= new();
 
     public object? this[string address]
     {

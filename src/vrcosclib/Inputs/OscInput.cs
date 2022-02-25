@@ -21,7 +21,6 @@ public static class OscInput
     public static void Send(this OscAxisInput content, float value)
     {
         OscParameterSender.SendValue(content.CreateAddress(), Math.Clamp(value, -1f, 1f));
-
     }
 
     public static string CreateAddress(this OscButtonInput content)
