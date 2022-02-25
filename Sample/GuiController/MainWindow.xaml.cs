@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using BuildSoft.VRChat.Osc;
-
+using BuildSoft.VRChat.Osc.Input;
 
 namespace GuiController;
 

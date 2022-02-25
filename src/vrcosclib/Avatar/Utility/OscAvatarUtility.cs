@@ -1,9 +1,9 @@
 ﻿using BlobHandles;
 using BuildSoft.OscCore;
 
-namespace BuildSoft.VRChat.Osc;
+namespace BuildSoft.VRChat.Osc.Avatar;
 
-public class OscAvatarUtility
+public static class OscAvatarUtility
 {
     internal static readonly Dictionary<string, object?> _commonParameters = new()
     {
@@ -36,7 +36,7 @@ public class OscAvatarUtility
         _avatarConfigs.Add(new WeakReference<OscAvatarConfig>(avatarConfig));
     }
 
-    public IReadOnlyDictionary<string, object?> CommonParameters => _commonParameters;
+    public static IReadOnlyDictionary<string, object?> CommonParameters => _commonParameters;
 
     public static OscAvatar CurrentAvatar => _currentAvatar;
 
@@ -52,49 +52,7 @@ public class OscAvatarUtility
     static OscAvatarUtility()
     {
         var server = OscUtility.Server;
-        server.TryAddMethod("/avatar/change", ReadAvatarIdFromApp);
-        server.AddMonitorCallback(ReadCommonParamsFromApp);
-    }
-
-    private static void ReadCommonParamsFromApp(BlobString blobString, OscMessageValues message)
-    {
-        string str = blobString.ToString();
-        if (!str.StartsWith("/avatar/parameters/"))
-        {
-            return;
-        }
-
-        var name = str["/avatar/parameters/".Length..];
-        if (!_commonParameters.ContainsKey(name))
-        {
-            return;
-        }
-        for (int i = 0; i < message.ElementCount; i++)
-        {
-            var oldValue = _commonParameters[name];
-            var newValue = message.ReadValue(i);
-            _commonParameters[name] = newValue;
-            CallOnCommonParamaterChanged(name, new ValueChangedEventArgs(oldValue, newValue));
-        }
-    }
-
-    private static void CallOnCommonParamaterChanged(string paramName, ValueChangedEventArgs e)
-    {
-        var configs = _avatarConfigs;
-
-        for (int i = configs.Count - 1; i >= 0; i--)
-        {
-            if (!configs[i].TryGetTarget(out var config))
-            {
-                configs.RemoveAt(i);
-                continue;
-            }
-            if (config.IsCreatedParameters)
-            {
-                var parameters = config.Parameters;
-                parameters.OnParameterChanged(parameters.GetParameter(paramName), e);
-            }
-        }
+        server.TryAddMethod(OscConst.AvatarIdAddress, ReadAvatarIdFromApp);
     }
 
     private static void ReadAvatarIdFromApp(OscMessageValues message)

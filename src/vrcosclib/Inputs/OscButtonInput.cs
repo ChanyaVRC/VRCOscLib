@@ -1,4 +1,4 @@
-﻿namespace BuildSoft.VRChat.Osc;
+﻿namespace BuildSoft.VRChat.Osc.Input;
 
 public enum OscButtonInput
 {

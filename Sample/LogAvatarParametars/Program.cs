@@ -1,6 +1,4 @@
-﻿using BuildSoft.VRChat.Osc;
-
-OscUtility.Initialize();
+﻿using BuildSoft.VRChat.Osc.Avatar;
 
 OscAvatarConfig? avatarConfig = null;
 

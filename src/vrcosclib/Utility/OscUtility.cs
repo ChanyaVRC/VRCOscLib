@@ -1,4 +1,5 @@
 ﻿using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Avatar;
 
 namespace BuildSoft.VRChat.Osc;
 
