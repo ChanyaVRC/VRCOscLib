@@ -5,29 +5,29 @@ namespace BuildSoft.VRChat.Osc.Avatar;
 
 public static class OscAvatarUtility
 {
-    internal static readonly Dictionary<string, object?> _commonParameters = new()
+    internal static readonly HashSet<string> _commonParameters = new()
     {
-        { "VRCFaceBlendV", null },
-        { "VRCFaceBlendH", null },
-        { "VRCEmote", null },
-        { "VelocityY", null },
-        { "VelocityX", null },
-        { "VelocityZ", null },
-        { "InStation", null },
-        { "Seated", null },
-        { "AFK", null },
-        { "Upright", null },
-        { "AngularY", null },
-        { "Grounded", null },
-        { "MuteSelf", null },
-        { "VRMode", null },
-        { "TrackingType", null },
-        { "GestureRightWeight", null },
-        { "GestureRight", null },
-        { "GestureLeftWeight", null },
-        { "GestureLeft", null },
-        { "Voice", null },
-        { "Viseme", null },
+        "VRCFaceBlendV",
+        "VRCFaceBlendH",
+        "VRCEmote",
+        "VelocityY",
+        "VelocityX",
+        "VelocityZ",
+        "InStation",
+        "Seated",
+        "AFK",
+        "Upright",
+        "AngularY",
+        "Grounded",
+        "MuteSelf",
+        "VRMode",
+        "TrackingType",
+        "GestureRightWeight",
+        "GestureRight",
+        "GestureLeftWeight",
+        "GestureLeft",
+        "Voice",
+        "Viseme",
     };
 
     internal static List<WeakReference<OscAvatarConfig>> _avatarConfigs = new();
@@ -36,7 +36,8 @@ public static class OscAvatarUtility
         _avatarConfigs.Add(new WeakReference<OscAvatarConfig>(avatarConfig));
     }
 
-    public static IReadOnlyDictionary<string, object?> CommonParameters => _commonParameters;
+    public static IReadOnlyDictionary<string, object?> CommonParameters
+        => _commonParameters.ToDictionary(s => s, GetCommonParameterValue);
 
     public static OscAvatar CurrentAvatar => _currentAvatar;
 
@@ -61,9 +62,11 @@ public static class OscAvatarUtility
         CallOnAvatarChanged();
     }
 
-    public static bool IsCommonParameter(string paramName) => _commonParameters.ContainsKey(paramName);
-    public static object? GetCommonParameterValue(string paramName) => _commonParameters[paramName];
-    public static IEnumerable<object?> GetCommonParameterValues() => _commonParameters.Values;
+    public static bool IsCommonParameter(string paramName) => _commonParameters.Contains(paramName);
+    public static object? GetCommonParameterValue(string paramName) 
+        => OscParameter.GetValue(OscConst.ParameterAddressSpace + paramName);
+    public static IEnumerable<object?> GetCommonParameterValues() 
+        => _commonParameters.Select(GetCommonParameterValue);
 
     private static void CallOnAvatarChanged()
     {
