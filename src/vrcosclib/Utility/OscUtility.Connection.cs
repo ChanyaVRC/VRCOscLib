@@ -7,20 +7,20 @@ public static partial class OscUtility
     private static OscServer? _server;
     private static OscClient? _client;
 
-    internal static OscServer Server => _server ??= OscServer.GetOrCreate(_sendPort);
-    internal static OscClient Client => _client ??= new OscClient("127.0.0.1", _receivePort);
+    internal static OscServer Server => _server ??= OscServer.GetOrCreate(_receivePort);
+    internal static OscClient Client => _client ??= new OscClient("127.0.0.1", _sendPort);
 
-    private static int _sendPort = 9001;
-    public static int SendPort
+    private static int _receivePort = 9001;
+    public static int ReceivePort
     {
-        get => _sendPort;
+        get => _receivePort;
         set
         {
             if (value > 65535 || value < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
-            _sendPort = value;
+            _receivePort = value;
 
             if (_server == null)
             {
@@ -41,10 +41,10 @@ public static partial class OscUtility
         }
     }
 
-    private static int _receivePort = 9000;
-    public static int ReceivePort
+    private static int _sendPort = 9000;
+    public static int SendPort
     {
-        get => _receivePort;
+        get => _sendPort;
         set
         {
             if (value > 65535 || value < 0)
@@ -52,7 +52,7 @@ public static partial class OscUtility
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
 
-            _receivePort = value;
+            _sendPort = value;
             if (_client != null)
             {
                 _client.Dispose();
