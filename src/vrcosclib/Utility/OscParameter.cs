@@ -10,7 +10,7 @@ public static partial class OscParameter
 
     static OscParameter()
     {
-        OscUtility.Server.AddMonitorCallback(ReceiveMessage);
+        OscUtility.RegisterMonitorCallback(ReceiveMessage);
     }
 
     internal static void Initialize()

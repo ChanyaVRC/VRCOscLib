@@ -16,8 +16,7 @@ public static partial class OscUtility
 
     static OscUtility()
     {
-        OscAvatarUtility.Initialize();
-        OscAvatarParametorContainer.Initialize();
+
     }
 
     internal static object? ReadValue(this OscMessageValues value, int index)
