@@ -19,4 +19,43 @@ public static class TestUtility
             }
         }
     }
+
+    public static string CreateConfigFileForTest(string avatarId, string name, string directory, bool empty = false)
+    {
+        Directory.CreateDirectory(directory);
+
+        var path = Path.Combine(directory, avatarId + ".json");
+        using var writer = File.CreateText(path);
+        if (empty)
+        {
+            return path;
+        }
+
+        writer.Write(
+@$"{{
+  ""id"":""{avatarId}"",
+  ""name"":""{name}"",
+  ""parameters"":[
+    {{
+      ""name"":""TestParam"",
+      ""input"":{{
+        ""address"":""/avatar/parameters/TestParam"",
+        ""type"":""Int""
+      }},
+      ""output"":{{
+        ""address"":""avatar/parameters/TestParam"",
+        ""type"":""Int""
+      }}
+    }},
+    {{
+      ""name"":""VelocityZ"",
+      ""output"":{{
+        ""address"":""avatar/parameters/VelocityZ"",
+        ""type"":""Float""
+      }}
+    }}
+  ]
+}}");
+        return path;
+    }
 }
