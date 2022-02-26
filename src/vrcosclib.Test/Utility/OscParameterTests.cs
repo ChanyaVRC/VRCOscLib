@@ -1,9 +1,12 @@
-﻿using System;
-using System.Threading;
+﻿#nullable disable
+
+using System;
 using System.Threading.Tasks;
 using BuildSoft.OscCore;
 using BuildSoft.OscCore.UnityObjects;
 using NUnit.Framework;
+
+using static BuildSoft.VRChat.Osc.Test.TestUtility;
 
 namespace BuildSoft.VRChat.Osc.Test;
 
@@ -12,13 +15,17 @@ public class OscParameterTests
 {
     OscClient _client;
     OscServer _server;
-
+    private int _defaultReceivePort;
+    private int _defaultSendPort;
     const int TestClientPort = 8001;
     const int TestServerPort = 8002;
 
     [SetUp]
     public void Setup()
     {
+        _defaultReceivePort = OscUtility.ReceivePort;
+        _defaultSendPort = OscUtility.SendPort;
+
         OscUtility.ReceivePort = TestClientPort;
         OscUtility.SendPort = TestServerPort;
         _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
@@ -28,8 +35,8 @@ public class OscParameterTests
     [TearDown]
     public void TearDown()
     {
-        OscUtility.ReceivePort = TestClientPort;
-        OscUtility.SendPort = TestServerPort;
+        OscUtility.ReceivePort = _defaultReceivePort;
+        OscUtility.SendPort = _defaultSendPort;
         _client.Dispose();
         _server.Dispose();
     }
@@ -37,7 +44,7 @@ public class OscParameterTests
     [Test]
     public async Task SendAvatarParameterTest()
     {
-        OscMessageValues? value = null;
+        OscMessageValues value = null;
         const string ParamName = "name";
         void valueReadMethod(OscMessageValues v) => value = v;
         _server.TryAddMethod(OscConst.AvatarParameterAddressSpace + ParamName, valueReadMethod);
@@ -114,7 +121,7 @@ public class OscParameterTests
     [Test]
     public async Task SendValueTest()
     {
-        OscMessageValues? value = null;
+        OscMessageValues value = null;
         const string Address = "/test/address";
         void valueReadMethod(OscMessageValues v) => value = v;
         _server.TryAddMethod(Address, valueReadMethod);
@@ -204,7 +211,7 @@ public class OscParameterTests
         const string ParamName = "paramName";
         const string Address = OscConst.AvatarParameterAddressSpace + ParamName;
         OscParameter.SendAvatarParameter(ParamName, value);
-        
+
         CollectionAssert.AreEqual(value, (byte[])OscParameter.Parameters[Address]!);
         CollectionAssert.AreEqual(value, (byte[])OscParameter.GetValue(Address)!);
     }
@@ -240,17 +247,5 @@ public class OscParameterTests
         await LoopWhile(() => !OscParameter.Parameters.ContainsKey(Address), new TimeSpan(100 * TimeSpan.TicksPerMillisecond));
 
         CollectionAssert.AreEqual(value, (byte[])OscParameter.Parameters[Address]!);
-    }
-
-    private static async Task LoopWhile(Func<bool> conditions, TimeSpan timeout)
-    {
-        await NewMethod(conditions).WaitAsync(timeout);
-        static async Task NewMethod(Func<bool> conditions)
-        {
-            while (conditions())
-            {
-                await Task.Delay(10);
-            }
-        }
     }
 }
