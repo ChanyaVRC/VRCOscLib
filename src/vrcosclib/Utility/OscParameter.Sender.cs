@@ -11,67 +11,67 @@ public static partial class OscParameter
     #region SendAvatarParameter
     public static void SendAvatarParameter(string name, float value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, int value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, bool value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, string value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, double value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     //public static void SendAvatarParameter(string name, long value)
     //{
-    //    string address = OscConst.ParameterAddressSpace + name;
+    //    string address = OscConst.AvatarParameterAddressSpace + name;
     //    SendValue(address, value);
     //}
     public static void SendAvatarParameter(string name, Vector2 value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, Vector3 value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, Color32 value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, MidiMessage value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, byte[] value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, char value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, value);
     }
     public static void SendAvatarParameter(string name, object value)
     {
-        string address = OscConst.ParameterAddressSpace + name;
+        string address = OscConst.AvatarParameterAddressSpace + name;
         SendValue(address, (dynamic)value);
     }
     #endregion
