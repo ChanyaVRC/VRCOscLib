@@ -34,11 +34,11 @@ public static partial class OscParameter
         string address = OscConst.ParameterAddressSpace + name;
         SendValue(address, value);
     }
-    public static void SendAvatarParameter(string name, long value)
-    {
-        string address = OscConst.ParameterAddressSpace + name;
-        SendValue(address, value);
-    }
+    //public static void SendAvatarParameter(string name, long value)
+    //{
+    //    string address = OscConst.ParameterAddressSpace + name;
+    //    SendValue(address, value);
+    //}
     public static void SendAvatarParameter(string name, Vector2 value)
     {
         string address = OscConst.ParameterAddressSpace + name;
