@@ -28,7 +28,14 @@ public static partial class OscUtility
 
     public static string GetOscAvatarConfigPath(string avatarId)
     {
-        return Directory.EnumerateFiles(VRChatOscPath, avatarId + ".json", SearchOption.AllDirectories).First();
+        try
+        {
+            return Directory.EnumerateFiles(VRChatOscPath, avatarId + ".json", SearchOption.AllDirectories).First();
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new FileNotFoundException("Current avatar config file is not found.", ex);
+        }
     }
 
     public static ImmutableArray<string> GetOscAvatarConfigPathes()
