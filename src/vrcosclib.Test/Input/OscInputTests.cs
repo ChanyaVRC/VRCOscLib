@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace BuildSoft.VRChat.Osc.Input.Test;
 
 [TestOf(typeof(OscInput))]
-public class OscInputTest
+public class OscInputTests
 {
     OscClient _client = null!;
     OscServer _server = null!;
