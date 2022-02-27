@@ -20,6 +20,10 @@ public static partial class OscUtility
             {
                 throw new ArgumentOutOfRangeException(nameof(value));
             }
+            if (_receivePort == value)
+            {
+                return;
+            }
             _receivePort = value;
 
             if (_server == null)
@@ -50,6 +54,10 @@ public static partial class OscUtility
             if (value > 65535 || value < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(value));
+            }
+            if (_sendPort == value)
+            {
+                return;
             }
 
             _sendPort = value;
