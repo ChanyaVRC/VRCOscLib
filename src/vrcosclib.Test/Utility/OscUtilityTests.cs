@@ -8,16 +8,19 @@ namespace BuildSoft.VRChat.Osc.Test;
 [TestOf(typeof(OscUtility))]
 public class OscUtilityTests
 {
-    OscClient _client = null!;
-    OscServer _server = null!;
+    private OscClient _client = null!;
+    private OscServer _server = null!;
     private int _defaultReceivePort;
     private int _defaultSendPort;
-    const int TestClientPort = 8001;
-    const int TestServerPort = 8002;
+    private const int TestClientPort = 8001;
+    private const int TestServerPort = 8002;
 
     [SetUp]
     public void Setup()
     {
+        _defaultReceivePort = OscUtility.ReceivePort;
+        _defaultSendPort = OscUtility.SendPort;
+
         _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
         _server = OscServer.GetOrCreate(OscUtility.SendPort);
 
@@ -38,9 +41,6 @@ public class OscUtilityTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        _defaultReceivePort = OscUtility.ReceivePort;
-        _defaultSendPort = OscUtility.SendPort;
-
         OscUtility.ReceivePort = TestClientPort;
         OscUtility.SendPort = TestServerPort;
     }
@@ -62,7 +62,7 @@ public class OscUtilityTests
         const string TestAvatarId = "avtr_test_avatar_id";
         _client.Send(OscConst.AvatarIdAddress, TestAvatarId);
 
-        await LoopWhile(() => !OscParameter.Parameters.ContainsKey(OscConst.AvatarIdAddress), TimeSpan.FromMilliseconds(100));
+        await LoopWhile(() => !OscParameter.Parameters.ContainsKey(OscConst.AvatarIdAddress), LatencyTimeout);
 
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetCurrentOscAvatarConfigPath());
         Assert.ThrowsAsync<FileNotFoundException>(async () => await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync());
@@ -156,11 +156,11 @@ public class OscUtilityTests
         using (var client = new OscClient("127.0.0.1", 12345))
         {
             client.Send("/value/send", 1);
-            await LoopWhile(() => value == 0, TimeSpan.FromMilliseconds(100));
+            await LoopWhile(() => value == 0, LatencyTimeout);
             Assert.AreEqual(1, value);
 
             client.Send("/value/send", 1);
-            await LoopWhile(() => value == 1, TimeSpan.FromMilliseconds(100));
+            await LoopWhile(() => value == 1, LatencyTimeout);
             Assert.AreEqual(2, value);
         }
 
@@ -168,7 +168,7 @@ public class OscUtilityTests
         using (var client = new OscClient("127.0.0.1", 54321))
         {
             client.Send("/value/send", 1);
-            await LoopWhile(() => value == 2, TimeSpan.FromMilliseconds(100));
+            await LoopWhile(() => value == 2, LatencyTimeout);
             Assert.AreEqual(3, value);
         }
     }

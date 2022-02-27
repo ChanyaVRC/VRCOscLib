@@ -8,6 +8,8 @@ namespace BuildSoft.VRChat.Osc.Test;
 
 public static class TestUtility
 {
+    public static readonly TimeSpan LatencyTimeout = TimeSpan.FromMilliseconds(100);
+
     public static async Task LoopWhile(Func<bool> conditions, TimeSpan timeout)
     {
         await NewMethod(conditions).WaitAsync(timeout);
@@ -15,7 +17,7 @@ public static class TestUtility
         {
             while (conditions())
             {
-                await Task.Delay(10);
+                await Task.Delay(5);
             }
         }
     }
