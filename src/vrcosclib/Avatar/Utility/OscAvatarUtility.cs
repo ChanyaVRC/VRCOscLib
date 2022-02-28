@@ -52,13 +52,13 @@ public static class OscAvatarUtility
 
     static OscAvatarUtility()
     {
-        var server = OscUtility.Server;
-        server.TryAddMethod(OscConst.AvatarIdAddress, ReadAvatarIdFromApp);
+        var parameters = OscParameter.Parameters;
+        parameters.AddValueChangedEventByAddress(OscConst.AvatarIdAddress, ReadAvatarIdFromApp);
     }
 
-    private static void ReadAvatarIdFromApp(OscMessageValues message)
+    private static void ReadAvatarIdFromApp(OscParameterCollection sender, ValueChangedEventArgs e)
     {
-        _changedAvatar.AvatarId = message.ReadStringElement(message.ElementCount - 1)!;
+        _changedAvatar.AvatarId = (string?)e.NewValue;
         CallOnAvatarChanged();
     }
 
