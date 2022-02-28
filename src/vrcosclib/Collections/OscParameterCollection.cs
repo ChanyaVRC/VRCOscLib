@@ -23,7 +23,8 @@ public class OscParameterCollection : IDictionary<string, object?>
             if (!containsValue || !OscUtility.AreEqual(oldValue, value))
             {
                 _items[address] = value;
-                OnValueChanged(new ParameterChangedEventArgs(oldValue, value, address));
+                var reason = containsValue ? ValueChangedReason.Substituted : ValueChangedReason.Added;
+                OnValueChanged(new ParameterChangedEventArgs(oldValue, value, address, reason));
             }
         }
     }
@@ -39,20 +40,36 @@ public class OscParameterCollection : IDictionary<string, object?>
     public void Add(string address, object? value)
     {
         _items.Add(address, value);
-        OnValueChanged(new ParameterChangedEventArgs(null, value, address));
+        OnValueChanged(new ParameterChangedEventArgs(null, value, address, ValueChangedReason.Added));
     }
 
     public void Add(KeyValuePair<string, object?> item)
        => Add(item.Key, item.Value);
 
-    public void Clear() => _items.Clear();
+    public void Clear()
+    {
+        var copiedItems = _items.ToArray();
+        _items.Clear();
+        for (int i = 0; i < copiedItems.Length; i++)
+        {
+            OnValueChanged(new ParameterChangedEventArgs(copiedItems[i].Value, null, copiedItems[i].Key, ValueChangedReason.Removed));
+        }
+    }
 
     public bool Contains(KeyValuePair<string, object?> item)
         => _items.TryGetValue(item.Key, out var value) && item.Value == value;
 
     public bool ContainsKey(string key) => _items.ContainsKey(key);
 
-    public bool Remove(string key) => _items.Remove(key);
+    public bool Remove(string key)
+    {
+        bool removed = _items.Remove(key, out var value);
+        if (removed)
+        {
+            OnValueChanged(new ParameterChangedEventArgs(value, null, key, ValueChangedReason.Removed));
+        }
+        return removed;
+    }
 
     public bool TryGetValue(string key, out object? value) => _items.TryGetValue(key, out value);
 
