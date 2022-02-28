@@ -59,6 +59,8 @@ public class OscUtilityTests
     public async Task TestAroundGetCurrentAvatarConfigPath()
     {
         Assert.IsNull(OscUtility.GetCurrentOscAvatarConfigPath());
+        Assert.ThrowsAsync<TaskCanceledException>(async () => await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync(CanceledToken));
+
         const string TestAvatarId = "avtr_test_avatar_id";
         _client.Send(OscConst.AvatarIdAddress, TestAvatarId);
 
