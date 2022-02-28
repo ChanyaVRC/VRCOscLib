@@ -19,8 +19,7 @@ public static partial class OscUtility
         string? avatarId = OscAvatarUtility.CurrentAvatar.AvatarId;
         while (avatarId == null)
         {
-            await Task.Delay(1);
-            token.ThrowIfCancellationRequested();
+            await Task.Delay(1, token);
             avatarId = OscAvatarUtility.CurrentAvatar.AvatarId;
         }
         return GetOscAvatarConfigPath(avatarId);
@@ -28,7 +27,14 @@ public static partial class OscUtility
 
     public static string GetOscAvatarConfigPath(string avatarId)
     {
-        return Directory.EnumerateFiles(VRChatOscPath, avatarId + ".json", SearchOption.AllDirectories).First();
+        try
+        {
+            return Directory.EnumerateFiles(VRChatOscPath, avatarId + ".json", SearchOption.AllDirectories).First();
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new FileNotFoundException("Current avatar config file is not found.", ex);
+        }
     }
 
     public static ImmutableArray<string> GetOscAvatarConfigPathes()

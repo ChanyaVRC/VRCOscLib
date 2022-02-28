@@ -137,7 +137,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #region Events
     private void GetValueCallback(OscParameterCollection sender, ParameterChangedEventArgs e)
     {
-        var name = e.Address[(OscConst.ParameterAddressSpace.Length + 1)..];
+        var name = e.Address[(OscConst.AvatarParameterAddressSpace.Length + 1)..];
         OnParameterChanged(GetParameter(name), e);
     }
 
