@@ -42,6 +42,8 @@ public class OscParameterTests
     {
         OscUtility.ReceivePort = TestClientPort;
         OscUtility.SendPort = TestServerPort;
+
+        OscParameter.Parameters.Clear();
     }
 
     [OneTimeTearDown]
