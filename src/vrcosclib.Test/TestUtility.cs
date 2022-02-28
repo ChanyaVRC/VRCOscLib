@@ -9,6 +9,20 @@ namespace BuildSoft.VRChat.Osc.Test;
 public static class TestUtility
 {
     public static readonly TimeSpan LatencyTimeout = TimeSpan.FromMilliseconds(100);
+    private static CancellationTokenSource? _canceledTokenSource;
+    private static CancellationTokenSource CanceledTokenSource
+    {
+        get
+        {
+            if (_canceledTokenSource == null)
+            {
+                var source = new CancellationTokenSource();
+                source.Cancel();
+                _canceledTokenSource = source;
+            }
+            return _canceledTokenSource;
+        }
+    }
 
     public static async Task LoopWhile(Func<bool> conditions, TimeSpan timeout)
     {
@@ -21,6 +35,8 @@ public static class TestUtility
             }
         }
     }
+
+    public static CancellationToken CanceledToken => CanceledTokenSource.Token;
 
     public static string CreateConfigFileForTest(string avatarId, string name, string directory, bool empty = false)
     {
