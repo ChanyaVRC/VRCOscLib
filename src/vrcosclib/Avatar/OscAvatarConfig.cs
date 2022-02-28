@@ -21,8 +21,7 @@ public class OscAvatarConfig
     [JsonIgnore]
     private OscAvatarParametorContainer? _parameters;
     [JsonIgnore]
-    public OscAvatarParametorContainer Parameters
-        => _parameters ??= new OscAvatarParametorContainer(_parametersList);
+    public OscAvatarParametorContainer Parameters => _parameters ??= new(_parametersList);
 
     internal bool IsCreatedParameters => _parameters != null;
 
@@ -42,6 +41,11 @@ public class OscAvatarConfig
             return null;
         }
         return GetAvatarConfig(path);
+    }
+
+    public static OscAvatarConfig? CreateOscAvatarConfig(string avatarId)
+    {
+        return GetAvatarConfig(OscUtility.GetOscAvatarConfigPath(avatarId));
     }
 
     public static async ValueTask<OscAvatarConfig> WaitAndCreateCurrentOscAvatarConfigAsync()
