@@ -19,8 +19,7 @@ public static partial class OscUtility
         string? avatarId = OscAvatarUtility.CurrentAvatar.AvatarId;
         while (avatarId == null)
         {
-            await Task.Delay(1);
-            token.ThrowIfCancellationRequested();
+            await Task.Delay(1, token);
             avatarId = OscAvatarUtility.CurrentAvatar.AvatarId;
         }
         return GetOscAvatarConfigPath(avatarId);
