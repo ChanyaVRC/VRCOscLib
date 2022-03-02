@@ -6,7 +6,7 @@ public static partial class OscUtility
 {
     public static string? GetCurrentOscAvatarConfigPath()
     {
-        var avatarId = OscAvatarUtility.CurrentAvatar.AvatarId;
+        var avatarId = OscAvatarUtility.CurrentAvatar.Id;
         if (avatarId == null)
         {
             return null;
@@ -16,11 +16,11 @@ public static partial class OscUtility
 
     public static async ValueTask<string> WaitAndGetCurrentOscAvatarConfigPathAsync(CancellationToken token = default)
     {
-        string? avatarId = OscAvatarUtility.CurrentAvatar.AvatarId;
+        string? avatarId = OscAvatarUtility.CurrentAvatar.Id;
         while (avatarId == null)
         {
             await Task.Delay(1, token);
-            avatarId = OscAvatarUtility.CurrentAvatar.AvatarId;
+            avatarId = OscAvatarUtility.CurrentAvatar.Id;
         }
         return GetOscAvatarConfigPath(avatarId);
     }

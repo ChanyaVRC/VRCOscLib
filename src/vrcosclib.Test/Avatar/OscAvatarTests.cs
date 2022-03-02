@@ -38,10 +38,10 @@ public class OscAvatarTests
     {
         const string AvatarId = "avtr_id_for_test"; 
         Assert.AreEqual(null, default(OscAvatar).ToConfig());
-        Assert.Throws<FileNotFoundException>(() => new OscAvatar { AvatarId = AvatarId }.ToConfig());
+        Assert.Throws<FileNotFoundException>(() => new OscAvatar { Id = AvatarId }.ToConfig());
 
         TestUtility.CreateConfigFileForTest(AvatarId, "Test Avatar", TestUtility.GetAvatarConfigDirectory());
-        var config = new OscAvatar { AvatarId = AvatarId }.ToConfig();
+        var config = new OscAvatar { Id = AvatarId }.ToConfig();
         Assert.IsNotNull(config);
         Assert.AreEqual(AvatarId, config!.Id);
     }

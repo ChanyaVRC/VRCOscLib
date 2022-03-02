@@ -66,7 +66,7 @@ public class OscUtilityTests
         const string TestAvatarId = "avtr_test_avatar_id";
         _client.Send(OscConst.AvatarIdAddress, TestAvatarId);
 
-        await LoopWhile(() => Avatar.OscAvatarUtility.CurrentAvatar.AvatarId == null, LatencyTimeout);
+        await LoopWhile(() => Avatar.OscAvatarUtility.CurrentAvatar.Id == null, LatencyTimeout);
 
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetCurrentOscAvatarConfigPath());
         Assert.ThrowsAsync<FileNotFoundException>(async () => await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync());
