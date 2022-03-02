@@ -224,7 +224,7 @@ public class OscParameterCollectionTests
             expectedArgs = e;
             calledCount = 0;
         };
-        void TestEvent(OscParameterCollection sender, ParameterChangedEventArgs e)
+        void TestEvent(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
         {
             Assert.AreSame(pararmeters, sender);
             Assert.AreSame(expectedArgs, e);

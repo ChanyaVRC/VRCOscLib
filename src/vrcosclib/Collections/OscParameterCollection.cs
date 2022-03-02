@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-using ParamChangedHandler = BuildSoft.VRChat.Osc.OscParameterChangedEventHandler<BuildSoft.VRChat.Osc.OscParameterCollection>;
+using ParamChangedHandler = BuildSoft.VRChat.Osc.OscParameterChangedEventHandler<BuildSoft.VRChat.Osc.IReadOnlyOscParameterCollection>;
 
 namespace BuildSoft.VRChat.Osc;
 
-public class OscParameterCollection : IDictionary<string, object?>
+public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOscParameterCollection
 {
     private readonly Dictionary<string, object?> _items = new();
 
@@ -76,6 +76,9 @@ public class OscParameterCollection : IDictionary<string, object?>
     public IEnumerator<KeyValuePair<string, object?>> GetEnumerator() => _items.GetEnumerator();
 
     #region Interface methods implemented explicitly
+    IEnumerable<string> IReadOnlyDictionary<string, object?>.Keys => Keys;
+    IEnumerable<object?> IReadOnlyDictionary<string, object?>.Values => Values;
+
     void ICollection<KeyValuePair<string, object?>>.CopyTo(KeyValuePair<string, object?>[] array, int arrayIndex)
     {
         throw new NotSupportedException();

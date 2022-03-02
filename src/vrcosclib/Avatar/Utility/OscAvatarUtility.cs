@@ -56,7 +56,7 @@ public static class OscAvatarUtility
         parameters.AddValueChangedEventByAddress(OscConst.AvatarIdAddress, ReadAvatarIdFromApp);
     }
 
-    private static void ReadAvatarIdFromApp(OscParameterCollection sender, ValueChangedEventArgs e)
+    private static void ReadAvatarIdFromApp(IReadOnlyOscParameterCollection sender, ValueChangedEventArgs e)
     {
         _changedAvatar.AvatarId = (string?)e.NewValue;
         CallOnAvatarChanged();
