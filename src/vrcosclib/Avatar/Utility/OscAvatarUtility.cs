@@ -63,9 +63,9 @@ public static class OscAvatarUtility
     }
 
     public static bool IsCommonParameter(string paramName) => _commonParameters.Contains(paramName);
-    public static object? GetCommonParameterValue(string paramName) 
+    public static object? GetCommonParameterValue(string paramName)
         => OscParameter.GetValue(OscConst.AvatarParameterAddressSpace + paramName);
-    public static IEnumerable<object?> GetCommonParameterValues() 
+    public static IEnumerable<object?> GetCommonParameterValues()
         => _commonParameters.Select(GetCommonParameterValue);
 
     private static void CallOnAvatarChanged()

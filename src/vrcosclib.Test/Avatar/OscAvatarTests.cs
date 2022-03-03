@@ -36,7 +36,7 @@ public class OscAvatarTests
     [Test]
     public void TestToConfig()
     {
-        const string AvatarId = "avtr_id_for_test"; 
+        const string AvatarId = "avtr_id_for_test";
         Assert.AreEqual(null, default(OscAvatar).ToConfig());
         Assert.Throws<FileNotFoundException>(() => new OscAvatar { Id = AvatarId }.ToConfig());
 

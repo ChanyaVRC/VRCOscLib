@@ -89,7 +89,7 @@ public class OscUtilityTests
 
         var testAvatarDirectory = Path.Combine(OscUtility.VRChatOscPath, @"usr_test_user_id\Avatars");
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetOscAvatarConfigPath(TestAvatarId));
-        
+
         var path = CreateConfigFileForTest(TestAvatarId, "TestAvatar", testAvatarDirectory, true);
         Assert.AreEqual(path, OscUtility.GetOscAvatarConfigPath(TestAvatarId));
     }
