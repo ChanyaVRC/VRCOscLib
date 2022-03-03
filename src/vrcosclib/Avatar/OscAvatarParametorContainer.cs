@@ -75,10 +75,10 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #endregion
 
     #region Value accessor(s)
-    public object this[string name]
+    public object? this[string name]
     {
-        get => GetAs<object>(name)!;
-        set => SetAs<object>(name, value);
+        get => GetAs<object>(name);
+        set => SetAs<object?>(name, value);
     }
 
     public T? GetAs<T>(string name) where T : notnull
