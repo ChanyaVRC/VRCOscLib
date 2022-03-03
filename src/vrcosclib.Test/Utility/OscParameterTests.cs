@@ -23,11 +23,10 @@ public class OscParameterTests
     [SetUp]
     public void Setup()
     {
-        _defaultReceivePort = OscUtility.ReceivePort;
-        _defaultSendPort = OscUtility.SendPort;
-
         _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
-        _server = OscServer.GetOrCreate(OscUtility.SendPort);
+        _server = new OscServer(OscUtility.SendPort);
+
+        OscParameter.Parameters.Clear();
     }
 
     [TearDown]
@@ -40,17 +39,13 @@ public class OscParameterTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        OscUtility.ReceivePort = TestClientPort;
-        OscUtility.SendPort = TestServerPort;
 
-        OscParameter.Parameters.Clear();
     }
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-        OscUtility.ReceivePort = _defaultReceivePort;
-        OscUtility.SendPort = _defaultSendPort;
+
     }
 
     [Test]
@@ -63,70 +58,70 @@ public class OscParameterTests
 
         OscParameter.SendAvatarParameter(ParamName, 1.2f);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(0), 1.2f);
+        Assert.AreEqual(1.2f, value.ReadFloatElementUnchecked(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, 10);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadIntElementUnchecked(0), 10);
+        Assert.AreEqual(10, value.ReadIntElementUnchecked(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, true);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadBooleanElement(0), true);
+        Assert.AreEqual(true, value.ReadBooleanElement(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, false);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadBooleanElement(0), false);
+        Assert.AreEqual(false, value.ReadBooleanElement(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, "value");
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadStringElement(0), "value");
+        Assert.AreEqual("value", value.ReadStringElement(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, 10.1);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadFloat64ElementUnchecked(0), 10.1);
+        Assert.AreEqual(10.1, value.ReadFloat64ElementUnchecked(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, new Vector2(1, 2));
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(0), 1);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(1), 2);
+        Assert.AreEqual(1, value.ReadFloatElementUnchecked(0));
+        Assert.AreEqual(2, value.ReadFloatElementUnchecked(1));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, new Vector3(1, 2, 3));
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(0), 1);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(1), 2);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(2), 3);
+        Assert.AreEqual(1, value.ReadFloatElementUnchecked(0));
+        Assert.AreEqual(2, value.ReadFloatElementUnchecked(1));
+        Assert.AreEqual(3, value.ReadFloatElementUnchecked(2));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, new Color32(1, 2, 3, 4));
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadIntElementUnchecked(0), 0x04030201);
+        Assert.AreEqual(0x04030201, value.ReadIntElementUnchecked(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, new MidiMessage(1, 2, 3, 4));
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadMidiElementUnchecked(0), new MidiMessage(1, 2, 3, 4));
+        Assert.AreEqual(new MidiMessage(1, 2, 3, 4), value.ReadMidiElementUnchecked(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, new byte[] { 1, 2, 3, 4 });
         await LoopWhile(() => value == null, LatencyTimeout);
-        CollectionAssert.AreEqual(value.ReadBlobElement(0), new byte[] { 1, 2, 3, 4 });
+        CollectionAssert.AreEqual(new byte[] { 1, 2, 3, 4 }, value.ReadBlobElement(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, 'c');
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadAsciiCharElement(0), 'c');
+        Assert.AreEqual('c', value.ReadAsciiCharElement(0));
         value = null;
 
         OscParameter.SendAvatarParameter(ParamName, (object)10);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadIntElementUnchecked(0), 10);
+        Assert.AreEqual(10, value.ReadIntElementUnchecked(0));
         value = null;
     }
 
@@ -140,65 +135,65 @@ public class OscParameterTests
 
         OscParameter.SendValue(Address, 1.2f);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(0), 1.2f);
+        Assert.AreEqual(1.2f, value.ReadFloatElementUnchecked(0));
         value = null;
 
         OscParameter.SendValue(Address, 10);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadIntElementUnchecked(0), 10);
+        Assert.AreEqual(10, value.ReadIntElementUnchecked(0));
         value = null;
 
         OscParameter.SendValue(Address, true);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadBooleanElement(0), true);
+        Assert.AreEqual(true, value.ReadBooleanElement(0));
         value = null;
 
         OscParameter.SendValue(Address, false);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadBooleanElement(0), false);
+        Assert.AreEqual(false, value.ReadBooleanElement(0));
         value = null;
 
         OscParameter.SendValue(Address, "value");
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadStringElement(0), "value");
+        Assert.AreEqual("value", value.ReadStringElement(0));
         value = null;
 
         OscParameter.SendValue(Address, 10.1);
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadFloat64ElementUnchecked(0), 10.1);
+        Assert.AreEqual(10.1, value.ReadFloat64ElementUnchecked(0));
         value = null;
 
         OscParameter.SendValue(Address, new Vector2(1, 2));
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(0), 1);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(1), 2);
+        Assert.AreEqual(1, value.ReadFloatElementUnchecked(0));
+        Assert.AreEqual(2, value.ReadFloatElementUnchecked(1));
         value = null;
 
         OscParameter.SendValue(Address, new Vector3(1, 2, 3));
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(0), 1);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(1), 2);
-        Assert.AreEqual(value.ReadFloatElementUnchecked(2), 3);
+        Assert.AreEqual(1, value.ReadFloatElementUnchecked(0));
+        Assert.AreEqual(2, value.ReadFloatElementUnchecked(1));
+        Assert.AreEqual(3, value.ReadFloatElementUnchecked(2));
         value = null;
 
         OscParameter.SendValue(Address, new Color32(1, 2, 3, 4));
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadIntElementUnchecked(0), 0x04030201);
+        Assert.AreEqual(0x04030201, value.ReadIntElementUnchecked(0));
         value = null;
 
         OscParameter.SendValue(Address, new MidiMessage(1, 2, 3, 4));
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadMidiElementUnchecked(0), new MidiMessage(1, 2, 3, 4));
+        Assert.AreEqual(new MidiMessage(1, 2, 3, 4), value.ReadMidiElementUnchecked(0));
         value = null;
 
         OscParameter.SendValue(Address, new byte[] { 1, 2, 3, 4 });
         await LoopWhile(() => value == null, LatencyTimeout);
-        CollectionAssert.AreEqual(value.ReadBlobElement(0), new byte[] { 1, 2, 3, 4 });
+        CollectionAssert.AreEqual(new byte[] { 1, 2, 3, 4 }, value.ReadBlobElement(0));
         value = null;
 
         OscParameter.SendValue(Address, 'c');
         await LoopWhile(() => value == null, LatencyTimeout);
-        Assert.AreEqual(value.ReadAsciiCharElement(0), 'c');
+        Assert.AreEqual('c', value.ReadAsciiCharElement(0));
         value = null;
     }
 
