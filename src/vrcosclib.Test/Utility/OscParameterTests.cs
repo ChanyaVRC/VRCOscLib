@@ -15,10 +15,6 @@ public class OscParameterTests
 {
     private OscClient _client;
     private OscServer _server;
-    private int _defaultReceivePort;
-    private int _defaultSendPort;
-    private const int TestClientPort = 8001;
-    private const int TestServerPort = 8002;
 
     [SetUp]
     public void Setup()
