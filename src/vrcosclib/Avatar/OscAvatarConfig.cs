@@ -28,12 +28,12 @@ public class OscAvatarConfig
     [field: JsonExtensionData]
     public Dictionary<string, object> Extra { get; } = new();
 
-    public static OscAvatarConfig[] CreateOscAvatarConfigs() =>
+    public static OscAvatarConfig[] CreateAll() =>
         OscUtility.GetOscAvatarConfigPathes()
             .Select(GetAvatarConfig)
             .Where(config => config != null).ToArray()!;
 
-    public static OscAvatarConfig? CreateCurrentOscAvatarConfig()
+    public static OscAvatarConfig? CreateAtCurrent()
     {
         var path = OscUtility.GetCurrentOscAvatarConfigPath();
         if (path == null)
@@ -43,12 +43,12 @@ public class OscAvatarConfig
         return GetAvatarConfig(path);
     }
 
-    public static OscAvatarConfig? CreateOscAvatarConfig(string avatarId)
+    public static OscAvatarConfig? Create(string avatarId)
     {
         return GetAvatarConfig(OscUtility.GetOscAvatarConfigPath(avatarId));
     }
 
-    public static async ValueTask<OscAvatarConfig> WaitAndCreateCurrentOscAvatarConfigAsync()
+    public static async ValueTask<OscAvatarConfig> WaitAndCreateAtCurrentAsync()
     {
         var path = await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync();
         var config = GetAvatarConfig(path);

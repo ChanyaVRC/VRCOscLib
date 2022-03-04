@@ -2,5 +2,7 @@
 
 public enum ValueChangedReason
 {
-    Added, Removed, Substituted
+    Added,
+    Removed,
+    Substituted
 }

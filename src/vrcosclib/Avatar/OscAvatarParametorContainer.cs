@@ -49,7 +49,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     #region Datas
     public ImmutableArray<OscAvatarParameter> Items { get; }
-    public OscAvatarParameter GetParameter(string name) => Items.First(p => p.Name == name);
+    public OscAvatarParameter Get(string name) => Items.First(p => p.Name == name);
 
     public IEnumerable<OscAvatarParameter> UniqueParameters => Items.Where(parm => !OscAvatarUtility.IsCommonParameter(parm.Name));
     public IEnumerable<object?> UniqueParameterValues
@@ -83,7 +83,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     public T? GetAs<T>(string name) where T : notnull
     {
-        var param = GetParameter(name);
+        var param = Get(name);
         var allParams = OscParameter.Parameters;
         if (allParams.TryGetValue(param.ReadableAddress, out var value))
         {
@@ -94,7 +94,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     public void SetAs<T>(string name, T value)
     {
-        var inputInterface = GetParameter(name).Input;
+        var inputInterface = Get(name).Input;
         if (inputInterface == null)
         {
             throw new InvalidOperationException($"{name} dosen't has a input interface.");
@@ -138,7 +138,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     private void GetValueCallback(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
     {
         var name = e.Address[(OscConst.AvatarParameterAddressSpace.Length + 1)..];
-        OnParameterChanged(GetParameter(name), e);
+        OnParameterChanged(Get(name), e);
     }
 
     public event OscAvatarParameterChangedEventHandler? ParameterChanged;

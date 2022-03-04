@@ -4,5 +4,5 @@ public struct OscAvatar
 {
     public string? Id { get; set; }
 
-    public OscAvatarConfig? ToConfig() => Id == null ? null : OscAvatarConfig.CreateOscAvatarConfig(Id);
+    public OscAvatarConfig? ToConfig() => Id == null ? null : OscAvatarConfig.Create(Id);
 }
