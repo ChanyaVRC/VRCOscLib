@@ -1,6 +1,6 @@
-<p style="font-size:80px; margin-bottom: 8px;" align="center">VRCOscLib</p>
+<font size="100px"><p align="center">VRCOscLib</p></font>
 <h2 align="center">The OSC library for VRChat (.NET Standard)</h2>
-<p align="center"><img alt="Discord" src="https://discordapp.com/api/guilds/865546716462710793/widget.png?style=shield"></p>
+<a href="https://discord.gg/u2BE6W5NMy"><p align="center"><img alt="Discord" src="https://img.shields.io/badge/Discord-Buildsoft%27s%20Discord%20Server-blue?logo=discord"></p></a>
 
 **VRCOscLib is now released!**
 
