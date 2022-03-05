@@ -29,7 +29,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #region Constructor(s)
     public OscAvatarParametorContainer(ImmutableArray<OscAvatarParameter> parameters)
     {
-        Parameters = parameters;
+        Items = parameters;
 
         var allParams = OscParameter.Parameters;
         for (int i = 0; i < parameters.Length; i++)
@@ -45,13 +45,13 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         : this(parameters.ToImmutableArray())
     {
     }
-    #endregion
+        #endregion
 
     #region Datas
-    public ImmutableArray<OscAvatarParameter> Parameters { get; }
-    public OscAvatarParameter GetParameter(string name) => Parameters.First(p => p.Name == name);
+    public ImmutableArray<OscAvatarParameter> Items { get; }
+    public OscAvatarParameter Get(string name) => Items.First(p => p.Name == name);
 
-    public IEnumerable<OscAvatarParameter> UniqueParameters => Parameters.Where(parm => !OscAvatarUtility.IsCommonParameter(parm.Name));
+    public IEnumerable<OscAvatarParameter> UniqueParameters => Items.Where(parm => !OscAvatarUtility.IsCommonParameter(parm.Name));
     public IEnumerable<object?> UniqueParameterValues
     {
         get
@@ -59,33 +59,33 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
             var allParams = OscParameter.Parameters;
             foreach (var item in UniqueParameters)
             {
-                var address = (item.Output ?? item.Input)!.Address;
+                var address = item.ReadableAddress;
                 allParams.TryGetValue(address, out var value);
                 yield return value;
             }
         }
     }
 
-    public IEnumerable<string> Names => Parameters.Select(param => param.Name);
+    public IEnumerable<string> Names => Items.Select(param => param.Name);
 
     public IEnumerable<string> Keys => Names;
-    public IEnumerable<object?> Values => Parameters.Select(v => GetAs<object>(v.Name));
+    public IEnumerable<object?> Values => Items.Select(v => GetAs<object>(v.Name));
 
-    public int Count => Parameters.Length;
+    public int Count => Items.Length;
     #endregion
 
     #region Value accessor(s)
-    public object this[string name]
+    public object? this[string name]
     {
-        get => GetAs<object>(name)!;
-        set => SetAs<object>(name, value);
+        get => GetAs<object>(name);
+        set => SetAs<object?>(name, value);
     }
 
     public T? GetAs<T>(string name) where T : notnull
     {
-        var param = GetParameter(name);
+        var param = Get(name);
         var allParams = OscParameter.Parameters;
-        if (allParams.TryGetValue((param.Output ?? param.Input)!.Address, out var value))
+        if (allParams.TryGetValue(param.ReadableAddress, out var value))
         {
             return (T?)value ?? default;
         }
@@ -94,7 +94,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     public void SetAs<T>(string name, T value)
     {
-        var inputInterface = GetParameter(name).Input;
+        var inputInterface = Get(name).Input;
         if (inputInterface == null)
         {
             throw new InvalidOperationException($"{name} dosen't has a input interface.");
@@ -118,11 +118,11 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         }
     }
 
-    public bool ContainsKey(string key) => Parameters.Any(param => param.Name == key);
+    public bool ContainsKey(string key) => Items.Any(param => param.Name == key);
 
     public bool TryGetValue(string key, [NotNullWhen(true)] out object? value)
     {
-        var param = Parameters.FirstOrDefault();
+        var param = Items.FirstOrDefault();
         if (param == null)
         {
             value = default;
@@ -135,10 +135,10 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #endregion
 
     #region Events
-    private void GetValueCallback(OscParameterCollection sender, ParameterChangedEventArgs e)
+    private void GetValueCallback(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
     {
         var name = e.Address[(OscConst.AvatarParameterAddressSpace.Length + 1)..];
-        OnParameterChanged(GetParameter(name), e);
+        OnParameterChanged(Get(name), e);
     }
 
     public event OscAvatarParameterChangedEventHandler? ParameterChanged;
@@ -151,7 +151,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     #region GetEnumerator method(s)
     public IEnumerator<KeyValuePair<string, object?>> GetEnumerator()
-        => Parameters
+        => Items
             .Select(param => new KeyValuePair<string, object?>(param.Name, GetAs<object>(param.Name)))
             .GetEnumerator();
 

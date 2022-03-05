@@ -52,20 +52,20 @@ public static class OscAvatarUtility
 
     static OscAvatarUtility()
     {
-        var server = OscUtility.Server;
-        server.TryAddMethod(OscConst.AvatarIdAddress, ReadAvatarIdFromApp);
+        var parameters = OscParameter.Parameters;
+        parameters.AddValueChangedEventByAddress(OscConst.AvatarIdAddress, ReadAvatarIdFromApp);
     }
 
-    private static void ReadAvatarIdFromApp(OscMessageValues message)
+    private static void ReadAvatarIdFromApp(IReadOnlyOscParameterCollection sender, ValueChangedEventArgs e)
     {
-        _changedAvatar.AvatarId = message.ReadStringElement(message.ElementCount - 1)!;
+        _changedAvatar.Id = (string?)e.NewValue;
         CallOnAvatarChanged();
     }
 
     public static bool IsCommonParameter(string paramName) => _commonParameters.Contains(paramName);
-    public static object? GetCommonParameterValue(string paramName) 
+    public static object? GetCommonParameterValue(string paramName)
         => OscParameter.GetValue(OscConst.AvatarParameterAddressSpace + paramName);
-    public static IEnumerable<object?> GetCommonParameterValues() 
+    public static IEnumerable<object?> GetCommonParameterValues()
         => _commonParameters.Select(GetCommonParameterValue);
 
     private static void CallOnAvatarChanged()

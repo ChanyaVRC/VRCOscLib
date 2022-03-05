@@ -38,6 +38,11 @@ public static class TestUtility
 
     public static CancellationToken CanceledToken => CanceledTokenSource.Token;
 
+    public static string GetAvatarConfigDirectory(string userId = "usr_test_user_id")
+    {
+        return OscUtility.VRChatOscPath + "/" + userId + "/Avatars";
+    }
+
     public static string CreateConfigFileForTest(string avatarId, string name, string directory, bool empty = false)
     {
         Directory.CreateDirectory(directory);

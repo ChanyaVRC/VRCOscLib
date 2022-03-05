@@ -3,7 +3,7 @@
 OscAvatarConfig? avatarConfig = null;
 
 Console.WriteLine($"[NOTIFICATION] Reading now... Try to \"Reset Avatar.\"");
-avatarConfig = await OscAvatarConfig.WaitAndCreateCurrentOscAvatarConfigAsync();
+avatarConfig = await OscAvatarConfig.WaitAndCreateAtCurrentAsync();
 Console.WriteLine($"[NOTIFICATION] Read avatar config. Name: {avatarConfig.Name}");
 
 OscAvatarParameterChangedEventHandler? handler = (parameter, e) =>
@@ -16,7 +16,7 @@ OscAvatarUtility.AvatarChanged += (sender, e) =>
 {
     avatarConfig.Parameters.ParameterChanged -= handler;
 
-    avatarConfig = OscAvatarConfig.CreateCurrentOscAvatarConfig()!;
+    avatarConfig = OscAvatarConfig.CreateAtCurrent()!;
     Console.WriteLine($"[NOTIFICATION] Changed avatar. Name: {avatarConfig.Name}");
 
     avatarConfig.Parameters.ParameterChanged += handler;

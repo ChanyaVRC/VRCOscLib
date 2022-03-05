@@ -7,7 +7,7 @@ public static partial class OscUtility
     private static OscServer? _server;
     private static OscClient? _client;
 
-    internal static OscServer Server => _server ??= OscServer.GetOrCreate(_receivePort);
+    internal static OscServer Server => _server ??= new OscServer(_receivePort);
     internal static OscClient Client => _client ??= new OscClient("127.0.0.1", _sendPort);
 
     private static int _receivePort = 9001;

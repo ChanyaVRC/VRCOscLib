@@ -5,7 +5,7 @@ namespace BuildSoft.VRChat.Osc.Test;
 [TestOf(typeof(OscParameterCollection))]
 public class OscParameterCollectionTests
 {
-    private static object?[] _valuesForTestCase = { null, 1, 2, 1.0, 1.2, "somevalue", "something" };
+    private static readonly object?[] _valuesForTestCase = { null, 1, 2, 1.0, 1.2, "somevalue", "something" };
 
     private static IEnumerable<TestCaseData> ValuesCaseSource => _valuesForTestCase.Select(x => new TestCaseData(x));
     private static IEnumerable<TestCaseData> NewOldCaseSource
@@ -35,7 +35,7 @@ public class OscParameterCollectionTests
         parameters[address] = value1;
         Assert.AreEqual(value1, parameters[address]);
         Assert.AreEqual(1, parameters.Count);
- 
+
         parameters[address] = value1;
         Assert.AreEqual(value1, parameters[address]);
         Assert.AreEqual(1, parameters.Count);
@@ -74,7 +74,7 @@ public class OscParameterCollectionTests
         Assert.IsFalse(isCalledValueChanged);
         isCalledValueChanged = false;
 
-        expected = OscUtility.AreEqual(value1, value2) ? null : new(value1, value2, address, ValueChangedReason.Substituted);        
+        expected = OscUtility.AreEqual(value1, value2) ? null : new(value1, value2, address, ValueChangedReason.Substituted);
         parameters[address] = value2;
         Assert.AreNotEqual(OscUtility.AreEqual(value1, value2), isCalledValueChanged);
         isCalledValueChanged = false;
@@ -85,7 +85,7 @@ public class OscParameterCollectionTests
     {
         const string Address1 = "/test/address1";
         const string Address2 = "/test/address2";
-        
+
         var parameters = new OscParameterCollection();
         Assert.AreEqual(0, parameters.Count);
 
@@ -95,7 +95,7 @@ public class OscParameterCollectionTests
 
         Assert.Throws<ArgumentException>(() => parameters.Add(Address1, value));
         Assert.AreEqual(1, parameters.Count);
-        
+
         Assert.IsFalse(parameters.Remove(Address2));
         Assert.AreEqual(1, parameters.Count);
 
@@ -224,7 +224,7 @@ public class OscParameterCollectionTests
             expectedArgs = e;
             calledCount = 0;
         };
-        void TestEvent(OscParameterCollection sender, ParameterChangedEventArgs e)
+        void TestEvent(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
         {
             Assert.AreSame(pararmeters, sender);
             Assert.AreSame(expectedArgs, e);

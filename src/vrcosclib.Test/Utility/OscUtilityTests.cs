@@ -43,6 +43,8 @@ public class OscUtilityTests
     {
         OscUtility.ReceivePort = TestClientPort;
         OscUtility.SendPort = TestServerPort;
+
+        OscParameter.Parameters.Clear();
     }
 
     [OneTimeTearDown]
@@ -64,7 +66,7 @@ public class OscUtilityTests
         const string TestAvatarId = "avtr_test_avatar_id";
         _client.Send(OscConst.AvatarIdAddress, TestAvatarId);
 
-        await LoopWhile(() => !OscParameter.Parameters.ContainsKey(OscConst.AvatarIdAddress), LatencyTimeout);
+        await LoopWhile(() => Avatar.OscAvatarUtility.CurrentAvatar.Id == null, LatencyTimeout);
 
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetCurrentOscAvatarConfigPath());
         Assert.ThrowsAsync<FileNotFoundException>(async () => await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync());
@@ -87,7 +89,7 @@ public class OscUtilityTests
 
         var testAvatarDirectory = Path.Combine(OscUtility.VRChatOscPath, @"usr_test_user_id\Avatars");
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetOscAvatarConfigPath(TestAvatarId));
-        
+
         var path = CreateConfigFileForTest(TestAvatarId, "TestAvatar", testAvatarDirectory, true);
         Assert.AreEqual(path, OscUtility.GetOscAvatarConfigPath(TestAvatarId));
     }

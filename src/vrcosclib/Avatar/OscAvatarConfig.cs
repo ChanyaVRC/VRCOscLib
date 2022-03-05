@@ -21,20 +21,19 @@ public class OscAvatarConfig
     [JsonIgnore]
     private OscAvatarParametorContainer? _parameters;
     [JsonIgnore]
-    public OscAvatarParametorContainer Parameters
-        => _parameters ??= new OscAvatarParametorContainer(_parametersList);
+    public OscAvatarParametorContainer Parameters => _parameters ??= new(_parametersList);
 
     internal bool IsCreatedParameters => _parameters != null;
 
     [field: JsonExtensionData]
     public Dictionary<string, object> Extra { get; } = new();
 
-    public static OscAvatarConfig[] CreateOscAvatarConfigs() =>
+    public static OscAvatarConfig[] CreateAll() =>
         OscUtility.GetOscAvatarConfigPathes()
             .Select(GetAvatarConfig)
             .Where(config => config != null).ToArray()!;
 
-    public static OscAvatarConfig? CreateCurrentOscAvatarConfig()
+    public static OscAvatarConfig? CreateAtCurrent()
     {
         var path = OscUtility.GetCurrentOscAvatarConfigPath();
         if (path == null)
@@ -44,7 +43,12 @@ public class OscAvatarConfig
         return GetAvatarConfig(path);
     }
 
-    public static async ValueTask<OscAvatarConfig> WaitAndCreateCurrentOscAvatarConfigAsync()
+    public static OscAvatarConfig? Create(string avatarId)
+    {
+        return GetAvatarConfig(OscUtility.GetOscAvatarConfigPath(avatarId));
+    }
+
+    public static async ValueTask<OscAvatarConfig> WaitAndCreateAtCurrentAsync()
     {
         var path = await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync();
         var config = GetAvatarConfig(path);

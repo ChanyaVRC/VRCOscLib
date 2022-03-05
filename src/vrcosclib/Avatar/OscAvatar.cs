@@ -2,5 +2,7 @@
 
 public struct OscAvatar
 {
-    public string? AvatarId { get; set; }
+    public string? Id { get; set; }
+
+    public OscAvatarConfig? ToConfig() => Id == null ? null : OscAvatarConfig.Create(Id);
 }

@@ -11,45 +11,57 @@ public class OscInputTests
 {
     OscClient _client = null!;
     OscServer _server = null!;
-    private int _defaultReceivePort;
-    private int _defaultSendPort;
-    const int TestClientPort = 8001;
-    const int TestServerPort = 8002;
 
-    [SetUp]
-    public void Setup()
+    public static IEnumerable<TestCaseData> AllOscButtonInput
+        => Enum.GetValues<OscButtonInput>().Select(item => new TestCaseData(item));
+    public static IEnumerable<TestCaseData> AllOscAxisInput
+        => Enum.GetValues<OscAxisInput>().Select(item => new TestCaseData(item));
+    public static IEnumerable<TestCaseData> OscAxisInputTestCases
     {
-        _defaultReceivePort = OscUtility.ReceivePort;
-        _defaultSendPort = OscUtility.SendPort;
-        
-        _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
-        _server = OscServer.GetOrCreate(OscUtility.SendPort);
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        _client.Dispose();
-        _server.Dispose();
+        get
+        {
+            foreach (var item in Enum.GetValues<OscAxisInput>())
+            {
+                yield return new(item, 1f) { ExpectedResult = 1f };
+                yield return new(item, 2.5f) { ExpectedResult = 1f };
+                yield return new(item, 0f) { ExpectedResult = 0f };
+                yield return new(item, 0.25f) { ExpectedResult = 0.25f };
+                yield return new(item, -1f) { ExpectedResult = -1f };
+                yield return new(item, -1.001f) { ExpectedResult = -1f };
+                yield return new(item, -12.34f) { ExpectedResult = -1f };
+                yield return new(item, float.MaxValue) { ExpectedResult = 1f };
+                yield return new(item, float.MinValue) { ExpectedResult = -1f };
+            }
+        }
     }
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        OscUtility.ReceivePort = TestClientPort;
-        OscUtility.SendPort = TestServerPort;
+        _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
+        _server = new OscServer(OscUtility.SendPort);
     }
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-        OscUtility.ReceivePort = _defaultReceivePort;
-        OscUtility.SendPort = _defaultSendPort;
+        _client.Dispose();
+        _server.Dispose();
     }
 
-    [TestCase(OscButtonInput.AFKToggle)]
-    [TestCase(OscButtonInput.Back)]
-    [TestCase(OscButtonInput.MoveBackward)]
+    [SetUp]
+    public void Setup()
+    {
+        OscParameter.Parameters.Clear();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+
+    }
+
+    [TestCaseSource(nameof(AllOscButtonInput))]
     public async Task TestSend(OscButtonInput buttonInput)
     {
         OscMessageValues values = null;
@@ -61,79 +73,51 @@ public class OscInputTests
 
         buttonInput.Send();
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(buttonInput.CreateAddress(), address);
         Assert.AreEqual(1, values.ReadIntElementUnchecked(0));
+        Assert.AreEqual(buttonInput.CreateAddress(), address);
         values = null;
 
         buttonInput.Send(true);
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(buttonInput.CreateAddress(), address);
         Assert.AreEqual(1, values.ReadIntElementUnchecked(0));
+        Assert.AreEqual(buttonInput.CreateAddress(), address);
         values = null;
 
         buttonInput.Send(false);
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(buttonInput.CreateAddress(), address);
         Assert.AreEqual(0, values.ReadIntElementUnchecked(0));
+        Assert.AreEqual(buttonInput.CreateAddress(), address);
         values = null;
 
         _server.RemoveMonitorCallback(Callback);
     }
 
-    [TestCase(OscAxisInput.SpinHoldUD)]
-    [TestCase(OscAxisInput.Horizontal)]
-    [TestCase(OscAxisInput.LookHorizontal)]
-    public async Task TestSend(OscAxisInput axisInput)
+    [TestCaseSource(nameof(OscAxisInputTestCases))]
+    public async Task<float> TestSendA(OscAxisInput axisInput, float value)
     {
         OscMessageValues values = null;
         string address = null;
 
         void Callback(BlobString a, OscMessageValues v)
             => (address, values) = (a.ToString(), v);
+
         _server.AddMonitorCallback(Callback);
 
-        axisInput.Send(1f);
+        axisInput.Send(value);
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
         Assert.AreEqual(axisInput.CreateAddress(), address);
-        Assert.AreEqual(1, values.ReadFloatElementUnchecked(0));
-        values = null;
+        Assert.IsTrue(_server.RemoveMonitorCallback(Callback));
 
-        axisInput.Send(0.25f);
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(axisInput.CreateAddress(), address);
-        Assert.AreEqual(0.25f, values.ReadFloatElementUnchecked(0));
-        values = null;
-
-        axisInput.Send(-1);
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(axisInput.CreateAddress(), address);
-        Assert.AreEqual(-1, values.ReadFloatElementUnchecked(0));
-        values = null;
-
-        axisInput.Send(-1.002f);
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(axisInput.CreateAddress(), address);
-        Assert.AreEqual(-1, values.ReadFloatElementUnchecked(0));
-        values = null;
-
-        axisInput.Send(1.2f);
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(axisInput.CreateAddress(), address);
-        Assert.AreEqual(1, values.ReadFloatElementUnchecked(0));
-        values = null;
-
-        _server.RemoveMonitorCallback(Callback);
+        return values.ReadFloatElement(0);
     }
 
-    [TestCase(OscButtonInput.AFKToggle)]
-    [TestCase(OscButtonInput.Back)]
-    [TestCase(OscButtonInput.MoveBackward)]
+    [TestCaseSource(nameof(AllOscButtonInput))]
     public async Task TestPressRelease(OscButtonInput buttonInput)
     {
         OscMessageValues values = null;
         string address = null;
 
-        void Callback(BlobString a, OscMessageValues v) 
+        void Callback(BlobString a, OscMessageValues v)
             => (address, values) = (a.ToString(), v);
         _server.AddMonitorCallback(Callback);
 
@@ -152,18 +136,14 @@ public class OscInputTests
         _server.RemoveMonitorCallback(Callback);
     }
 
-    [TestCase(OscButtonInput.AFKToggle)]
-    [TestCase(OscButtonInput.Run)]
-    [TestCase(OscButtonInput.ComfortRight)]
+    [TestCaseSource(nameof(AllOscButtonInput))]
     public void TestCreateAddress(OscButtonInput buttonInput)
     {
         Assert.AreEqual("/input/" + buttonInput.ToString(), buttonInput.CreateAddress());
         Assert.AreEqual("/input/" + buttonInput.ToString(), buttonInput.CreateAddress());
     }
 
-    [TestCase(OscAxisInput.SpinHoldUD)]
-    [TestCase(OscAxisInput.Vertical)]
-    [TestCase(OscAxisInput.LookHorizontal)]
+    [TestCaseSource(nameof(AllOscAxisInput))]
     public void TestCreateAddress(OscAxisInput axisInput)
     {
         Assert.AreEqual("/input/" + axisInput.ToString(), axisInput.CreateAddress());

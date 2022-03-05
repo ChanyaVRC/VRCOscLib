@@ -102,11 +102,11 @@ public static partial class OscParameter
         Parameters[address] = value;
         OscUtility.Client.Send(address, value);
     }
-    public static void SendValue(string address, long value)
-    {
-        Parameters[address] = value;
-        OscUtility.Client.Send(address, value);
-    }
+    //public static void SendValue(string address, long value)
+    //{
+    //    Parameters[address] = value;
+    //    OscUtility.Client.Send(address, value);
+    //}
     public static void SendValue(string address, Vector2 value)
     {
         Parameters[address] = value;
