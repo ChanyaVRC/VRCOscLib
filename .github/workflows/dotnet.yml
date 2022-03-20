@@ -1,0 +1,40 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  ubuntu-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore /p:Platform="For Test"
+    - name: Test Build
+      run: dotnet build /p:Platform="For Test" --no-restore
+    - name: Test
+      run: dotnet test /p:Platform="For Test" --no-build --verbosity normal
+
+  windows-build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore /p:Platform="Full Build"
+    - name: Full Build
+      run: dotnet build /p:Platform="Full Build" --no-restore
+    - name: Test Build
+      run: dotnet build /p:Platform="For Test" --no-restore
+    - name: Test
+      run: dotnet test /p:Platform="For Test" --no-build --verbosity normal
