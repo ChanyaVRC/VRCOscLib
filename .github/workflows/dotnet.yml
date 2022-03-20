@@ -7,7 +7,7 @@ on:
     branches: [ main, dev ]
 
 jobs:
-  build:
+  ubuntu-build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -22,7 +22,7 @@ jobs:
     - name: Test
       run: dotnet test /p:Platform="For Test" --no-build --verbosity normal
 
-  build:
+  windows-build:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
