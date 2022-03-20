@@ -72,7 +72,7 @@ public class OscUtilityTests
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetCurrentOscAvatarConfigPath());
         Assert.ThrowsAsync<FileNotFoundException>(async () => await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync());
 
-        var testAvatarDirectory = Path.Combine(OscUtility.VRChatOscPath, @"usr_test_user_id\Avatars");
+        var testAvatarDirectory = Path.Combine(OscUtility.VRChatOscPath, @"usr_test_user_id", "Avatars");
         var path = CreateConfigFileForTest(TestAvatarId, "TestAvatar", testAvatarDirectory, true);
 
         var configPath = OscUtility.GetCurrentOscAvatarConfigPath();
@@ -88,7 +88,7 @@ public class OscUtilityTests
         const string TestAvatarId = "avtr_test_avatar_id";
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetOscAvatarConfigPath(TestAvatarId));
 
-        var testAvatarDirectory = Path.Combine(OscUtility.VRChatOscPath, @"usr_test_user_id\Avatars");
+        var testAvatarDirectory = Path.Combine(OscUtility.VRChatOscPath, @"usr_test_user_id", "Avatars");
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetOscAvatarConfigPath(TestAvatarId));
 
         var path = CreateConfigFileForTest(TestAvatarId, "TestAvatar", testAvatarDirectory, true);
@@ -100,7 +100,7 @@ public class OscUtilityTests
     {
         CollectionAssert.IsEmpty(OscUtility.GetOscAvatarConfigPathes());
 
-        var testAvatarDirectory = Path.Combine(OscUtility.VRChatOscPath, @"usr_test_user_id\Avatars");
+        var testAvatarDirectory = Path.Combine(OscUtility.VRChatOscPath, @"usr_test_user_id", "Avatars");
         Directory.CreateDirectory(testAvatarDirectory);
 
         CollectionAssert.IsEmpty(OscUtility.GetOscAvatarConfigPathes());

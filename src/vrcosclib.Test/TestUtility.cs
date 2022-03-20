@@ -8,7 +8,7 @@ namespace BuildSoft.VRChat.Osc.Test;
 
 public static class TestUtility
 {
-    public static readonly TimeSpan LatencyTimeout = TimeSpan.FromMilliseconds(100);
+    public static readonly TimeSpan LatencyTimeout = TimeSpan.FromMilliseconds(2000);
     private static CancellationTokenSource? _canceledTokenSource;
     private static CancellationTokenSource CanceledTokenSource
     {
@@ -26,8 +26,8 @@ public static class TestUtility
 
     public static async Task LoopWhile(Func<bool> conditions, TimeSpan timeout)
     {
-        await NewMethod(conditions).WaitAsync(timeout);
-        static async Task NewMethod(Func<bool> conditions)
+        await WaitWhile(conditions).WaitAsync(timeout);
+        static async Task WaitWhile(Func<bool> conditions)
         {
             while (conditions())
             {
@@ -40,7 +40,7 @@ public static class TestUtility
 
     public static string GetAvatarConfigDirectory(string userId = "usr_test_user_id")
     {
-        return OscUtility.VRChatOscPath + "/" + userId + "/Avatars";
+        return Path.Combine(OscUtility.VRChatOscPath, userId, "Avatars");
     }
 
     public static string CreateConfigFileForTest(string avatarId, string name, string directory, bool empty = false)
@@ -66,14 +66,14 @@ public static class TestUtility
         ""type"":""Int""
       }},
       ""output"":{{
-        ""address"":""avatar/parameters/TestParam"",
+        ""address"":""/avatar/parameters/TestParam"",
         ""type"":""Int""
       }}
     }},
     {{
       ""name"":""VelocityZ"",
       ""output"":{{
-        ""address"":""avatar/parameters/VelocityZ"",
+        ""address"":""/avatar/parameters/VelocityZ"",
         ""type"":""Float""
       }}
     }}

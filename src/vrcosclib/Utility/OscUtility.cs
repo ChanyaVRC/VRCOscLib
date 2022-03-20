@@ -5,8 +5,8 @@ namespace BuildSoft.VRChat.Osc;
 
 public static partial class OscUtility
 {
-    internal static readonly string UserProfile = Environment.ExpandEnvironmentVariables("%USERPROFILE%");
-    public static readonly string VRChatAppDataPath = Path.Combine(UserProfile, @"AppData\LocalLow\VRChat\VRChat");
+    internal static readonly string UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    public static readonly string VRChatAppDataPath = Path.Combine(UserProfile, @"AppData", "LocalLow", "VRChat", "VRChat");
     public static readonly string VRChatOscPath = Path.Combine(VRChatAppDataPath, @"Osc");
 
     public static void Initialize()
