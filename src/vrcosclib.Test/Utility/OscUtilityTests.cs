@@ -24,6 +24,7 @@ public class OscUtilityTests
         _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
         _server = OscServer.GetOrCreate(OscUtility.SendPort);
 
+        Directory.CreateDirectory(OscUtility.VRChatOscPath);
         Directory.Move(OscUtility.VRChatOscPath, OscUtility.VRChatOscPath + "_Renamed");
         Directory.CreateDirectory(OscUtility.VRChatOscPath);
     }

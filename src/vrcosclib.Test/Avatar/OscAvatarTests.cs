@@ -9,6 +9,7 @@ public class OscAvatarTests
     [SetUp]
     public void Setup()
     {
+        Directory.CreateDirectory(OscUtility.VRChatOscPath);
         Directory.Move(OscUtility.VRChatOscPath, OscUtility.VRChatOscPath + "_Renamed");
         Directory.CreateDirectory(OscUtility.VRChatOscPath);
     }
