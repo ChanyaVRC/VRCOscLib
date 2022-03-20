@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore /p:Platform="For Test"
     - name: Test Build
       run: dotnet build /p:Platform="For Test" --no-restore
     - name: Test
@@ -31,10 +31,10 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore /p:Platform="Full Build"
     - name: Full Build
       run: dotnet build /p:Platform="Full Build" --no-restore
     - name: Test Build
-      run: dotnet build /p:Platform="For Build" --no-restore
+      run: dotnet build /p:Platform="For Test" --no-restore
     - name: Test
       run: dotnet test /p:Platform="For Test" --no-build --verbosity normal
