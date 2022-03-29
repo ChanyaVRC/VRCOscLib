@@ -8,7 +8,7 @@ public static partial class OscUtility
     private static OscClient? _client;
 
     internal static OscServer Server => _server ??= new OscServer(_receivePort);
-    internal static OscClient Client => _client ??= new OscClient("127.0.0.1", _sendPort);
+    internal static OscClient Client => _client ??= new OscClient(_clientIPAddress, _sendPort);
 
     private static int _receivePort = 9001;
     public static int ReceivePort
@@ -64,10 +64,29 @@ public static partial class OscUtility
             if (_client != null)
             {
                 _client.Dispose();
-                _client = new OscClient("127.0.0.1", value);
+                _client = null;
             }
         }
     }
+
+    private static string _clientIPAddress = "127.0.0.1";
+
+    public static string ClientIPAddress
+    {
+        get => _clientIPAddress;
+        set
+        {
+            // throw Exception if `value` can't be parsed.
+            _clientIPAddress = System.Net.IPAddress.Parse(value).ToString();
+
+            if (_client != null)
+            {
+                _client.Dispose();
+                _client = null;
+            }
+        }
+    }
+
 
     public static void RegisterMonitorCallback(MonitorCallback callback)
     {
