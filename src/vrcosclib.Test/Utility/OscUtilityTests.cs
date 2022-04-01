@@ -117,10 +117,12 @@ public class OscUtilityTests
     public void TestSendPort(int port)
     {
         int oldPort = OscUtility.SendPort;
+        var oldClient = OscUtility.Client;
 
         OscUtility.SendPort = port;
         Assert.AreEqual(port, OscUtility.SendPort);
         Assert.AreEqual(port, OscUtility.Client.Destination.Port);
+        Assert.AreNotSame(oldClient, OscUtility.Client);
 
         OscUtility.SendPort = oldPort;
     }
@@ -130,9 +132,11 @@ public class OscUtilityTests
     public void TestSendPortOutOfRange(int port)
     {
         int oldPort = OscUtility.SendPort;
+        var oldClient = OscUtility.Client;
+
         Assert.Throws<ArgumentOutOfRangeException>(() => OscUtility.SendPort = port);
         Assert.AreEqual(oldPort, OscUtility.SendPort);
-        Assert.AreEqual(oldPort, OscUtility.Client.Destination.Port);
+        Assert.AreSame(oldClient, OscUtility.Client);
     }
 
     [TestCase(0)]
@@ -158,34 +162,40 @@ public class OscUtilityTests
     [TestCase("127.0.0.1")]
     [TestCase("192.168.1.1")]
     [TestCase("8.8.8.8")]
-    public void TestClientIPAddress(string ipAddress)
+    public void TestVrcIPAddress(string ipAddress)
     {
-        string oldAddress = OscUtility.ClientIPAddress;
+        string oldAddress = OscUtility.VrcIPAddress;
+        var _oldClient = OscUtility.Client;
 
-        OscUtility.ClientIPAddress = ipAddress;
-        Assert.AreEqual(ipAddress, OscUtility.ClientIPAddress);
+        OscUtility.VrcIPAddress = ipAddress;
+        Assert.AreEqual(ipAddress, OscUtility.VrcIPAddress);
         Assert.AreEqual(ipAddress, OscUtility.Client.Destination.Address.ToString());
+        Assert.AreNotSame(_oldClient, OscUtility.Client);
 
-        OscUtility.ClientIPAddress = oldAddress;
+        OscUtility.VrcIPAddress = oldAddress;
     }
 
     [TestCase("example.com")]
     [TestCase("ipaddress")]
-    public void TestClientIPAddressInvalidFormat(string ipAddress)
+    public void TestVrcIPAddressInvalidFormat(string ipAddress)
     {
-        string oldAddress = OscUtility.ClientIPAddress;
-        Assert.Throws<FormatException>(() => OscUtility.ClientIPAddress = ipAddress);
-        Assert.AreEqual(oldAddress, OscUtility.ClientIPAddress);
-        Assert.AreEqual(oldAddress, OscUtility.Client.Destination.Address.ToString());
+        string oldAddress = OscUtility.VrcIPAddress;
+        var _oldClient = OscUtility.Client;
+
+        Assert.Throws<FormatException>(() => OscUtility.VrcIPAddress = ipAddress);
+        Assert.AreEqual(oldAddress, OscUtility.VrcIPAddress);
+        Assert.AreSame(_oldClient, OscUtility.Client);
     }
 
     [Test]
     public void TestClientIPAddressNull()
     {
-        string oldAddress = OscUtility.ClientIPAddress;
-        Assert.Throws<ArgumentNullException>(() => OscUtility.ClientIPAddress = null!);
-        Assert.AreEqual(oldAddress, OscUtility.ClientIPAddress);
-        Assert.AreEqual(oldAddress, OscUtility.Client.Destination.Address.ToString());
+        string oldAddress = OscUtility.VrcIPAddress;
+        var _oldClient = OscUtility.Client;
+
+        Assert.Throws<ArgumentNullException>(() => OscUtility.VrcIPAddress = null!);
+        Assert.AreEqual(oldAddress, OscUtility.VrcIPAddress);
+        Assert.AreSame(_oldClient, OscUtility.Client);
     }
 
     [Test]
