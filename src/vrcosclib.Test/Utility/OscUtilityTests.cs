@@ -228,7 +228,7 @@ public class OscUtilityTests
         OscUtility.SendPort = oldPort;
     }
 
-    private static IEnumerable<IPAddress> IPv4Addresses => Dns.GetHostAddresses(Dns.GetHostName()).Where(addr => addr.AddressFamily == AddressFamily.InterNetwork);
+    private static IEnumerable<IPAddress> IPv4Addresses => Dns.GetHostAddresses(Dns.GetHostName(), AddressFamily.InterNetwork);
 
     [Test, TestCaseSource(nameof(IPv4Addresses))]
     public async Task TestVrcIPAddressWithSending(IPAddress address)
@@ -240,7 +240,7 @@ public class OscUtilityTests
             OscParameter.SendValue("/value/send", 1);
             var result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
             Assert.AreEqual("127.0.0.1", result.RemoteEndPoint.Address.ToString());
-
+            
             OscUtility.VrcIPAddress = address.ToString();
             OscParameter.SendValue("/value/send", 1);
             result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
