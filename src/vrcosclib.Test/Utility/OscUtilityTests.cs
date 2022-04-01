@@ -228,23 +228,26 @@ public class OscUtilityTests
         OscUtility.SendPort = oldPort;
     }
 
-    private static IEnumerable<IPAddress> IPv4Addresses => Dns.GetHostAddresses(Dns.GetHostName(), AddressFamily.InterNetwork);
-
-    [Test, TestCaseSource(nameof(IPv4Addresses))]
-    public async Task TestVrcIPAddressWithSending(IPAddress address)
+    [Test]
+    public async Task TestVrcIPAddressWithSending()
     {
         string oldAddress = OscUtility.VrcIPAddress;
 
-        using (var client = new UdpClient(OscUtility.SendPort))
+        using (var client = new UdpClient(new IPEndPoint(
+                IPAddress.Parse("127.0.0.1"),
+                OscUtility.SendPort)))
         {
             OscParameter.SendValue("/value/send", 1);
-            var result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
-            Assert.AreEqual("127.0.0.1", result.RemoteEndPoint.Address.ToString());
-            
-            OscUtility.VrcIPAddress = address.ToString();
-            OscParameter.SendValue("/value/send", 1);
-            result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
-            Assert.AreEqual(address.ToString(), result.RemoteEndPoint.Address.ToString());
+            await client.ReceiveAsync().WaitAsync(LatencyTimeout);
+        }
+
+        using (var client = new UdpClient(new IPEndPoint(
+                IPAddress.Parse("127.0.0.2"),
+                OscUtility.SendPort)))
+        {
+            OscUtility.VrcIPAddress = "127.0.0.2"; //127.0.0.1 to 127.0.0.2
+            OscParameter.SendValue("/value/send", 2);
+            await client.ReceiveAsync().WaitAsync(LatencyTimeout);
         }
 
         OscUtility.VrcIPAddress = oldAddress;
