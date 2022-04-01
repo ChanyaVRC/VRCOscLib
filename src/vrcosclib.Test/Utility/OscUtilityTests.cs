@@ -1,4 +1,6 @@
-﻿using BuildSoft.OscCore;
+﻿using System.Net;
+using System.Net.Sockets;
+using BuildSoft.OscCore;
 using NUnit.Framework;
 
 using static BuildSoft.VRChat.Osc.Test.TestUtility;
@@ -8,22 +10,9 @@ namespace BuildSoft.VRChat.Osc.Test;
 [TestOf(typeof(OscUtility))]
 public class OscUtilityTests
 {
-    private OscClient _client = null!;
-    private OscServer _server = null!;
-    private int _defaultReceivePort;
-    private int _defaultSendPort;
-    private const int TestClientPort = 8001;
-    private const int TestServerPort = 8002;
-
     [SetUp]
     public void Setup()
     {
-        _defaultReceivePort = OscUtility.ReceivePort;
-        _defaultSendPort = OscUtility.SendPort;
-
-        _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
-        _server = OscServer.GetOrCreate(OscUtility.SendPort);
-
         Directory.CreateDirectory(OscUtility.VRChatOscPath);
         Directory.Move(OscUtility.VRChatOscPath, OscUtility.VRChatOscPath + "_Renamed");
         Directory.CreateDirectory(OscUtility.VRChatOscPath);
@@ -32,9 +21,6 @@ public class OscUtilityTests
     [TearDown]
     public void TearDown()
     {
-        _client.Dispose();
-        _server.Dispose();
-
         Directory.Delete(OscUtility.VRChatOscPath, true);
         Directory.Move(OscUtility.VRChatOscPath + "_Renamed", OscUtility.VRChatOscPath);
     }
@@ -42,18 +28,12 @@ public class OscUtilityTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        OscUtility.ReceivePort = TestClientPort;
-        OscUtility.SendPort = TestServerPort;
-
         OscParameter.Parameters.Clear();
     }
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-        OscUtility.ReceivePort = _defaultReceivePort;
-        OscUtility.SendPort = _defaultSendPort;
-
         Directory.Delete(OscUtility.VRChatOscPath, true);
         Directory.CreateDirectory(OscUtility.VRChatOscPath);
     }
@@ -65,9 +45,12 @@ public class OscUtilityTests
         Assert.ThrowsAsync<TaskCanceledException>(async () => await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync(CanceledToken));
 
         const string TestAvatarId = "avtr_test_avatar_id";
-        _client.Send(OscConst.AvatarIdAddress, TestAvatarId);
 
-        await LoopWhile(() => Avatar.OscAvatarUtility.CurrentAvatar.Id == null, LatencyTimeout);
+        using (var client = new OscClient("127.0.0.1", OscUtility.ReceivePort))
+        {
+            client.Send(OscConst.AvatarIdAddress, TestAvatarId);
+            await LoopWhile(() => Avatar.OscAvatarUtility.CurrentAvatar.Id == null, LatencyTimeout);
+        }
 
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetCurrentOscAvatarConfigPath());
         Assert.ThrowsAsync<FileNotFoundException>(async () => await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync());
@@ -117,10 +100,12 @@ public class OscUtilityTests
     public void TestSendPort(int port)
     {
         int oldPort = OscUtility.SendPort;
+        var oldClient = OscUtility.Client;
 
         OscUtility.SendPort = port;
         Assert.AreEqual(port, OscUtility.SendPort);
         Assert.AreEqual(port, OscUtility.Client.Destination.Port);
+        Assert.AreNotSame(oldClient, OscUtility.Client);
 
         OscUtility.SendPort = oldPort;
     }
@@ -130,9 +115,9 @@ public class OscUtilityTests
     public void TestSendPortOutOfRange(int port)
     {
         int oldPort = OscUtility.SendPort;
+
         Assert.Throws<ArgumentOutOfRangeException>(() => OscUtility.SendPort = port);
         Assert.AreEqual(oldPort, OscUtility.SendPort);
-        Assert.AreEqual(oldPort, OscUtility.Client.Destination.Port);
     }
 
     [TestCase(0)]
@@ -158,34 +143,34 @@ public class OscUtilityTests
     [TestCase("127.0.0.1")]
     [TestCase("192.168.1.1")]
     [TestCase("8.8.8.8")]
-    public void TestClientIPAddress(string ipAddress)
+    public void TestVrcIPAddress(string ipAddress)
     {
-        string oldAddress = OscUtility.ClientIPAddress;
+        string oldAddress = OscUtility.VrcIPAddress;
 
-        OscUtility.ClientIPAddress = ipAddress;
-        Assert.AreEqual(ipAddress, OscUtility.ClientIPAddress);
+        OscUtility.VrcIPAddress = ipAddress;
+        Assert.AreEqual(ipAddress, OscUtility.VrcIPAddress);
         Assert.AreEqual(ipAddress, OscUtility.Client.Destination.Address.ToString());
 
-        OscUtility.ClientIPAddress = oldAddress;
+        OscUtility.VrcIPAddress = oldAddress;
     }
 
     [TestCase("example.com")]
     [TestCase("ipaddress")]
-    public void TestClientIPAddressInvalidFormat(string ipAddress)
+    public void TestVrcIPAddressInvalidFormat(string ipAddress)
     {
-        string oldAddress = OscUtility.ClientIPAddress;
-        Assert.Throws<FormatException>(() => OscUtility.ClientIPAddress = ipAddress);
-        Assert.AreEqual(oldAddress, OscUtility.ClientIPAddress);
-        Assert.AreEqual(oldAddress, OscUtility.Client.Destination.Address.ToString());
+        string oldAddress = OscUtility.VrcIPAddress;
+
+        Assert.Throws<FormatException>(() => OscUtility.VrcIPAddress = ipAddress);
+        Assert.AreEqual(oldAddress, OscUtility.VrcIPAddress);
     }
 
     [Test]
     public void TestClientIPAddressNull()
     {
-        string oldAddress = OscUtility.ClientIPAddress;
-        Assert.Throws<ArgumentNullException>(() => OscUtility.ClientIPAddress = null!);
-        Assert.AreEqual(oldAddress, OscUtility.ClientIPAddress);
-        Assert.AreEqual(oldAddress, OscUtility.Client.Destination.Address.ToString());
+        string oldAddress = OscUtility.VrcIPAddress;
+
+        Assert.Throws<ArgumentNullException>(() => OscUtility.VrcIPAddress = null!);
+        Assert.AreEqual(oldAddress, OscUtility.VrcIPAddress);
     }
 
     [Test]
@@ -193,6 +178,8 @@ public class OscUtilityTests
     {
         int value = 0;
         OscUtility.RegisterMonitorCallback((_, _) => value++);
+
+        int oldPort = OscUtility.ReceivePort;
 
         OscUtility.ReceivePort = 12345;
         using (var client = new OscClient("127.0.0.1", 12345))
@@ -213,5 +200,53 @@ public class OscUtilityTests
             await LoopWhile(() => value == 2, LatencyTimeout);
             Assert.AreEqual(3, value);
         }
+
+        OscUtility.ReceivePort = oldPort;
+    }
+
+    [Test]
+    public async Task TestSendPortWithSending()
+    {
+        int oldPort = OscUtility.SendPort;
+
+        OscUtility.SendPort = 12345;
+        using (var client = new UdpClient(12345))
+        {
+            OscParameter.SendValue("/value/send", 1);
+            var result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
+            Assert.AreEqual(OscUtility.VrcIPAddress, result.RemoteEndPoint.Address.ToString());
+        }
+
+        OscUtility.SendPort = 54321;
+        using (var client = new UdpClient(54321))
+        {
+            OscParameter.SendValue("/value/send", 1);
+            var result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
+            Assert.AreEqual(OscUtility.VrcIPAddress, result.RemoteEndPoint.Address.ToString());
+        }
+
+        OscUtility.SendPort = oldPort;
+    }
+
+    private static IEnumerable<IPAddress> IPv4Addresses => Dns.GetHostAddresses(Dns.GetHostName(), AddressFamily.InterNetwork);
+
+    [Test, TestCaseSource(nameof(IPv4Addresses))]
+    public async Task TestVrcIPAddressWithSending(IPAddress address)
+    {
+        string oldAddress = OscUtility.VrcIPAddress;
+
+        using (var client = new UdpClient(OscUtility.SendPort))
+        {
+            OscParameter.SendValue("/value/send", 1);
+            var result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
+            Assert.AreEqual("127.0.0.1", result.RemoteEndPoint.Address.ToString());
+            
+            OscUtility.VrcIPAddress = address.ToString();
+            OscParameter.SendValue("/value/send", 1);
+            result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
+            Assert.AreEqual(address.ToString(), result.RemoteEndPoint.Address.ToString());
+        }
+
+        OscUtility.VrcIPAddress = oldAddress;
     }
 }

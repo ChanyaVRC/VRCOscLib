@@ -8,7 +8,7 @@ public static partial class OscUtility
     private static OscClient? _client;
 
     internal static OscServer Server => _server ??= new OscServer(_receivePort);
-    internal static OscClient Client => _client ??= new OscClient(_clientIPAddress, _sendPort);
+    internal static OscClient Client => _client ??= new OscClient(_vrcIPAddress, _sendPort);
 
     private static int _receivePort = 9001;
     public static int ReceivePort
@@ -69,15 +69,15 @@ public static partial class OscUtility
         }
     }
 
-    private static string _clientIPAddress = "127.0.0.1";
+    private static string _vrcIPAddress = "127.0.0.1";
 
-    public static string ClientIPAddress
+    public static string VrcIPAddress
     {
-        get => _clientIPAddress;
+        get => _vrcIPAddress;
         set
         {
             // throw Exception if `value` can't be parsed.
-            _clientIPAddress = System.Net.IPAddress.Parse(value).ToString();
+            _vrcIPAddress = System.Net.IPAddress.Parse(value).ToString();
 
             if (_client != null)
             {
