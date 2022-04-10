@@ -1,0 +1,31 @@
+name: publish to NuGet.org
+
+on:
+  push:
+    tags:
+      - '[0-9.]+'
+
+jobs:
+  publish-to-nuget.org:
+    if: github.repository == 'ChanyaVRC/VRCOscLib'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore -p:Platform="For Test"
+      - name: Test Build
+        run: dotnet build -p:Platform="For Test" --no-restore
+      - name: Test
+        run: dotnet test -p:Platform="For Test" --no-build --verbosity normal
+      - name: Pack
+        if: ${{ success() }}
+        run: dotnet pack -o "nupkgs" -c Release -p:Platform="For Test" -p:PackageVersion=${{ GITHUB_REF/refs\/tags\// }} --no-restore
+      - name: Publish
+        if: ${{ success() }}
+        run: dotnet nuget push "nupkgs/*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
