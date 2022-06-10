@@ -45,7 +45,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         : this(parameters.ToImmutableArray())
     {
     }
-        #endregion
+    #endregion
 
     #region Datas
     public ImmutableArray<OscAvatarParameter> Items { get; }
@@ -137,7 +137,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #region Events
     private void GetValueCallback(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
     {
-        var name = e.Address[(OscConst.AvatarParameterAddressSpace.Length + 1)..];
+        var name = e.Address[OscConst.AvatarParameterAddressSpace.Length..];
         OnParameterChanged(Get(name), e);
     }
 
