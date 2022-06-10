@@ -12,7 +12,6 @@ namespace BuildSoft.VRChat.Osc.Avatar.Test;
 public class OscAvatarParametorContainerTest
 {
     private const string AvatarId = "avtr_TestAvatar";
-    ImmutableArray<OscAvatarParameter> _parameters;
     string _configFile = null!;
     OscAvatarConfig _config = null!;
     OscClient _client = null!;
