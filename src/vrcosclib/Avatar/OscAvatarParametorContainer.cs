@@ -87,9 +87,9 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         var allParams = OscParameter.Parameters;
         if (allParams.TryGetValue(param.ReadableAddress, out var value))
         {
-            return (T?)value ?? default;
+            return (T?)value;
         }
-        throw new ArgumentOutOfRangeException(nameof(name));
+        return default;
     }
 
     public void SetAs<T>(string name, T value)
@@ -100,18 +100,16 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
             throw new InvalidOperationException($"{name} dosen't has a input interface.");
         }
 
-        var client = OscUtility.Client;
-
         switch (value)
         {
             case int intValue:
-                client.Send(inputInterface.Address, intValue);
+                OscParameter.SendValue(inputInterface.Address, intValue);
                 break;
             case float floatValue:
-                client.Send(inputInterface.Address, floatValue);
+                OscParameter.SendValue(inputInterface.Address, floatValue);
                 break;
             case bool booleanValue:
-                client.Send(inputInterface.Address, booleanValue);
+                OscParameter.SendValue(inputInterface.Address, booleanValue);
                 break;
             default:
                 throw new NotSupportedException($"The type {value?.GetType()} is still not supported.");
