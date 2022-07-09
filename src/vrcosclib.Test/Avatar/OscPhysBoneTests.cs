@@ -8,6 +8,7 @@ namespace BuildSoft.VRChat.Osc.Avatar.Test;
 public class OscPhysBoneTests
 {
     private OscAvatarConfig _avatar = null!;
+    private OscServer _server = null!;
     private const string AvatarId = "avtr_id_for_test";
     private const string PhysBoneParam = "PhysBoneParam";
 
@@ -21,6 +22,8 @@ public class OscPhysBoneTests
         TestUtility.CreateConfigFileForTest(AvatarId, "Test Avatar", TestUtility.GetAvatarConfigDirectory());
         _avatar = OscAvatarConfig.Create(AvatarId)!;
 
+        _server = new OscServer(OscUtility.SendPort);
+
         OscParameter.Parameters.Clear();
     }
 
@@ -29,6 +32,7 @@ public class OscPhysBoneTests
     {
         Directory.Delete(OscUtility.VRChatOscPath, true);
         Directory.Move(OscUtility.VRChatOscPath + "_Renamed", OscUtility.VRChatOscPath);
+        _server.Dispose();
     }
 
     [OneTimeSetUp]
