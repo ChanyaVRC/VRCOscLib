@@ -71,6 +71,39 @@ public static class TestUtility
       }}
     }},
     {{
+      ""name"":""PhysBoneParam_IsGrabbed"",
+      ""input"":{{
+        ""address"":""/avatar/parameters/PhysBoneParam_IsGrabbed"",
+        ""type"":""Bool""
+      }},
+      ""output"":{{
+        ""address"":""/avatar/parameters/PhysBoneParam_IsGrabbed"",
+        ""type"":""Bool""
+      }}
+    }},
+    {{
+      ""name"":""PhysBoneParam_Angle"",
+      ""input"":{{
+        ""address"":""/avatar/parameters/PhysBoneParam_Angle"",
+        ""type"":""Float""
+      }},
+      ""output"":{{
+        ""address"":""/avatar/parameters/PhysBoneParam_Angle"",
+        ""type"":""Float""
+      }}
+    }},
+    {{
+      ""name"":""PhysBoneParam_Stretch"",
+      ""input"":{{
+        ""address"":""/avatar/parameters/PhysBoneParam_Stretch"",
+        ""type"":""Float""
+      }},
+      ""output"":{{
+        ""address"":""/avatar/parameters/PhysBoneParam_Stretch"",
+        ""type"":""Float""
+      }}
+    }},
+    {{
       ""name"":""VelocityZ"",
       ""output"":{{
         ""address"":""/avatar/parameters/VelocityZ"",
