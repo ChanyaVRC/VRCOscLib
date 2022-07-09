@@ -62,7 +62,7 @@ public class OscAvatarConfig
     private static OscAvatarConfig? GetAvatarConfig(string path)
         => JsonConvert.DeserializeObject<OscAvatarConfig>(File.ReadAllText(path));
 
-    public OscAvatarConfig()
+    private OscAvatarConfig()
     {
         OscAvatarUtility.RegisterAvaterConfig(this);
     }
