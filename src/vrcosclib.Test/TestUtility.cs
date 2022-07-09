@@ -31,7 +31,7 @@ public static class TestUtility
         {
             while (conditions())
             {
-                await Task.Delay(5);
+                await Task.Delay(0);
             }
         }
     }
