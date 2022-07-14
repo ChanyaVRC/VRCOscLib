@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace BuildSoft.VRChat.Osc.Test;
 
@@ -53,65 +56,30 @@ public static class TestUtility
         {
             return path;
         }
+        string configJson = JsonConvert.SerializeObject(
+            new OscAvatarConfigJson(avatarId, name, new OscAvatarParameterJson[] {
+                new("TestParam",                "Int",   hasInput: true),
+                new("PhysBoneParam_IsGrabbed",  "Bool",  hasInput: true),
+                new("PhysBoneParam_Angle",      "Float", hasInput: true),
+                new("PhysBoneParam_Stretch",    "Float", hasInput: true),
+                new("PhysBoneParam__IsGrabbed", "Float", hasInput: true),
+                new("PhysBoneParam__Angle",     "Float", hasInput: true),
+                new("PhysBoneParam__Stretch",   "Bool",  hasInput: true),
+                new("VelocityZ",                "Float", hasInput: false),
+            }));
+        writer.Write(configJson);
+        return path;
+    }
 
-        writer.Write(
-@$"{{
-  ""id"":""{avatarId}"",
-  ""name"":""{name}"",
-  ""parameters"":[
-    {{
-      ""name"":""TestParam"",
-      ""input"":{{
-        ""address"":""/avatar/parameters/TestParam"",
-        ""type"":""Int""
-      }},
-      ""output"":{{
-        ""address"":""/avatar/parameters/TestParam"",
-        ""type"":""Int""
-      }}
-    }},
-    {{
-      ""name"":""PhysBoneParam_IsGrabbed"",
-      ""input"":{{
-        ""address"":""/avatar/parameters/PhysBoneParam_IsGrabbed"",
-        ""type"":""Bool""
-      }},
-      ""output"":{{
-        ""address"":""/avatar/parameters/PhysBoneParam_IsGrabbed"",
-        ""type"":""Bool""
-      }}
-    }},
-    {{
-      ""name"":""PhysBoneParam_Angle"",
-      ""input"":{{
-        ""address"":""/avatar/parameters/PhysBoneParam_Angle"",
-        ""type"":""Float""
-      }},
-      ""output"":{{
-        ""address"":""/avatar/parameters/PhysBoneParam_Angle"",
-        ""type"":""Float""
-      }}
-    }},
-    {{
-      ""name"":""PhysBoneParam_Stretch"",
-      ""input"":{{
-        ""address"":""/avatar/parameters/PhysBoneParam_Stretch"",
-        ""type"":""Float""
-      }},
-      ""output"":{{
-        ""address"":""/avatar/parameters/PhysBoneParam_Stretch"",
-        ""type"":""Float""
-      }}
-    }},
-    {{
-      ""name"":""VelocityZ"",
-      ""output"":{{
-        ""address"":""/avatar/parameters/VelocityZ"",
-        ""type"":""Float""
-      }}
-    }}
-  ]
-}}");
+    public static string CreateConfigFileForTest(OscAvatarConfigJson avatar, string directory)
+    {
+        Directory.CreateDirectory(directory);
+
+        var path = Path.Combine(directory, avatar.id + ".json");
+
+        using var writer = File.CreateText(path);
+        writer.Write(JsonConvert.SerializeObject(avatar));
+
         return path;
     }
 }
