@@ -10,7 +10,7 @@ public record class OscAvatarParameterJson
     public OscAvatarParameterInterfaceJson? output;
 
     public OscAvatarParameterJson(string name, OscAvatarParameterInterfaceJson? input, OscAvatarParameterInterfaceJson? output)
-    {
+{
         this.name = name;
         this.input = input;
         this.output = output;
