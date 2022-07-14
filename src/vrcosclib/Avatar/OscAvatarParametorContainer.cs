@@ -72,6 +72,68 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     public IEnumerable<object?> Values => Items.Select(v => GetAs<object>(v.Name));
 
     public int Count => Items.Length;
+
+    private ImmutableArray<OscPhysBone> _physBones;
+    public IReadOnlyList<OscPhysBone> PhysBones
+    {
+        get
+        {
+            if (_physBones.IsDefault)
+            {
+                _physBones = CreatePhysBones();
+            }
+            return _physBones;
+        }
+    }
+
+    private ImmutableArray<OscPhysBone> CreatePhysBones()
+    {
+        (string Suffix, string Type)[] paramInfos =
+        {
+            ("_" + nameof(OscPhysBone.IsGrabbed),   "Bool"),
+            ("_" + nameof(OscPhysBone.Angle),       "Float"),
+            ("_" + nameof(OscPhysBone.Stretch),     "Float"),
+        };
+
+        Dictionary<string, int> dictionay = new();
+        var items = Items;
+        var builder = ImmutableArray.CreateBuilder<OscPhysBone>();
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            var parameter = items[i];
+            var paramName = parameter.Name;
+            var output = parameter.Output;
+
+            if (output == null)
+            {
+                continue;
+            }
+
+            for (int j = 0; j < paramInfos.Length; j++)
+            {
+                var info = paramInfos[j];
+                if (!paramName.EndsWith(info.Suffix) || output.Type != info.Type)
+                {
+                    continue;
+                }
+
+                string baseName = paramName[..^info.Suffix.Length];
+                int count = dictionay.ContainsKey(baseName) ? dictionay[baseName] + 1 : 1;
+                dictionay[baseName] = count;
+
+                if (count == paramInfos.Length)
+                {
+                    builder.Add(new OscPhysBone(this, baseName, false));
+                }
+
+                break;
+            }
+        }
+
+        return builder.ToImmutable();
+    }
+
     #endregion
 
     #region Value accessor(s)
