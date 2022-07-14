@@ -52,6 +52,8 @@ public class OscAvatarParametorContainerTest
             new("InvalidParam7IsGrabbed",  "Bool",  hasInput: true),
             new("InvalidParam7Angle",      "Float", hasInput: true),
             new("InvalidParam7Stretch",    "Float", hasInput: true),
+
+            new("TestParam",               "Float", hasInput: true),
         }), Path.Combine(OscUtility.VRChatOscPath, "Test"));
 
         _config = new OscAvatar { Id = AvatarId }.ToConfig()!;
