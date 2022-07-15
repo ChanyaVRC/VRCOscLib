@@ -29,14 +29,7 @@ public static class TestUtility
 
     public static async Task LoopWhile(Func<bool> conditions, TimeSpan timeout)
     {
-        await WaitWhile(conditions).WaitAsync(timeout);
-        static async Task WaitWhile(Func<bool> conditions)
-        {
-            while (conditions())
-            {
-                await Task.Delay(1);
-            }
-        }
+        await Task.Run(() => { while (conditions()) ; }).WaitAsync(timeout);
     }
 
     public static CancellationToken CanceledToken => CanceledTokenSource.Token;
