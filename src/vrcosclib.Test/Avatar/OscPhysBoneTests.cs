@@ -16,9 +16,7 @@ public class OscPhysBoneTests
     [SetUp]
     public void Setup()
     {
-        Directory.CreateDirectory(OscUtility.VRChatOscPath);
-        Directory.Move(OscUtility.VRChatOscPath, OscUtility.VRChatOscPath + "_Renamed");
-        Directory.CreateDirectory(OscUtility.VRChatOscPath);
+        TestUtility.StashOscDirectory();
 
         TestUtility.CreateConfigFileForTest(AvatarId, "Test Avatar", TestUtility.GetAvatarConfigDirectory());
         _avatar = OscAvatarConfig.Create(AvatarId)!;
@@ -31,8 +29,7 @@ public class OscPhysBoneTests
     [TearDown]
     public void TearDown()
     {
-        Directory.Delete(OscUtility.VRChatOscPath, true);
-        Directory.Move(OscUtility.VRChatOscPath + "_Renamed", OscUtility.VRChatOscPath);
+        TestUtility.RestoreOscDirectory();
         _server.Dispose();
     }
 

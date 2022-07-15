@@ -75,4 +75,23 @@ public static class TestUtility
 
         return path;
     }
+
+
+    static readonly string _destDirName = OscUtility.VRChatOscPath + "_Renamed";
+
+    public static void StashOscDirectory()
+    {
+        Directory.CreateDirectory(OscUtility.VRChatOscPath);
+        Directory.Move(OscUtility.VRChatOscPath, _destDirName);
+        Directory.CreateDirectory(OscUtility.VRChatOscPath);
+    }
+
+    public static void RestoreOscDirectory()
+    {
+        if (Directory.Exists(_destDirName))
+        {
+            Directory.Delete(OscUtility.VRChatOscPath, true);
+            Directory.Move(_destDirName, OscUtility.VRChatOscPath);
+        }
+    }
 }

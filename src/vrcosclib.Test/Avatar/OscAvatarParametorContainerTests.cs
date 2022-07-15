@@ -94,7 +94,7 @@ public class OscAvatarParametorContainerTest
     public void PhysBonesTest()
     {
         var physbones = _parameters.PhysBones;
-  
+
         Assert.IsNotNull(physbones);
         CollectionAssert.AreEquivalent(
             new[] { "ValidParam1", "ValidParam2", "ValidParam3", },

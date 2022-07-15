@@ -9,16 +9,13 @@ public class OscAvatarTests
     [SetUp]
     public void Setup()
     {
-        Directory.CreateDirectory(OscUtility.VRChatOscPath);
-        Directory.Move(OscUtility.VRChatOscPath, OscUtility.VRChatOscPath + "_Renamed");
-        Directory.CreateDirectory(OscUtility.VRChatOscPath);
+        TestUtility.StashOscDirectory();
     }
 
     [TearDown]
     public void TearDown()
     {
-        Directory.Delete(OscUtility.VRChatOscPath, true);
-        Directory.Move(OscUtility.VRChatOscPath + "_Renamed", OscUtility.VRChatOscPath);
+        TestUtility.RestoreOscDirectory();
     }
 
     [OneTimeSetUp]
@@ -30,8 +27,7 @@ public class OscAvatarTests
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-        Directory.Delete(OscUtility.VRChatOscPath, true);
-        Directory.CreateDirectory(OscUtility.VRChatOscPath);
+
     }
 
     [Test]
