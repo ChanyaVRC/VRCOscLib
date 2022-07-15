@@ -1,4 +1,5 @@
-﻿using BuildSoft.OscCore;
+﻿using System;
+using BuildSoft.OscCore;
 using BuildSoft.VRChat.Osc.Test;
 using NUnit.Framework;
 
@@ -47,16 +48,29 @@ public class OscPhysBoneTests
     }
 
     [Test]
-    public void TestCtor()
+    public void TestCtor1()
     {
         var physBone = new OscPhysBone(_avatar, PhysBoneParam);
-        Assert.AreSame(_avatar, physBone.Avatar);
         Assert.AreEqual(PhysBoneParam, physBone.ParamName);
         Assert.IsFalse(physBone.IsGrabbed);
         Assert.Zero(physBone.Angle);
         Assert.Zero(physBone.Stretch);
 
-        Assert.Throws<ArgumentException>(() => new OscPhysBone(_avatar, PhysBoneParam + "_"));
+        var exception = Assert.Throws<ArgumentException>(() => new OscPhysBone(_avatar, PhysBoneParam + "_"));
+        Assert.AreEqual("avatar", exception?.ParamName);
+    }
+
+    [Test]
+    public void TestCtor2()
+    {
+        var physBone = new OscPhysBone(_avatar.Parameters, PhysBoneParam);
+        Assert.AreEqual(PhysBoneParam, physBone.ParamName);
+        Assert.IsFalse(physBone.IsGrabbed);
+        Assert.Zero(physBone.Angle);
+        Assert.Zero(physBone.Stretch);
+
+        var exception = Assert.Throws<ArgumentException>(() => new OscPhysBone(_avatar.Parameters, PhysBoneParam + "_"));
+        Assert.AreEqual("parameters", exception?.ParamName);
     }
 
     [Test]
