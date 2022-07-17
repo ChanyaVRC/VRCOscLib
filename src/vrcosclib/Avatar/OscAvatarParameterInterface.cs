@@ -28,4 +28,17 @@ public class OscAvatarParameterInterface
     }
 
     public string Type => _type;
+
+
+    [JsonConstructor]
+    private OscAvatarParameterInterface()
+    {
+
+    }
+
+    public OscAvatarParameterInterface(string address, OscType type)
+    {
+        _address = address;
+        _type = type.ToString();
+    }
 }
