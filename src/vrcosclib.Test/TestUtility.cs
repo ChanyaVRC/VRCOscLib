@@ -51,14 +51,14 @@ public static class TestUtility
         }
         string configJson = JsonConvert.SerializeObject(
             new OscAvatarConfigJson(avatarId, name, new OscAvatarParameterJson[] {
-                new("TestParam",                "Int",   hasInput: true),
-                new("PhysBoneParam_IsGrabbed",  "Bool",  hasInput: true),
-                new("PhysBoneParam_Angle",      "Float", hasInput: true),
-                new("PhysBoneParam_Stretch",    "Float", hasInput: true),
-                new("PhysBoneParam__IsGrabbed", "Float", hasInput: true),
-                new("PhysBoneParam__Angle",     "Float", hasInput: true),
-                new("PhysBoneParam__Stretch",   "Bool",  hasInput: true),
-                new("VelocityZ",                "Float", hasInput: false),
+                new("TestParam",                OscType.Int,   hasInput: true),
+                new("PhysBoneParam_IsGrabbed",  OscType.Bool,  hasInput: true),
+                new("PhysBoneParam_Angle",      OscType.Float, hasInput: true),
+                new("PhysBoneParam_Stretch",    OscType.Float, hasInput: true),
+                new("PhysBoneParam__IsGrabbed", OscType.Float, hasInput: true),
+                new("PhysBoneParam__Angle",     OscType.Float, hasInput: true),
+                new("PhysBoneParam__Stretch",   OscType.Bool,  hasInput: true),
+                new("VelocityZ",                OscType.Float, hasInput: false),
             }));
         writer.Write(configJson);
         return path;

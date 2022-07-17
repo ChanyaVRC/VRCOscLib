@@ -88,11 +88,11 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     private ImmutableArray<OscPhysBone> CreatePhysBones()
     {
-        (string Suffix, string Type)[] paramInfos =
+        (string Suffix, OscType Type)[] paramInfos =
         {
-            ("_" + nameof(OscPhysBone.IsGrabbed),   "Bool"),
-            ("_" + nameof(OscPhysBone.Angle),       "Float"),
-            ("_" + nameof(OscPhysBone.Stretch),     "Float"),
+            ("_" + nameof(OscPhysBone.IsGrabbed),   OscType.Bool),
+            ("_" + nameof(OscPhysBone.Angle),       OscType.Float),
+            ("_" + nameof(OscPhysBone.Stretch),     OscType.Float),
         };
 
         Dictionary<string, int> dictionay = new();
@@ -113,7 +113,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
             for (int j = 0; j < paramInfos.Length; j++)
             {
                 var info = paramInfos[j];
-                if (!paramName.EndsWith(info.Suffix) || output.Type != info.Type)
+                if (!paramName.EndsWith(info.Suffix) || output.OscType != info.Type)
                 {
                     continue;
                 }

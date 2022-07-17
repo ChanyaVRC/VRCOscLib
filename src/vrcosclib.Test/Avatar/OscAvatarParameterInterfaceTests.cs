@@ -15,6 +15,7 @@ public class OscAvatarParameterInterfaceTests
         Assert.AreEqual(Address, parameterInterface1.Address);
         Assert.AreEqual(new BlobString(Address), parameterInterface1.AddressBlob);
 
+        Assert.AreEqual(OscType.Bool, parameterInterface1.OscType);
         Assert.AreEqual("Bool", parameterInterface1.Type);
     }
 }

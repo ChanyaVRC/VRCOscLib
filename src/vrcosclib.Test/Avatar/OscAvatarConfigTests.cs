@@ -41,7 +41,7 @@ public class OscAvatarConfigTests
                     int parameterCount = Random.Shared.Next(0, 10);
                     for (int k = 0; k < parameterCount; k++)
                     {
-                        parameters.Add(new OscAvatarParameterJson($"param{k}", "Float"));
+                        parameters.Add(new OscAvatarParameterJson($"param{k}", OscType.Float));
                     }
                     configs.Add(new OscAvatarConfigJson($"avtr_{j}", $"name{j}", parameters.ToArray()));
                 }

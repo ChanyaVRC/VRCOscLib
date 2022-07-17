@@ -29,10 +29,10 @@ public class OscPhysBone
 
     internal OscPhysBone(OscAvatarParametorContainer parameters, string paramName, bool needCheck, string checkedParamName = "parameters")
     {
-        (string Name, string Type)[] actualParam = {
-            (paramName + "_" + nameof(IsGrabbed), "Bool" ),
-            (paramName + "_" + nameof(Angle),     "Float"),
-            (paramName + "_" + nameof(Stretch),   "Float"),
+        (string Name, OscType Type)[] actualParam = {
+            (paramName + "_" + nameof(IsGrabbed), OscType.Bool ),
+            (paramName + "_" + nameof(Angle),     OscType.Float),
+            (paramName + "_" + nameof(Stretch),   OscType.Float),
         };
 
         if (needCheck)
@@ -54,7 +54,7 @@ public class OscPhysBone
     private static void ThrowArgumentException_IfNotExistParameters(
         OscAvatarParametorContainer parameters,
         string paramName,
-        (string Name, string Type)[] actualParam,
+        (string Name, OscType Type)[] actualParam,
         string checkedParamName)
     {
         int count = 0;
@@ -67,7 +67,7 @@ public class OscPhysBone
             }
 
             string name = parameter.Name;
-            string type = output.Type;
+            OscType type = output.OscType;
             for (int i = 0; i < actualParam.Length; i++)
             {
                 if (actualParam[i].Name == name && actualParam[i].Type == type)

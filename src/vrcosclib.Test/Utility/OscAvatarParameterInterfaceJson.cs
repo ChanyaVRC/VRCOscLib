@@ -1,3 +1,6 @@
-﻿namespace BuildSoft.VRChat.Osc.Test;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
-public record class OscAvatarParameterInterfaceJson(string address, string type);
+namespace BuildSoft.VRChat.Osc.Test;
+
+public record class OscAvatarParameterInterfaceJson(string address, [JsonConverter(typeof(StringEnumConverter))] OscType type);
