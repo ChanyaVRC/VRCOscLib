@@ -28,6 +28,31 @@ public class OscAvatarConfig
     [field: JsonExtensionData]
     public Dictionary<string, object> Extra { get; } = new();
 
+
+    [JsonConstructor]
+    private OscAvatarConfig()
+    {
+        OscAvatarUtility.RegisterAvaterConfig(this);
+    }
+
+    public OscAvatarConfig(string id, string name, IEnumerable<OscAvatarParameter> parameters)
+        : this()
+    {
+        if (id == "")
+        {
+            throw new ArgumentException($"{nameof(id)} can't be empty.", nameof(id));
+        }
+        if (name == "")
+        {
+            throw new ArgumentException($"{nameof(name)} can't be empty.", nameof(name));
+        }
+
+        _id = id;
+        _name = name;
+        _parametersList.AddRange(parameters);
+    }
+
+
     public static OscAvatarConfig[] CreateAll() =>
         OscUtility.GetOscAvatarConfigPathes()
             .Select(GetAvatarConfig)
@@ -61,9 +86,4 @@ public class OscAvatarConfig
 
     private static OscAvatarConfig? GetAvatarConfig(string path)
         => JsonConvert.DeserializeObject<OscAvatarConfig>(File.ReadAllText(path));
-
-    public OscAvatarConfig()
-    {
-        OscAvatarUtility.RegisterAvaterConfig(this);
-    }
 }

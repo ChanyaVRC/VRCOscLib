@@ -1,5 +1,6 @@
 ﻿using BlobHandles;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace BuildSoft.VRChat.Osc.Avatar;
 
@@ -10,8 +11,8 @@ public class OscAvatarParameterInterface
     [JsonProperty("address", Required = Required.Always)]
     private string _address = string.Empty;
     private BlobString _addressBlob = default;
-    [JsonProperty("type", Required = Required.Always)]
-    private string _type = string.Empty;
+    [JsonProperty("type", Required = Required.Always, ItemConverterType = typeof(StringEnumConverter))]
+    private OscType _type = 0;
 #pragma warning restore IDE0044 // Add readonly modifier
 
     public string Address => _address;
@@ -27,5 +28,19 @@ public class OscAvatarParameterInterface
         }
     }
 
-    public string Type => _type;
+    public OscType OscType => _type;
+    public string Type => _type.ToString();
+
+
+    [JsonConstructor]
+    private OscAvatarParameterInterface()
+    {
+
+    }
+
+    public OscAvatarParameterInterface(string address, OscType type)
+    {
+        _address = address;
+        _type = type;
+    }
 }

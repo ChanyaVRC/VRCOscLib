@@ -20,10 +20,12 @@ public record class OscAvatarParameter
 
     public string ReadableAddress => (Output ?? Input)!.Address;
 
-    public OscAvatarParameter()
+    [JsonConstructor]
+    private OscAvatarParameter()
     {
 
     }
+
     public OscAvatarParameter(string name, OscAvatarParameterInterface? input = null, OscAvatarParameterInterface? output = null)
     {
         if (input == null && output == null)

@@ -72,6 +72,68 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     public IEnumerable<object?> Values => Items.Select(v => GetAs<object>(v.Name));
 
     public int Count => Items.Length;
+
+    private ImmutableArray<OscPhysBone> _physBones;
+    public IReadOnlyList<OscPhysBone> PhysBones
+    {
+        get
+        {
+            if (_physBones.IsDefault)
+            {
+                _physBones = CreatePhysBones();
+            }
+            return _physBones;
+        }
+    }
+
+    private ImmutableArray<OscPhysBone> CreatePhysBones()
+    {
+        (string Suffix, OscType Type)[] paramInfos =
+        {
+            ("_" + nameof(OscPhysBone.IsGrabbed),   OscType.Bool),
+            ("_" + nameof(OscPhysBone.Angle),       OscType.Float),
+            ("_" + nameof(OscPhysBone.Stretch),     OscType.Float),
+        };
+
+        Dictionary<string, int> dictionay = new();
+        var items = Items;
+        var builder = ImmutableArray.CreateBuilder<OscPhysBone>();
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            var parameter = items[i];
+            var paramName = parameter.Name;
+            var output = parameter.Output;
+
+            if (output == null)
+            {
+                continue;
+            }
+
+            for (int j = 0; j < paramInfos.Length; j++)
+            {
+                var info = paramInfos[j];
+                if (!paramName.EndsWith(info.Suffix) || output.OscType != info.Type)
+                {
+                    continue;
+                }
+
+                string baseName = paramName[..^info.Suffix.Length];
+                int count = dictionay.ContainsKey(baseName) ? dictionay[baseName] + 1 : 1;
+                dictionay[baseName] = count;
+
+                if (count == paramInfos.Length)
+                {
+                    builder.Add(new OscPhysBone(this, baseName, false));
+                }
+
+                break;
+            }
+        }
+
+        return builder.ToImmutable();
+    }
+
     #endregion
 
     #region Value accessor(s)
@@ -87,9 +149,9 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         var allParams = OscParameter.Parameters;
         if (allParams.TryGetValue(param.ReadableAddress, out var value))
         {
-            return (T?)value ?? default;
+            return (T?)value;
         }
-        throw new ArgumentOutOfRangeException(nameof(name));
+        return default;
     }
 
     public void SetAs<T>(string name, T value)
@@ -100,18 +162,16 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
             throw new InvalidOperationException($"{name} dosen't has a input interface.");
         }
 
-        var client = OscUtility.Client;
-
         switch (value)
         {
             case int intValue:
-                client.Send(inputInterface.Address, intValue);
+                OscParameter.SendValue(inputInterface.Address, intValue);
                 break;
             case float floatValue:
-                client.Send(inputInterface.Address, floatValue);
+                OscParameter.SendValue(inputInterface.Address, floatValue);
                 break;
             case bool booleanValue:
-                client.Send(inputInterface.Address, booleanValue);
+                OscParameter.SendValue(inputInterface.Address, booleanValue);
                 break;
             default:
                 throw new NotSupportedException($"The type {value?.GetType()} is still not supported.");
