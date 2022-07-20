@@ -27,10 +27,10 @@ public partial class ParameterSenderItem : UserControl
         DependencyProperty.Register(nameof(Address), typeof(string), typeof(ParameterSenderItem), new PropertyMetadata(string.Empty));
 
     public static readonly DependencyProperty TypeProperty =
-        DependencyProperty.Register("MyProperty", typeof(OscType), typeof(ParameterSenderItem), new PropertyMetadata(OscType.Int, OnTypeChanged));
+        DependencyProperty.Register(nameof(Type), typeof(OscType), typeof(ParameterSenderItem), new PropertyMetadata(OscType.Int, OnTypeChanged));
  
     public static readonly DependencyProperty ValueProperty =
-        DependencyProperty.Register("Value", typeof(string), typeof(ParameterSenderItem), new PropertyMetadata(string.Empty));
+        DependencyProperty.Register(nameof(Value), typeof(string), typeof(ParameterSenderItem), new PropertyMetadata(string.Empty, null, CoerceValue));
 
     private static void OnTypeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
     {
@@ -47,6 +47,32 @@ public partial class ParameterSenderItem : UserControl
             items.Add(bool.TrueString);
             items.Add(bool.FalseString);
         }
+    }
+
+    private static object CoerceValue(DependencyObject dependencyObject, object value)
+    {
+        var senderItem = (ParameterSenderItem)dependencyObject;
+        string strValue = (string)value;
+
+        if (strValue == "")
+        {
+            return "";
+        }
+
+        bool canConvert = false;
+        switch (senderItem.Type)
+        {
+            case OscType.Bool:
+                canConvert = bool.TryParse(strValue, out _);
+                break;
+            case OscType.Int:
+                canConvert = int.TryParse(strValue, out _);
+                break;
+            case OscType.Float:
+                canConvert = float.TryParse(strValue, out _);
+                break;
+        }
+        return canConvert ? value : senderItem.Value;
     }
 
 
