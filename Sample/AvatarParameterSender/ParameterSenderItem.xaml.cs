@@ -47,6 +47,7 @@ public partial class ParameterSenderItem : UserControl
             items.Add(bool.TrueString);
             items.Add(bool.FalseString);
         }
+        dependencyObject.CoerceValue(ValueProperty);
     }
 
     private static object CoerceValue(DependencyObject dependencyObject, object value)
@@ -72,7 +73,7 @@ public partial class ParameterSenderItem : UserControl
                 canConvert = float.TryParse(strValue, out _);
                 break;
         }
-        return canConvert ? value : senderItem.Value;
+        return canConvert ? value : "";
     }
 
 
