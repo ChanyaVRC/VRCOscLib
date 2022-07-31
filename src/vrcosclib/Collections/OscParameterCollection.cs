@@ -81,12 +81,13 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
 
     void ICollection<KeyValuePair<string, object?>>.CopyTo(KeyValuePair<string, object?>[] array, int arrayIndex)
     {
-        throw new NotSupportedException();
+        ((ICollection<KeyValuePair<string, object?>>)_items).CopyTo(array, arrayIndex);
     }
     bool ICollection<KeyValuePair<string, object?>>.Remove(KeyValuePair<string, object?> item)
     {
-        throw new NotSupportedException();
+        return ((ICollection<KeyValuePair<string, object?>>)_items).Remove(item);
     }
+
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     #endregion
 
