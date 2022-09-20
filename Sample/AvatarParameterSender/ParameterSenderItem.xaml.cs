@@ -22,20 +22,20 @@ public partial class ParameterSenderItem : UserControl
 {
     public static readonly DependencyProperty ParameterNameProperty =
         DependencyProperty.Register(nameof(ParameterName), typeof(string), typeof(ParameterSenderItem), new PropertyMetadata(string.Empty));
-  
+
     public static readonly DependencyProperty AddressProperty =
         DependencyProperty.Register(nameof(Address), typeof(string), typeof(ParameterSenderItem), new PropertyMetadata(string.Empty));
 
     public static readonly DependencyProperty TypeProperty =
         DependencyProperty.Register(nameof(Type), typeof(OscType), typeof(ParameterSenderItem), new PropertyMetadata(OscType.Int, OnTypeChanged));
- 
+
     public static readonly DependencyProperty ValueProperty =
         DependencyProperty.Register(nameof(Value), typeof(string), typeof(ParameterSenderItem), new PropertyMetadata(string.Empty, null, CoerceValue));
 
     private static void OnTypeChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
     {
         var senderItem = (ParameterSenderItem)dependencyObject;
-        
+
         var items = senderItem.ValueBox.Items;
         items.Clear();
 

@@ -63,8 +63,9 @@ public partial class MainWindow : Window
                 continue;
             }
 
-            children.Add(new ParameterSenderItem() {
-                Address = input.Address, 
+            children.Add(new ParameterSenderItem()
+            {
+                Address = input.Address,
                 ParameterName = items[i].Name,
                 Type = input.OscType,
             });
