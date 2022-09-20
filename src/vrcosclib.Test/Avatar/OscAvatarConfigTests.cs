@@ -10,6 +10,8 @@ namespace BuildSoft.VRChat.Osc.Avatar.Test;
 [TestOf(typeof(OscAvatarConfig))]
 public class OscAvatarConfigTests
 {
+    public static readonly Random SharedRandom = new();
+
     private const string Id = "avtr_id";
     private const string Name = "avatar";
 
@@ -38,7 +40,7 @@ public class OscAvatarConfigTests
                 {
                     parameters.Clear();
 
-                    int parameterCount = Random.Shared.Next(0, 10);
+                    int parameterCount = SharedRandom.Next(0, 10);
                     for (int k = 0; k < parameterCount; k++)
                     {
                         parameters.Add(new OscAvatarParameterJson($"param{k}", OscType.Float));
