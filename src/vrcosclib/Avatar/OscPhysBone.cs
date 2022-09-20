@@ -89,7 +89,7 @@ public class OscPhysBone
 
     private void GetValueCallback(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
     {
-        var name = e.Address[OscConst.AvatarParameterAddressSpace.Length..];
+        var name = e.Address.Substring(OscConst.AvatarParameterAddressSpace.Length);
         OnParameterChanged(_parameters.Get(name), e);
     }
 

@@ -1,4 +1,6 @@
-﻿namespace BuildSoft.VRChat.Osc.Input;
+﻿using BuildSoft.VRChat.Osc.Utility;
+
+namespace BuildSoft.VRChat.Osc.Input;
 
 public static class OscInput
 {
@@ -20,7 +22,7 @@ public static class OscInput
 
     public static void Send(this OscAxisInput content, float value)
     {
-        OscParameter.SendValue(content.CreateAddress(), Math.Clamp(value, -1f, 1f));
+        OscParameter.SendValue(content.CreateAddress(), MathHelper.Clamp(value, -1f, 1f));
     }
 
     public static string CreateAddress(this OscButtonInput content)

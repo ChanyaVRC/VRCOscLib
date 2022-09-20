@@ -94,4 +94,25 @@ public static class TestUtility
             Directory.Move(_destDirName, OscUtility.VRChatOscPath);
         }
     }
+
+#if NETFRAMEWORK
+    public static async Task WaitAsync(this Task task, TimeSpan timeout)
+    {
+        task.Start();
+
+        using CancellationTokenSource source = new CancellationTokenSource();
+        source.CancelAfter(timeout);
+        await Task.Run(() => { while (task.IsCompleted) ; }, source.Token);
+    }
+
+    public static async Task<T> WaitAsync<T>(this Task<T> task, TimeSpan timeout)
+    {
+        task.Start();
+
+        using CancellationTokenSource source = new CancellationTokenSource();
+        source.CancelAfter(timeout);
+        await Task.Run(() => { while (task.IsCompleted) ; }, source.Token);
+        return task.Result;
+    }
+#endif
 }

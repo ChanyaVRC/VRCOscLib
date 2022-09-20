@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using BuildSoft.VRChat.Osc.Avatar;
+﻿namespace BuildSoft.VRChat.Osc.Test;
 
-namespace BuildSoft.VRChat.Osc.Test;
+public record class OscAvatarConfigJson
+{
+    public string id;
+    public string name;
+    public OscAvatarParameterJson[] parameters;
 
-public record class OscAvatarConfigJson(string id, string name, OscAvatarParameterJson[] parameters);
+    public OscAvatarConfigJson(string id, string name, OscAvatarParameterJson[] parameters)
+    {
+        this.id = id;
+        this.name = name;
+        this.parameters = parameters;
+    }
+}
