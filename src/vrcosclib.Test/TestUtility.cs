@@ -109,7 +109,7 @@ public static class TestUtility
         using CancellationTokenSource source = new CancellationTokenSource();
         source.CancelAfter(timeout);
 
-        await Task.Run(() => { while (task.IsCompleted) ; }, source.Token);
+        await Task.Run(() => { while (!task.IsCompleted) ; }, source.Token);
     }
 
     public static async Task<T> WaitAsync<T>(this Task<T> task, TimeSpan timeout)
@@ -125,7 +125,7 @@ public static class TestUtility
         using CancellationTokenSource source = new CancellationTokenSource();
         source.CancelAfter(timeout);
 
-        await Task.Run(() => { while (task.IsCompleted) ; }, source.Token);
+        await Task.Run(() => { while (!task.IsCompleted) ; }, source.Token);
         return task.Result;
     }
 #endif
