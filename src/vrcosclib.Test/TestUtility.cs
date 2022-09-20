@@ -98,6 +98,14 @@ public static class TestUtility
 #if NETFRAMEWORK
     public static async Task WaitAsync(this Task task, TimeSpan timeout)
     {
+        // if not running, start task
+        try
+        {
+            task.Start();
+        }
+        catch (InvalidOperationException)
+        {
+        }
         using CancellationTokenSource source = new CancellationTokenSource();
         source.CancelAfter(timeout);
 
@@ -106,6 +114,14 @@ public static class TestUtility
 
     public static async Task<T> WaitAsync<T>(this Task<T> task, TimeSpan timeout)
     {
+        // if not running, start task
+        try
+        {
+            task.Start();
+        }
+        catch (InvalidOperationException)
+        {
+        }
         using CancellationTokenSource source = new CancellationTokenSource();
         source.CancelAfter(timeout);
 
