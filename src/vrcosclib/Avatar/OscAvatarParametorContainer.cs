@@ -49,7 +49,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     #region Datas
     public ImmutableArray<OscAvatarParameter> Items { get; }
-    public OscAvatarParameter Get(string name) => Items.First(p => p.Name == name);
+    public OscAvatarParameter? Get(string name) => Items.FirstOrDefault(p => p.Name == name);
 
     public IEnumerable<OscAvatarParameter> UniqueParameters => Items.Where(parm => !OscAvatarUtility.IsCommonParameter(parm.Name));
     public IEnumerable<object?> UniqueParameterValues
@@ -146,6 +146,11 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     public T? GetAs<T>(string name) where T : notnull
     {
         var param = Get(name);
+        if (param == null)
+        {
+            return default;
+        }
+
         var allParams = OscParameter.Parameters;
         if (allParams.TryGetValue(param.ReadableAddress, out var value))
         {
@@ -156,7 +161,13 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     public void SetAs<T>(string name, T value)
     {
-        var inputInterface = Get(name).Input;
+        var param = Get(name);
+        if (param == null)
+        {
+            throw new InvalidOperationException($"{name} does not exist.");
+        }
+
+        var inputInterface = param.Input;
         if (inputInterface == null)
         {
             throw new InvalidOperationException($"{name} dosen't has a input interface.");
@@ -202,7 +213,13 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     private void GetValueCallback(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
     {
         var name = e.Address.Substring(OscConst.AvatarParameterAddressSpace.Length);
-        OnParameterChanged(Get(name), e);
+        var param = Get(name);
+        if (param == null)
+        {
+            return;
+        }
+
+        OnParameterChanged(param, e);
     }
 
     public event OscAvatarParameterChangedEventHandler? ParameterChanged;
