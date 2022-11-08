@@ -63,12 +63,17 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
 
     public bool Remove(string key)
     {
-        bool removed = _items.Remove(key, out var value);
-        if (removed)
+        var item = _items;
+        if (item.TryGetValue(key, out var value))
         {
-            OnValueChanged(new ParameterChangedEventArgs(value, null, key, ValueChangedReason.Removed));
+            bool removed = item.Remove(key);
+            if (removed)
+            {
+                OnValueChanged(new ParameterChangedEventArgs(value, null, key, ValueChangedReason.Removed));
+            }
+            return removed;
         }
-        return removed;
+        return false;
     }
 
     public bool TryGetValue(string key, out object? value) => _items.TryGetValue(key, out value);
@@ -81,12 +86,13 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
 
     void ICollection<KeyValuePair<string, object?>>.CopyTo(KeyValuePair<string, object?>[] array, int arrayIndex)
     {
-        throw new NotSupportedException();
+        ((ICollection<KeyValuePair<string, object?>>)_items).CopyTo(array, arrayIndex);
     }
     bool ICollection<KeyValuePair<string, object?>>.Remove(KeyValuePair<string, object?> item)
     {
-        throw new NotSupportedException();
+        return ((ICollection<KeyValuePair<string, object?>>)_items).Remove(item);
     }
+
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     #endregion
 

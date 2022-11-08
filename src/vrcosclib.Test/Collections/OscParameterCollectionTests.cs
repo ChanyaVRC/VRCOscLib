@@ -263,4 +263,14 @@ public class OscParameterCollectionTests
         pararmeters[Address1] = 60;
         Assert.AreEqual(0, calledCount);
     }
+
+    [Test]
+    public void TestLinq()
+    {
+        var pararmeters = CreateParameterCollectionForTest();
+        pararmeters["/address/to/parameter1"] = 10;
+        pararmeters["/address/to/parameter2"] = 10f;
+        pararmeters["/address/to/parameter3"] = false;
+        Assert.DoesNotThrow(() => pararmeters.OrderBy(v => v.Key).ToArray());
+    }
 }

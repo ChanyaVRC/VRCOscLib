@@ -118,7 +118,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
                     continue;
                 }
 
-                string baseName = paramName[..^info.Suffix.Length];
+                string baseName = paramName.Substring(0, paramName.Length - info.Suffix.Length);
                 int count = dictionay.ContainsKey(baseName) ? dictionay[baseName] + 1 : 1;
                 dictionay[baseName] = count;
 
@@ -180,7 +180,11 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     public bool ContainsKey(string key) => Items.Any(param => param.Name == key);
 
-    public bool TryGetValue(string key, [NotNullWhen(true)] out object? value)
+    public bool TryGetValue(string key,
+#if NETSTANDARD2_1_OR_GREATER
+    [NotNullWhen(true)] 
+#endif
+    out object? value)
     {
         var param = Items.FirstOrDefault();
         if (param == null)
@@ -197,7 +201,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #region Events
     private void GetValueCallback(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
     {
-        var name = e.Address[OscConst.AvatarParameterAddressSpace.Length..];
+        var name = e.Address.Substring(OscConst.AvatarParameterAddressSpace.Length);
         OnParameterChanged(Get(name), e);
     }
 

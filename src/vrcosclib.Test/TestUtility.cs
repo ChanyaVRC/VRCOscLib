@@ -94,4 +94,51 @@ public static class TestUtility
             Directory.Move(_destDirName, OscUtility.VRChatOscPath);
         }
     }
+
+#if NETFRAMEWORK
+    public static async Task WaitAsync(this Task task, TimeSpan timeout)
+    {
+        // if not running, start task
+        try
+        {
+            task.Start();
+        }
+        catch (InvalidOperationException)
+        {
+        }
+
+        bool isSuccessed = Task.Run(() => { while (task.Status == TaskStatus.Running || task.Status == TaskStatus.WaitingForActivation) ; }).Wait(timeout);
+        if (!isSuccessed)
+        {
+            throw new TimeoutException();
+        }
+        if (task.IsFaulted)
+        {
+            throw task.Exception.InnerException;
+        }
+    }
+
+    public static async Task<T> WaitAsync<T>(this Task<T> task, TimeSpan timeout)
+    {
+        // if not running, start task
+        try
+        {
+            task.Start();
+        }
+        catch (InvalidOperationException)
+        {
+        }
+
+        bool isSuccessed = Task.Run(() => { while (task.Status == TaskStatus.Running || task.Status == TaskStatus.WaitingForActivation) ; }).Wait(timeout);
+        if (!isSuccessed)
+        {
+            throw new TimeoutException();
+        }
+        if (task.IsFaulted)
+        {
+            throw task.Exception.InnerException;
+        }
+        return task.Result;
+    }
+#endif
 }

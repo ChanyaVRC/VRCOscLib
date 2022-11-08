@@ -13,14 +13,14 @@ public class OscInputTests
     OscServer _server = null!;
 
     public static IEnumerable<TestCaseData> AllOscButtonInput
-        => Enum.GetValues<OscButtonInput>().Select(item => new TestCaseData(item));
+        => Enum.GetValues(typeof(OscButtonInput)).Cast<OscButtonInput>().Select(item => new TestCaseData(item));
     public static IEnumerable<TestCaseData> AllOscAxisInput
-        => Enum.GetValues<OscAxisInput>().Select(item => new TestCaseData(item));
+        => Enum.GetValues(typeof(OscAxisInput)).Cast<OscAxisInput>().Select(item => new TestCaseData(item));
     public static IEnumerable<TestCaseData> OscAxisInputTestCases
     {
         get
         {
-            foreach (var item in Enum.GetValues<OscAxisInput>())
+            foreach (var item in Enum.GetValues(typeof(OscAxisInput)))
             {
                 yield return new(item, 1f) { ExpectedResult = 1f };
                 yield return new(item, 2.5f) { ExpectedResult = 1f };
