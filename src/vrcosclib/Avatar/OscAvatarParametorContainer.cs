@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using BlobHandles;
 using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Delegate;
 
 namespace BuildSoft.VRChat.Osc.Avatar;
 
@@ -49,7 +50,8 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     #region Datas
     public ImmutableArray<OscAvatarParameter> Items { get; }
-    public OscAvatarParameter? Get(string name) => Items.FirstOrDefault(p => p.Name == name);
+    public OscAvatarParameter Get(string name) => Items.First(p => p.Name == name);
+    internal OscAvatarParameter? TryGet(string name) => Items.FirstOrDefault(p => p.Name == name);
 
     public IEnumerable<OscAvatarParameter> UniqueParameters => Items.Where(parm => !OscAvatarUtility.IsCommonParameter(parm.Name));
     public IEnumerable<object?> UniqueParameterValues
@@ -146,11 +148,6 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     public T? GetAs<T>(string name) where T : notnull
     {
         var param = Get(name);
-        if (param == null)
-        {
-            return default;
-        }
-
         var allParams = OscParameter.Parameters;
         if (allParams.TryGetValue(param.ReadableAddress, out var value))
         {
@@ -161,13 +158,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     public void SetAs<T>(string name, T value)
     {
-        var param = Get(name);
-        if (param == null)
-        {
-            throw new InvalidOperationException($"{name} does not exist.");
-        }
-
-        var inputInterface = param.Input;
+        var inputInterface = Get(name).Input;
         if (inputInterface == null)
         {
             throw new InvalidOperationException($"{name} dosen't has a input interface.");
@@ -213,7 +204,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     private void GetValueCallback(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
     {
         var name = e.Address.Substring(OscConst.AvatarParameterAddressSpace.Length);
-        var param = Get(name);
+        OscAvatarParameter? param = TryGet(name);
         if (param == null)
         {
             return;
@@ -226,7 +217,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 
     protected internal void OnParameterChanged(OscAvatarParameter param, ValueChangedEventArgs e)
     {
-        ParameterChanged?.Invoke(param, e);
+        ParameterChanged?.DynamicInvokeAllWithoutException(param, e);
     }
     #endregion
 
