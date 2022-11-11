@@ -68,6 +68,13 @@ public class OscAvatarParametorContainerTest
         _client.Dispose();
     }
 
+    [SetUp]
+    public void SetUp()
+    {
+        OscParameter.Parameters.Clear();
+    }
+
+
     [Test]
     public async Task ParameterChangedTest()
     {
@@ -99,5 +106,43 @@ public class OscAvatarParametorContainerTest
         CollectionAssert.AreEquivalent(
             new[] { "ValidParam1", "ValidParam2", "ValidParam3", },
             physbones.Select(v => v.ParamName));
+    }
+
+    [Test]
+    public void Get_ExistParameterTest()
+    {
+        var param = _parameters.Get("TestParam");
+        Assert.AreEqual("TestParam", param.Name);
+        Assert.AreEqual(OscType.Float, param.Input!.OscType);
+        Assert.AreEqual(OscType.Float, param.Output!.OscType);
+    }
+
+    [Test]
+    public void Get_NotExistParameterTest()
+    {
+        Assert.Throws<InvalidOperationException>(() => _parameters.Get("NotTestParam"));
+    }
+
+    [Test]
+    public async Task OnParameterChanged_NotExistParameterRecievedTest()
+    {
+        bool isCalled = false;
+
+        _parameters.ParameterChanged += ThrowExceptionHandler;
+        _parameters.ParameterChanged += MonitorCalledHandler;
+
+        _client.Send(OscConst.AvatarParameterAddressSpace + "TestParam", 1);
+        await TestUtility.LoopWhile(() => !isCalled, TestUtility.LatencyTimeout);
+        isCalled = false;
+
+        _client.Send(OscConst.AvatarParameterAddressSpace + "TestParam", 2);
+        await TestUtility.LoopWhile(() => !isCalled, TestUtility.LatencyTimeout);
+        isCalled = false;
+
+        _parameters.ParameterChanged -= ThrowExceptionHandler;
+        _parameters.ParameterChanged -= MonitorCalledHandler;
+
+        void ThrowExceptionHandler(OscAvatarParameter param, ValueChangedEventArgs e) => throw new Exception();
+        void MonitorCalledHandler(OscAvatarParameter param, ValueChangedEventArgs e) => isCalled = true;
     }
 }

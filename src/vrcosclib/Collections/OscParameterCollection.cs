@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-
+using BuildSoft.VRChat.Osc.Delegate;
 using ParamChangedHandler = BuildSoft.VRChat.Osc.OscParameterChangedEventHandler<BuildSoft.VRChat.Osc.IReadOnlyOscParameterCollection>;
 
 namespace BuildSoft.VRChat.Osc;
@@ -101,7 +101,7 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
 
     protected void OnValueChanged(ParameterChangedEventArgs args)
     {
-        ValueChanged?.Invoke(this, args);
+        ValueChanged?.DynamicInvokeAllWithoutException(this, args);
         OnValueChangedByAddress(args);
     }
 
@@ -114,7 +114,14 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
         var handlers = list.ToArray();
         for (int i = 0; i < handlers.Length; i++)
         {
-            handlers[i].Invoke(this, args);
+            try
+            {
+                handlers[i].Invoke(this, args);
+            }
+            catch (Exception)
+            {
+                // eat exception
+            }
         }
     }
 

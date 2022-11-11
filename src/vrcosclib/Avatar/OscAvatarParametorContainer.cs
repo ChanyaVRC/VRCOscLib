@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using BlobHandles;
 using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Delegate;
 
 namespace BuildSoft.VRChat.Osc.Avatar;
 
@@ -50,6 +51,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #region Datas
     public ImmutableArray<OscAvatarParameter> Items { get; }
     public OscAvatarParameter Get(string name) => Items.First(p => p.Name == name);
+    internal OscAvatarParameter? TryGet(string name) => Items.FirstOrDefault(p => p.Name == name);
 
     public IEnumerable<OscAvatarParameter> UniqueParameters => Items.Where(parm => !OscAvatarUtility.IsCommonParameter(parm.Name));
     public IEnumerable<object?> UniqueParameterValues
@@ -202,14 +204,20 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     private void GetValueCallback(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
     {
         var name = e.Address.Substring(OscConst.AvatarParameterAddressSpace.Length);
-        OnParameterChanged(Get(name), e);
+        OscAvatarParameter? param = TryGet(name);
+        if (param == null)
+        {
+            return;
+        }
+
+        OnParameterChanged(param, e);
     }
 
     public event OscAvatarParameterChangedEventHandler? ParameterChanged;
 
     protected internal void OnParameterChanged(OscAvatarParameter param, ValueChangedEventArgs e)
     {
-        ParameterChanged?.Invoke(param, e);
+        ParameterChanged?.DynamicInvokeAllWithoutException(param, e);
     }
     #endregion
 
