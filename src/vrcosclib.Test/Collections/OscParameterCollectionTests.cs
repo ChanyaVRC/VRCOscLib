@@ -207,6 +207,7 @@ public class OscParameterCollectionTests
                      break;
              }
          };
+        parameters.ValueChanged += (sender, e) => throw new Exception();
         return parameters;
     }
 
@@ -272,5 +273,22 @@ public class OscParameterCollectionTests
         pararmeters["/address/to/parameter2"] = 10f;
         pararmeters["/address/to/parameter3"] = false;
         Assert.DoesNotThrow(() => pararmeters.OrderBy(v => v.Key).ToArray());
+    }
+
+
+    [Test]
+    public void OnValueChangedByAddress_IgnoreExceptionTest()
+    {
+        var parameters = CreateParameterCollectionForTest();
+        int calledCount = 0;
+
+        const string Address = "/address/to/parameter";
+        parameters.AddValueChangedEventByAddress(Address, (_, _) => calledCount++);
+        parameters.AddValueChangedEventByAddress(Address, (_, _) => throw new Exception());
+        parameters.AddValueChangedEventByAddress(Address, (_, _) => calledCount++);
+
+        parameters[Address] = 1;
+
+        Assert.AreEqual(2, calledCount);
     }
 }
