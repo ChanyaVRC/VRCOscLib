@@ -95,50 +95,39 @@ public static class TestUtility
         }
     }
 
-#if NETFRAMEWORK
+#if !NET6_0_OR_GREATER
     public static async Task WaitAsync(this Task task, TimeSpan timeout)
     {
-        // if not running, start task
-        try
-        {
-            task.Start();
-        }
-        catch (InvalidOperationException)
-        {
-        }
+        var source = CreateCancellationTokenSourceWithDelay(timeout);
 
-        bool isSuccessed = Task.Run(() => { while (task.Status == TaskStatus.Running || task.Status == TaskStatus.WaitingForActivation) ; }).Wait(timeout);
-        if (!isSuccessed)
+        await Task.Run(() =>
         {
-            throw new TimeoutException();
-        }
+            while (true)
+            {
+                if (source.IsCancellationRequested) { throw new TimeoutException(); }
+                if (task.IsCompleted) { break; }
+            }
+        });
         if (task.IsFaulted)
         {
-            throw task.Exception.InnerException;
+            throw task.Exception!.InnerException!;
         }
     }
 
     public static async Task<T> WaitAsync<T>(this Task<T> task, TimeSpan timeout)
     {
-        // if not running, start task
-        try
-        {
-            task.Start();
-        }
-        catch (InvalidOperationException)
-        {
-        }
-
-        bool isSuccessed = Task.Run(() => { while (task.Status == TaskStatus.Running || task.Status == TaskStatus.WaitingForActivation) ; }).Wait(timeout);
-        if (!isSuccessed)
-        {
-            throw new TimeoutException();
-        }
-        if (task.IsFaulted)
-        {
-            throw task.Exception.InnerException;
-        }
+        await WaitAsync((Task)task, timeout);
         return task.Result;
+    }
+
+    private static CancellationTokenSource CreateCancellationTokenSourceWithDelay(TimeSpan delay)
+    {
+        CancellationTokenSource source = new(delay);
+        if (delay <= TimeSpan.Zero)
+        {
+            source.Cancel();
+        }
+        return source;
     }
 #endif
 }
