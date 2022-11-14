@@ -12,6 +12,7 @@ I can also download from [NuGet Package Manager](https://docs.microsoft.com/nuge
 
 
 ## Usage in code
+Please check the `Sample` for the combination with the actual application.
 
 ### About avatar parameters
 If you want to control avatar parameters, use classes in `BuildSoft.VRChat.Osc.Avatar`.
@@ -103,6 +104,36 @@ OscButtonInput.Jump.Press();
 await Task.Delay(1000);
 OscButtonInput.Jump.Release();
 ```
+
+### About Chatbox
+If you want to use button input with OSC, use classes in `BuildSoft.VRChat.Osc.Chatbox`.  
+
+#### e.g.) Send a string to Chatbox
+```cs
+using BuildSoft.VRChat.Osc.Chatbox;
+
+OscChatbox.SendMessage("some message", direct: true);
+```
+
+#### e.g.) Send a string to Chatbox UI
+```cs
+using BuildSoft.VRChat.Osc.Chatbox;
+
+OscChatbox.SendMessage("some message", direct: false);
+```
+
+#### e.g.) Act like typing
+```cs
+using BuildSoft.VRChat.Osc.Chatbox;
+using System.Threading.Tasks;
+
+// typing during 3 second.
+OscChatbox.SetIsTyping(true);
+await Task.Delay(3000);
+
+OscChatbox.SendMessage("some message", direct: true);
+```
+
 
 <!-- ## Contact
 * Twitter: [@ChanyaVRChat1](https://twitter.com/ChanyaVRChat1)
