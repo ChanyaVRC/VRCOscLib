@@ -7,7 +7,7 @@ public static class OscChatbox
 {
     public static string InputAddress = "/chatbox/input";
     public static string TypingAddress = "/chatbox/typing";
-    public static void SendMessage(string message, bool direct)
+    public static void SendMessage(string message, bool direct, bool complete = false)
     {
         OscClient client = OscUtility.Client;
         OscWriter writer = client.Writer;
@@ -15,7 +15,7 @@ public static class OscChatbox
 
         writer.Reset();
         writer.Write(InputAddress);
-        writer.Write(direct ? ",sT" : ",sF");
+        writer.Write((direct ? ",sT" : ",sF") + (complete ? "T" : "F"));
         writer.WriteUtfString(message);
         socket.Send(writer.Buffer, writer.Length, SocketFlags.None);
     }
