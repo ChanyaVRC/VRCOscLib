@@ -35,9 +35,9 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         for (int i = 0; i < parameters.Length; i++)
         {
             var param = parameters[i];
-            var outputInterface = param.Output!;
+            var outputInterface = param.Output;
             Debug.Assert(outputInterface != null);
-            allParams.AddValueChangedEventByAddress(outputInterface.Address, GetValueCallback);
+            allParams.AddValueChangedEventByAddress(outputInterface!.Address, GetValueCallback);
         }
     }
 
