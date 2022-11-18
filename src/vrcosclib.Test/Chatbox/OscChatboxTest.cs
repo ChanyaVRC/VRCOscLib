@@ -37,12 +37,12 @@ public class OscChatboxTest
     }
 
 
-    [TestCase("", true)]
-    [TestCase("ASCII", true)]
-    [TestCase("ASCII", false)]
-    [TestCase("ＵＴＦ-８", true)]
-    [TestCase("😂😭😪😥😰😅😓😩😫😨😱", true)]
-    public async Task SendMessageTest(string message, bool direct)
+    [TestCase("", true, true)]
+    [TestCase("ASCII", true, false)]
+    [TestCase("ASCII", false, true)]
+    [TestCase("ＵＴＦ-８", true, false)]
+    [TestCase("😂😭😪😥😰😅😓😩😫😨😱", true, true)]
+    public async Task SendMessageTest(string message, bool direct, bool messageComplete)
     {
         OscMessageValues value = null!;
         void valueReadMethod(OscMessageValues v) => value = v;
@@ -50,14 +50,16 @@ public class OscChatboxTest
         byte[] recievedMessage = new byte[2024];
 
 
-        OscChatbox.SendMessage(message, direct);
+        OscChatbox.SendMessage(message, direct, messageComplete);
         await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
         int length = value.ReadStringElementBytes(0, recievedMessage);
         bool recievedDirect = value.ReadBooleanElement(1);
+        bool recievedMessageComplete = value.ReadBooleanElement(2);
 
 
         Assert.AreEqual(message, Encoding.UTF8.GetString(recievedMessage, 0, length));
         Assert.AreEqual(direct, recievedDirect);
+        Assert.AreEqual(messageComplete, recievedMessageComplete);
     }
 
     [TestCase(true)]
