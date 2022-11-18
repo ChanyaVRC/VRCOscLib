@@ -10,7 +10,7 @@
     <BaseOutputPath>..\..\bin</BaseOutputPath>
     
     <PackageId>VRCOscLib</PackageId>
-    <Version>1.3.2</Version>
+    <Version>1.3.3</Version>
     <Authors>ChanyaKushima</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageDescription>A OSC library for VRChat</PackageDescription>
