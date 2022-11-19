@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvatarParameterSender", "Sa
 		{3D5D91B8-5663-43AB-BD91-FD80502BDEF0} = {3D5D91B8-5663-43AB-BD91-FD80502BDEF0}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatboxSender", "Sample\ChatboxSender\ChatboxSender.csproj", "{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatboxSender", "Sample\ChatboxSender\ChatboxSender.csproj", "{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,13 +98,11 @@ Global
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Debug|For Test.ActiveCfg = Debug|Any CPU
-		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Debug|For Test.Build.0 = Debug|Any CPU
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Debug|Full Build.ActiveCfg = Debug|Any CPU
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Debug|Full Build.Build.0 = Debug|Any CPU
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Release|For Test.ActiveCfg = Release|Any CPU
-		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Release|For Test.Build.0 = Release|Any CPU
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Release|Full Build.ActiveCfg = Release|Any CPU
 		{1BF37DAA-23F4-4321-B709-6D1EAD45D10E}.Release|Full Build.Build.0 = Release|Any CPU
 	EndGlobalSection
