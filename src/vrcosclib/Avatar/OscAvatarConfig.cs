@@ -54,7 +54,8 @@ public class OscAvatarConfig
 
 
     public static OscAvatarConfig[] CreateAll() =>
-        OscUtility.GetOscAvatarConfigPathes()
+        OscUtility.EnumerateOscAvatarConfigPathes()
+            .AsParallel()
             .Select(GetAvatarConfig)
             .Where(config => config != null).ToArray()!;
 

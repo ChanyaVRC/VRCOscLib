@@ -39,20 +39,24 @@ public static partial class OscUtility
 
     public static ImmutableArray<string> GetOscAvatarConfigPathes()
     {
+        return EnumerateOscAvatarConfigPathes().ToImmutableArray();
+    }
+
+    internal static IEnumerable<string> EnumerateOscAvatarConfigPathes()
+    {
         if (!Directory.Exists(VRChatOscPath))
         {
-            return ImmutableArray<string>.Empty;
+            return Array.Empty<string>();
         }
 
         try
         {
             return Directory.EnumerateDirectories(VRChatOscPath, "Avatars", SearchOption.AllDirectories)
-                .SelectMany(s => Directory.EnumerateFiles(s, "*.json"))
-                .ToImmutableArray();
+                .SelectMany(s => Directory.EnumerateFiles(s, "*.json"));
         }
         catch (DirectoryNotFoundException)
         {
-            return ImmutableArray<string>.Empty;
+            return Array.Empty<string>();
         }
     }
 }
