@@ -16,6 +16,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     /// </summary>
     internal static void Initialize()
     {
+
     }
 
     /// <summary>
@@ -23,7 +24,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     /// </summary>
     static OscAvatarParametorContainer()
     {
-        OscParameter.Initialize();
+        Initialize();
     }
     #endregion
 

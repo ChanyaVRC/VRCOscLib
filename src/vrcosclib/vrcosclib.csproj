@@ -10,11 +10,12 @@
     <BaseOutputPath>..\..\bin</BaseOutputPath>
     
     <PackageId>VRCOscLib</PackageId>
-    <Version>1.3.3</Version>
+    <Version>1.4.0</Version>
     <Authors>ChanyaKushima</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageDescription>A OSC library for VRChat</PackageDescription>
     <RepositoryUrl>https://github.com/ChanyaVRC/VRCOscLib</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ChanyaVRC/VRCOscLib</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
