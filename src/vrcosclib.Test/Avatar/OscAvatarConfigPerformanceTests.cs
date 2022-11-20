@@ -59,7 +59,7 @@ public class OscAvatarConfigPerformanceTests
     }
 
 
-    [Timeout(4000)]
+    [Timeout(8000)]
     [Test]
     public void CreateAll_PerformanceTest()
     {
