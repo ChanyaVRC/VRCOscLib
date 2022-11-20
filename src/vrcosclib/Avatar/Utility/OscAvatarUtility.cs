@@ -46,14 +46,31 @@ public static class OscAvatarUtility
 
     public static event OscValueChangedEventHandler<OscAvatar, OscAvatar>? AvatarChanged;
 
-    internal static void Initialize()
+    public static void Initialize()
     {
+        OscParameter.Initialize();
+        var parameters = OscParameter.Parameters;
+
+        OscParameterChangedEventHandler<IReadOnlyOscParameterCollection> readAvatarIdFromApp = ReadAvatarIdFromApp;
+        parameters.RemoveValueChangedEventByAddress(OscConst.AvatarIdAddress, readAvatarIdFromApp);
+        parameters.AddValueChangedEventByAddress(OscConst.AvatarIdAddress, readAvatarIdFromApp);
     }
 
     static OscAvatarUtility()
     {
-        var parameters = OscParameter.Parameters;
-        parameters.AddValueChangedEventByAddress(OscConst.AvatarIdAddress, ReadAvatarIdFromApp);
+        try
+        {
+            Initialize();
+        }
+        catch (Exception ex)
+        {
+            if (OscConnectionSettings._utilityInitialized)
+            {
+                throw;
+            }
+            OscUtility._initializationExceptions.Add(ex);
+            return;
+        }
     }
 
     private static void ReadAvatarIdFromApp(IReadOnlyOscParameterCollection sender, ValueChangedEventArgs e)

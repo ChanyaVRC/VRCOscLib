@@ -9,14 +9,25 @@ public static partial class OscUtility
     public static readonly string VRChatAppDataPath = Path.Combine(UserProfile, @"AppData", "LocalLow", "VRChat", "VRChat");
     public static readonly string VRChatOscPath = Path.Combine(VRChatAppDataPath, @"Osc");
 
+    internal static readonly List<Exception> _initializationExceptions = new();
+    public static bool IsFailedAutoInitialization => _initializationExceptions.Count > 0;
+
     public static void Initialize()
     {
-
+        OscAvatarUtility.Initialize();
     }
 
     static OscUtility()
     {
-        OscAvatarUtility.Initialize();
+        try
+        {
+            Initialize();
+        }
+        catch (Exception ex)
+        {
+            _initializationExceptions.Add(ex);
+        }
+        OscConnectionSettings._utilityInitialized = true;
     }
 
     internal static object? ReadValue(this OscMessageValues value, int index)
