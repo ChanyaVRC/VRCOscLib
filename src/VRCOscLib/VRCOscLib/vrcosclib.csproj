@@ -7,7 +7,7 @@
     <LangVersion>10.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     
-    <BaseOutputPath>..\..\bin</BaseOutputPath>
+    <BaseOutputPath>..\..\..\artifacts\bin</BaseOutputPath>
     
     <PackageId>VRCOscLib</PackageId>
     <Version>1.4.0</Version>

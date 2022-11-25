@@ -5,10 +5,11 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <OutputPath>..\..\..\artifacts\Sample\$(MSBuildProjectName)\bin</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\vrcosclib\vrcosclib.csproj" />
+    <ProjectReference Include="..\..\VRCOscLib\VRCOscLib\vrcosclib.csproj" />
   </ItemGroup>
 
 </Project>
