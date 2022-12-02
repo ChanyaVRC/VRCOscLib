@@ -1,4 +1,5 @@
-﻿using BuildSoft.VRChat.Osc.Utility;
+﻿using System.Reflection;
+using BuildSoft.VRChat.Osc.Utility;
 
 namespace BuildSoft.VRChat.Osc.Input;
 
@@ -6,6 +7,8 @@ public static class OscInput
 {
     private static readonly Dictionary<OscAxisInput, string> _axisInputAddressCache = new();
     private static readonly Dictionary<OscButtonInput, string> _buttonInputAddressCache = new();
+    private static IEnumerable<OscButtonInput>? _activeButtonInputs;
+    private static IEnumerable<OscAxisInput>? _activeAxisInputs;
 
     public static void Send(this OscButtonInput content, bool isOn = true)
     {
@@ -59,5 +62,16 @@ public static class OscInput
             _axisInputAddressCache.Add(content, address);
         }
         return address;
+    }
+
+    public static IEnumerable<OscButtonInput> ActiveButtonInputs => _activeButtonInputs ??= CreateActiveFields<OscButtonInput>();
+    public static IEnumerable<OscAxisInput> ActiveAxisInputs => _activeAxisInputs ??= CreateActiveFields<OscAxisInput>();
+
+    private static IEnumerable<T> CreateActiveFields<T>() where T : Enum
+    {
+        return typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Where(s => !s.IsDefined(typeof(ObsoleteAttribute), true))
+            .Select(s => (T)s.GetValue(null))
+            .ToArray();
     }
 }
