@@ -15,6 +15,5 @@ while (true)
         OscChatbox.SetIsTyping(true);
         await Task.Delay(1000);
         OscChatbox.SendMessage(text, true);
-        OscChatbox.SetIsTyping(false);
     }
 }
