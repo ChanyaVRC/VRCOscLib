@@ -149,4 +149,21 @@ public class OscInputTests
         Assert.AreEqual("/input/" + axisInput.ToString(), axisInput.CreateAddress());
         Assert.AreEqual("/input/" + axisInput.ToString(), axisInput.CreateAddress());
     }
+
+
+    [TestCaseSource(nameof(AllOscAxisInput))]
+    public void TestActiveAxisInputs(OscAxisInput axisInput)
+    {
+        bool hasObsoluteAttribute = typeof(OscAxisInput).GetField(axisInput.ToString()).IsDefined(typeof(ObsoleteAttribute), true);
+
+        Assert.AreEqual(!hasObsoluteAttribute, OscInput.ActiveAxisInputs.Contains(axisInput));
+    }
+
+    [TestCaseSource(nameof(AllOscButtonInput))]
+    public void TestActiveButtonInputs(OscButtonInput axisInput)
+    {
+        bool hasObsoluteAttribute = typeof(OscButtonInput).GetField(axisInput.ToString()).IsDefined(typeof(ObsoleteAttribute), true);
+
+        Assert.AreEqual(!hasObsoluteAttribute, OscInput.ActiveButtonInputs.Contains(axisInput));
+    }
 }

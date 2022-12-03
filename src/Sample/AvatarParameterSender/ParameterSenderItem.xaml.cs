@@ -36,16 +36,19 @@ public partial class ParameterSenderItem : UserControl
     {
         var senderItem = (ParameterSenderItem)dependencyObject;
 
-        var items = senderItem.ValueBox.Items;
-        items.Clear();
 
-        senderItem.ValueBox.IsEditable = true;
+        var valueBox = senderItem.ValueBox;
+        var valueCheck = senderItem.ValueCheck;
 
         if ((OscType)e.NewValue == OscType.Bool)
         {
-            senderItem.ValueBox.IsEditable = false;
-            items.Add(bool.TrueString);
-            items.Add(bool.FalseString);
+            valueBox.Visibility = Visibility.Hidden;
+            valueCheck.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            valueBox.Visibility = Visibility.Visible;
+            valueCheck.Visibility = Visibility.Hidden;
         }
         dependencyObject.CoerceValue(ValueProperty);
     }

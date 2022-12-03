@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">net6.0;net461</TargetFrameworks>
@@ -7,12 +7,8 @@
     <RootNamespace>BuildSoft.VRChat.Osc.Test</RootNamespace>
     <LangVersion>10.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
-	  <IsPackable>false</IsPackable>
+    <IsPackable>false</IsPackable>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <NoWarn>CS0618</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\vrcosclib\vrcosclib.csproj" />
+    <ProjectReference Include="..\..\VRCOscLib\vrcosclib.csproj" />
   </ItemGroup>
 
 </Project>
