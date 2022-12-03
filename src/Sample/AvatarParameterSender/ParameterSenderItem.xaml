@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:AvatarParameterSender"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:StringBooleanConverter x:Key="StringBooleanConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280*"/>
@@ -28,11 +31,17 @@
         <Label Grid.Column="2">
             <TextBlock Text="{Binding Type, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ParameterSenderItem}}}"/>
         </Label>
-        <ComboBox x:Name="ValueBox"
-                  Grid.Column="3"
-                  Text="{Binding Value, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ParameterSenderItem}}}"
-                  IsEditable="True" 
-                  PreviewTextInput="ValueBox_PreviewTextInput" />
+        <Grid Grid.Column="3">
+            <ComboBox x:Name="ValueBox"
+                      Text="{Binding Value, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ParameterSenderItem}}}"
+                      IsEditable="True" 
+                      PreviewTextInput="ValueBox_PreviewTextInput" />
+            <CheckBox x:Name="ValueCheck"
+                      IsChecked="{Binding Value, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ParameterSenderItem}}, Converter={StaticResource StringBooleanConverter}}"
+                      Margin="0,0,0,0"
+                      Visibility="Hidden"
+                      VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        </Grid>
         <Button x:Name="SendButton" Content="Send" Grid.Column="4" Click="SendButton_Click"/>
     </Grid>
 </UserControl>
