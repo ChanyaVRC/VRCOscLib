@@ -6,6 +6,6 @@ public interface IReadOnlyOscParameterCollection : IReadOnlyDictionary<string, o
 {
     event ParamChangedHandler? ValueChanged;
 
-    public void AddValueChangedEventByAddress(string address, ParamChangedHandler handler);
+    void AddValueChangedEventByAddress(string address, ParamChangedHandler handler);
     bool RemoveValueChangedEventByAddress(string address, ParamChangedHandler handler);
 }
