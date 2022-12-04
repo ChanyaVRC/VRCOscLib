@@ -12,7 +12,6 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
     private readonly Dictionary<string, object?> _items = new();
 
     private Dictionary<string, List<ParamChangedHandler>>? _handlersPerAddress;
-    private Dictionary<string, List<ParamChangedHandler>> HandlersPerAddress => _handlersPerAddress ??= new();
 
     public object? this[string address]
     {
@@ -107,10 +106,16 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
 
     protected void OnValueChangedByAddress(ParameterChangedEventArgs args)
     {
-        if (!HandlersPerAddress.TryGetValue(args.Address, out var list) || list.Count <= 0)
+        var handlersPerAddress = _handlersPerAddress;
+        if (handlersPerAddress == null)
         {
             return;
         }
+        if (!handlersPerAddress.TryGetValue(args.Address, out var list) || list.Count <= 0)
+        {
+            return;
+        }
+
         var handlers = list.ToArray();
         for (int i = 0; i < handlers.Length; i++)
         {
@@ -128,8 +133,13 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
     #region Event registration methods
     public void AddValueChangedEventByAddress(string address, ParamChangedHandler handler)
     {
-        var dict = HandlersPerAddress;
-        if (dict.TryGetValue(address, out var list))
+        var dict = _handlersPerAddress;
+        if (dict == null)
+        {
+            dict = new();
+            _handlersPerAddress = dict;
+        }
+        else if (dict.TryGetValue(address, out var list))
         {
             list.Add(handler);
             return;
@@ -139,7 +149,11 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
 
     public bool RemoveValueChangedEventByAddress(string address, ParamChangedHandler handler)
     {
-        var dict = HandlersPerAddress;
+        var dict = _handlersPerAddress;
+        if (dict == null)
+        {
+            return false;
+        }
         if (!dict.TryGetValue(address, out var list))
         {
             return false;

@@ -8,8 +8,7 @@ using ParamChangedHandler = BuildSoft.VRChat.Osc.OscParameterChangedEventHandler
 namespace BuildSoft.VRChat.Osc;
 public static partial class OscParameter
 {
-    private static OscParameterCollection? _parameters;
-    internal static OscParameterCollection Parameters => _parameters ??= new();
+    internal static OscParameterCollection Parameters { get; } = new();
 
     public static event ParamChangedHandler ValueChanged
     {

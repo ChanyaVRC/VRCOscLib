@@ -30,10 +30,12 @@ public static class OscAvatarUtility
         "Viseme",
     };
 
-    internal static List<WeakReference<OscAvatarConfig>> _avatarConfigs = new();
+    private static List<WeakReference<OscAvatarConfig>>? _avatarConfigs;
+    internal static List<WeakReference<OscAvatarConfig>> AvatarConfigs => _avatarConfigs ??= new();
+
     internal static void RegisterAvaterConfig(OscAvatarConfig avatarConfig)
     {
-        _avatarConfigs.Add(new WeakReference<OscAvatarConfig>(avatarConfig));
+        AvatarConfigs.Add(new WeakReference<OscAvatarConfig>(avatarConfig));
     }
 
     public static IReadOnlyDictionary<string, object?> CommonParameters
