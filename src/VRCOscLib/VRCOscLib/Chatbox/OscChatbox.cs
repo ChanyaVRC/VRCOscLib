@@ -5,8 +5,9 @@ using BuildSoft.OscCore;
 namespace BuildSoft.VRChat.Osc.Chatbox;
 public static class OscChatbox
 {
-    public static string InputAddress = "/chatbox/input";
-    public static string TypingAddress = "/chatbox/typing";
+    public static readonly string InputAddress = "/chatbox/input";
+    public static readonly string TypingAddress = "/chatbox/typing";
+
     public static void SendMessage(string message, bool direct, bool complete = false)
     {
         OscClient client = OscUtility.Client;
