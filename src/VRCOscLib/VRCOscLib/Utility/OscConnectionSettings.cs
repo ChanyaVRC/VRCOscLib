@@ -39,13 +39,10 @@ public static class OscConnectionSettings
             _server.Dispose();
             _server = new OscServer(value);
 
-            if (_monitorCallbacks == null)
+            var monitorCallbacks = MonitorCallbacks;
+            for (int i = 0; i < monitorCallbacks.Count; i++)
             {
-                return;
-            }
-            for (int i = 0; i < _monitorCallbacks.Count; i++)
-            {
-                _server.AddMonitorCallback(_monitorCallbacks[i]);
+                _server.AddMonitorCallback(monitorCallbacks[i]);
             }
         }
     }
@@ -91,6 +88,6 @@ public static class OscConnectionSettings
             }
         }
     }
-    private static List<MonitorCallback>? _monitorCallbacks;
-    internal static List<MonitorCallback> MonitorCallbacks => _monitorCallbacks ??= new List<MonitorCallback>();
+
+    internal static List<MonitorCallback> MonitorCallbacks { get; } = new List<MonitorCallback>();
 }
