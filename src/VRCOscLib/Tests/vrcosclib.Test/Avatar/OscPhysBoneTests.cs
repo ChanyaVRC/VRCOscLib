@@ -21,7 +21,6 @@ public class OscPhysBoneTests
         TestUtility.CreateConfigFileForTest(AvatarId, "Test Avatar", TestUtility.GetAvatarConfigDirectory());
         _avatar = OscAvatarConfig.Create(AvatarId)!;
 
-        _server = new OscServer(OscUtility.SendPort);
 
         OscParameter.Parameters.Clear();
     }
@@ -30,18 +29,18 @@ public class OscPhysBoneTests
     public void TearDown()
     {
         TestUtility.RestoreOscDirectory();
-        _server.Dispose();
     }
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
+        _server = new OscServer(OscUtility.SendPort);
     }
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-
+        _server.Dispose();
     }
 
     [Test]
