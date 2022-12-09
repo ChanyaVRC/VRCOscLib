@@ -14,29 +14,27 @@ public class OscTrackingTest
     [SetUp]
     public void Setup()
     {
-        _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
-        _server = new OscServer(OscUtility.SendPort);
-
         OscParameter.Parameters.Clear();
     }
 
     [TearDown]
     public void TearDown()
     {
-        _client.Dispose();
-        _server.Dispose();
+
     }
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-
+        _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
+        _server = new OscServer(OscUtility.SendPort);
     }
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-
+        _client.Dispose();
+        _server.Dispose();
     }
 
 
