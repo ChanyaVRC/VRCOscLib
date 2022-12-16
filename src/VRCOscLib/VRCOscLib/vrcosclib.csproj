@@ -9,6 +9,9 @@
     
     <BaseOutputPath>..\..\..\artifacts\bin</BaseOutputPath>
     
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>..\..\..\artifacts\xml\$(AssemblyName).xml</DocumentationFile>
+
     <PackageId>VRCOscLib</PackageId>
     <Version>1.4.2</Version>
     <Authors>ChanyaKushima</Authors>

@@ -7,12 +7,16 @@ using ParamChangedHandler = BuildSoft.VRChat.Osc.OscParameterChangedEventHandler
 
 namespace BuildSoft.VRChat.Osc;
 
+/// <summary>
+/// A collection of OSC parameters that can be accessed using a string address.
+/// </summary>
 public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOscParameterCollection
 {
     private readonly Dictionary<string, object?> _items = new();
 
     private Dictionary<string, List<ParamChangedHandler>>? _handlersPerAddress;
 
+    /// <inheritdoc/>
     public object? this[string address]
     {
         get => _items[address];
@@ -28,23 +32,30 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
         }
     }
 
+    /// <inheritdoc/>
     public ICollection<string> Keys => _items.Keys;
 
+    /// <inheritdoc/>
     public ICollection<object?> Values => _items.Values;
 
+    /// <inheritdoc/>
     public int Count => _items.Count;
 
+    /// <inheritdoc/>
     public bool IsReadOnly => false;
 
+    /// <inheritdoc/>
     public void Add(string address, object? value)
     {
         _items.Add(address, value);
         OnValueChanged(new ParameterChangedEventArgs(null, value, address, ValueChangedReason.Added));
     }
 
+    /// <inheritdoc/>
     public void Add(KeyValuePair<string, object?> item)
        => Add(item.Key, item.Value);
 
+    /// <inheritdoc/>
     public void Clear()
     {
         var copiedItems = _items.ToArray();
@@ -55,11 +66,14 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
         }
     }
 
+    /// <inheritdoc/>
     public bool Contains(KeyValuePair<string, object?> item)
         => _items.TryGetValue(item.Key, out var value) && item.Value == value;
 
+    /// <inheritdoc/>
     public bool ContainsKey(string key) => _items.ContainsKey(key);
 
+    /// <inheritdoc/>
     public bool Remove(string key)
     {
         var item = _items;
@@ -75,35 +89,52 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
         return false;
     }
 
+    /// <inheritdoc/>
     public bool TryGetValue(string key, out object? value) => _items.TryGetValue(key, out value);
 
+    /// <inheritdoc/>
     public IEnumerator<KeyValuePair<string, object?>> GetEnumerator() => _items.GetEnumerator();
 
     #region Interface methods implemented explicitly
+    /// <inheritdoc/>
     IEnumerable<string> IReadOnlyDictionary<string, object?>.Keys => Keys;
+    /// <inheritdoc/>
     IEnumerable<object?> IReadOnlyDictionary<string, object?>.Values => Values;
 
+    /// <inheritdoc/>
     void ICollection<KeyValuePair<string, object?>>.CopyTo(KeyValuePair<string, object?>[] array, int arrayIndex)
     {
         ((ICollection<KeyValuePair<string, object?>>)_items).CopyTo(array, arrayIndex);
     }
+    /// <inheritdoc/>
     bool ICollection<KeyValuePair<string, object?>>.Remove(KeyValuePair<string, object?> item)
     {
         return ((ICollection<KeyValuePair<string, object?>>)_items).Remove(item);
     }
 
+    /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     #endregion
 
     #region Event(s)
+
+    /// <inheritdoc/>
     public event ParamChangedHandler? ValueChanged;
 
+    /// <summary>
+    /// Raises the <see cref="ValueChanged"/> event and invokes the event handlers registered by address.
+    /// </summary>
+    /// <param name="args">The event data.</param>
     protected void OnValueChanged(ParameterChangedEventArgs args)
     {
         ValueChanged?.DynamicInvokeAllWithoutException(this, args);
         OnValueChangedByAddress(args);
     }
 
+    /// <summary>
+    /// Invokes the event handlers registered by address for the <see cref="ValueChanged"/> event.
+    /// </summary>
+    /// <param name="args">The event data.</param>
     protected void OnValueChangedByAddress(ParameterChangedEventArgs args)
     {
         var handlersPerAddress = _handlersPerAddress;
@@ -131,6 +162,8 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
     }
 
     #region Event registration methods
+
+    /// <inheritdoc/>
     public void AddValueChangedEventByAddress(string address, ParamChangedHandler handler)
     {
         var dict = _handlersPerAddress;
@@ -147,6 +180,7 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
         dict.Add(address, new() { handler });
     }
 
+    /// <inheritdoc/>
     public bool RemoveValueChangedEventByAddress(string address, ParamChangedHandler handler)
     {
         var dict = _handlersPerAddress;

@@ -1,19 +1,39 @@
 ﻿using BuildSoft.OscCore.UnityObjects;
 
 namespace BuildSoft.VRChat.Osc.Tracking;
+
+/// <summary>
+/// Provides an OSC tracker
+/// </summary>
 public class OscTracker
 {
+    /// <summary>
+    /// The number of supported trackers.
+    /// </summary>
     public static readonly int SupportedTrackerCount = 8;
 
+    /// <summary>
+    /// The OSC address for the position of the tracker.
+    /// </summary>
     public string PositionAddress { get; }
+
+    /// <summary>
+    /// The OSC address for the rotation of the tracker.
+    /// </summary>
     public string RotationAddress { get; }
 
+    /// <summary>
+    /// Gets or sets the position of the tracker.
+    /// </summary>
     public Vector3 Position
     {
         get => OscParameter.GetValueAsVector3(PositionAddress) ?? default;
         set => OscParameter.SendValue(PositionAddress, value);
     }
 
+    /// <summary>
+    /// Gets or sets the rotation of the tracker.
+    /// </summary>
     public Vector3 Rotation
     {
         get => OscParameter.GetValueAsVector3(RotationAddress) ?? default;
@@ -37,6 +57,10 @@ public class OscTracker
         }
     }
 
+    /// <summary>
+    /// Create the OSC tracker.
+    /// </summary>
+    /// <param name="part">The part of the OSC address for the tracker.</param>
     internal OscTracker(string part)
     {
         PositionAddress = $"/tracking/trackers/{part}/position";

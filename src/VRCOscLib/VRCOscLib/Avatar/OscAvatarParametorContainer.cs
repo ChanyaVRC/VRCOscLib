@@ -8,6 +8,9 @@ using BuildSoft.VRChat.Osc.Delegate;
 
 namespace BuildSoft.VRChat.Osc.Avatar;
 
+/// <summary>
+/// This class represents a container for avatar parameters in VRChat.
+/// </summary>
 public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
 {
     #region Static methods(s)
@@ -29,6 +32,11 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #endregion
 
     #region Constructor(s)
+
+    /// <summary>
+    /// Creates a new instance of <see cref="OscAvatarParametorContainer"/> with the specified avatar parameters.
+    /// </summary>
+    /// <param name="parameters">The avatar parameters to be contained in this instance.</param>
     public OscAvatarParametorContainer(ImmutableArray<OscAvatarParameter> parameters)
     {
         Items = parameters;
@@ -43,18 +51,45 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         }
     }
 
+    /// <summary>
+    /// Creates a new instance of <see cref="OscAvatarParametorContainer"/> with the specified avatar parameters.
+    /// </summary>
+    /// <param name="parameters">The avatar parameters to be contained in this instance.</param>
     public OscAvatarParametorContainer(IEnumerable<OscAvatarParameter> parameters)
         : this(parameters.ToImmutableArray())
     {
     }
+
     #endregion
 
     #region Datas
+    /// <summary>
+    /// Gets the avatar parameters contained in this instance.
+    /// </summary>
     public ImmutableArray<OscAvatarParameter> Items { get; }
+
+    /// <summary>
+    /// Gets the avatar parameter with the specified name.
+    /// </summary>
+    /// <param name="name">The name of the avatar parameter to retrieve.</param>
+    /// <returns>The avatar parameter with the specified name.</returns>
     public OscAvatarParameter Get(string name) => Items.First(p => p.Name == name);
+
+    /// <summary>
+    /// Attempts to retrieve the avatar parameter with the specified name.
+    /// </summary>
+    /// <param name="name">The name of the avatar parameter to retrieve.</param>
+    /// <returns>The avatar parameter with the specified name, if it exists; otherwise, null.</returns>
     internal OscAvatarParameter? TryGet(string name) => Items.FirstOrDefault(p => p.Name == name);
 
+    /// <summary>
+    /// Gets a collection of the unique avatar parameters contained in this instance.
+    /// </summary>
     public IEnumerable<OscAvatarParameter> UniqueParameters => Items.Where(parm => !OscAvatarUtility.IsCommonParameter(parm.Name));
+
+    /// <summary>
+    /// Gets a collection of the values of the unique avatar parameters contained in this instance.
+    /// </summary>
     public IEnumerable<object?> UniqueParameterValues
     {
         get
@@ -69,14 +104,31 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         }
     }
 
+    /// <summary>
+    /// Gets a collection of the names of the avatar parameters contained in this instance.
+    /// </summary>
     public IEnumerable<string> Names => Items.Select(param => param.Name);
 
+    /// <summary>
+    /// Gets a collection of the keys (i.e., names) of the avatar parameters contained in this instance.
+    /// </summary>
     public IEnumerable<string> Keys => Names;
+
+    /// <summary>
+    /// Gets a collection of the values of the avatar parameters contained in this instance.
+    /// </summary>
     public IEnumerable<object?> Values => Items.Select(v => GetAs<object>(v.Name));
 
+    /// <summary>
+    /// Gets the number of avatar parameters contained in this instance.
+    /// </summary>
     public int Count => Items.Length;
 
     private ImmutableArray<OscPhysBone> _physBones;
+
+    /// <summary>
+    /// Gets a <see cref="OscPhysBone"/> contained in this instance.
+    /// </summary>
     public IReadOnlyList<OscPhysBone> PhysBones
     {
         get
@@ -140,12 +192,23 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #endregion
 
     #region Value accessor(s)
+
+    /// <summary>
+    /// Gets or sets the value of the avatar parameter with the specified name.
+    /// </summary>
+    /// <param name="name">The name of the avatar parameter whose value to get or set.</param>
     public object? this[string name]
     {
         get => GetAs<object>(name);
         set => SetAs<object?>(name, value);
     }
 
+    /// <summary>
+    /// Gets the value of the avatar parameter with the specified name as the specified type.
+    /// </summary>
+    /// <typeparam name="T">The type to retrieve the avatar parameter value as.</typeparam>
+    /// <param name="name">The name of the avatar parameter whose value to retrieve.</param>
+    /// <returns>The value of the avatar parameter as the specified type.</returns>
     public T? GetAs<T>(string name) where T : notnull
     {
         var param = Get(name);
@@ -157,6 +220,12 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         return default;
     }
 
+    /// <summary>
+    /// Sets the value of the avatar parameter with the specified name to the specified value.
+    /// </summary>
+    /// <typeparam name="T">The type of the value to set the avatar parameter to.</typeparam>
+    /// <param name="name">The name of the avatar parameter whose value to set.</param>
+    /// <param name="value">The value to set the avatar parameter to.</param>
     public void SetAs<T>(string name, T value)
     {
         var inputInterface = Get(name).Input;
@@ -181,8 +250,20 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         }
     }
 
+    /// <summary>
+    /// Determines whether this instance contains an avatar parameter with the specified name.
+    /// </summary>
+    /// <param name="key">The name of the avatar parameter to locate in this instance.</param>
+    /// <returns><see langword="true"/> if this instance contains an avatar parameter with the specified name; otherwise, <see langword="false"/>.</returns>
     public bool ContainsKey(string key) => Items.Any(param => param.Name == key);
 
+    /// <summary>
+    /// Tries to get the value of the avatar parameter with the specified name.
+    /// </summary>
+    /// <param name="key">The name of the avatar parameter whose value to get.</param>
+    /// <param name="value">When this method returns, contains the value of the avatar parameter with the specified name, if found;
+    /// otherwise, the default value for the type of the <paramref name="value"/> parameter.</param>
+    /// <returns><see langword="true"/> if the avatar parameter with the specified name is found; otherwise, <see langword="false"/>.</returns>
     public bool TryGetValue(string key,
 #if NETSTANDARD2_1_OR_GREATER
     [NotNullWhen(true)] 
@@ -202,6 +283,11 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #endregion
 
     #region Events
+    /// <summary>
+    /// Callback method that is called when the value of an avatar parameter changes.
+    /// </summary>
+    /// <param name="sender">The object that raised the event.</param>
+    /// <param name="e">The event data.</param>
     private void GetValueCallback(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
     {
         var name = e.Address.Substring(OscConst.AvatarParameterAddressSpace.Length);
@@ -214,8 +300,16 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
         OnParameterChanged(param, e);
     }
 
+    /// <summary>
+    /// Occurs when the value of an avatar parameter contained in this instance changes.
+    /// </summary>
     public event OscAvatarParameterChangedEventHandler? ParameterChanged;
 
+    /// <summary>
+    /// Raises the <see cref="ParameterChanged"/> event.
+    /// </summary>
+    /// <param name="param">The avatar parameter whose value changed.</param>
+    /// <param name="e">The event data.</param>
     protected internal void OnParameterChanged(OscAvatarParameter param, ValueChangedEventArgs e)
     {
         ParameterChanged?.DynamicInvokeAllWithoutException(param, e);
@@ -223,11 +317,13 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #endregion
 
     #region GetEnumerator method(s)
+    /// <inheritdoc/>
     public IEnumerator<KeyValuePair<string, object?>> GetEnumerator()
         => Items
             .Select(param => new KeyValuePair<string, object?>(param.Name, GetAs<object>(param.Name)))
             .GetEnumerator();
 
+    /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     #endregion
 }

@@ -2,17 +2,45 @@
 
 namespace BuildSoft.VRChat.Osc;
 
+/// <summary>
+/// The settings for an OSC connection.
+/// </summary>
 public static class OscConnectionSettings
 {
+    /// <summary>
+    /// Indicates whether <see cref="OscUtility"/> has been initialized.
+    /// </summary>
     internal static bool _utilityInitialized = false;
 
+    /// <summary>
+    /// The OSC server used to receive messages.
+    /// </summary>
     private static OscServer? _server;
+
+    /// <summary>
+    /// The OSC client used to send messages.
+    /// </summary>
     private static OscClient? _client;
-    
+
+    /// <summary>
+    /// Gets the OSC server used to receive messages.
+    /// </summary>
     internal static OscServer Server => _server ??= new OscServer(_receivePort);
+
+    /// <summary>
+    /// Gets the OSC client used to send messages.
+    /// </summary>
     internal static OscClient Client => _client ??= new OscClient(_vrcIPAddress, _sendPort);
 
+    /// <summary>
+    /// The port number used to receive OSC messages.
+    /// </summary>
     private static int _receivePort = 9001;
+
+    /// <summary>
+    /// Gets or sets the port number used to receive OSC messages.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when the value is less than 0 or greater than 65535.</exception>
     public static int ReceivePort
     {
         get => _receivePort;
@@ -47,7 +75,15 @@ public static class OscConnectionSettings
         }
     }
 
+    /// <summary>
+    /// The port number used to send OSC messages.
+    /// </summary>
     private static int _sendPort = 9000;
+
+    /// <summary>
+    /// Gets or sets the port number used to send OSC messages.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when the value is less than 0 or greater than 65535.</exception>
     public static int SendPort
     {
         get => _sendPort;
@@ -71,8 +107,16 @@ public static class OscConnectionSettings
         }
     }
 
+    /// <summary>
+    /// The IP address to VRChat client running.
+    /// </summary>
+
     private static string _vrcIPAddress = "127.0.0.1";
 
+    /// <summary>
+    /// Gets or sets the IP address of the VRChat client to send OSC messages to.
+    /// </summary>
+    /// <exception cref="FormatException">Thrown when the value cannot be parsed as an IP address.</exception>
     public static string VrcIPAddress
     {
         get => _vrcIPAddress;
@@ -89,5 +133,8 @@ public static class OscConnectionSettings
         }
     }
 
+    /// <summary>
+    /// A list of callbacks to be invoked when an OSC message is received.
+    /// </summary>
     internal static List<MonitorCallback> MonitorCallbacks { get; } = new List<MonitorCallback>();
 }

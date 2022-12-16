@@ -9,6 +9,11 @@ namespace BuildSoft.VRChat.Osc;
 
 public static partial class OscParameter
 {
+    /// <summary>
+    /// Handles an incoming OSC message by updating the corresponding OSC parameter in the <see cref="Parameters"/> collection.
+    /// </summary>
+    /// <param name="address">The address of the OSC message.</param>
+    /// <param name="values">The values contained in the OSC message.</param>
     internal static void ReceiveMessage(BlobString address, OscMessageValues values)
     {
         var addressString = address.ToString();
@@ -30,6 +35,11 @@ public static partial class OscParameter
         Parameters[addressString] = objects;
     }
 
+    /// <summary>
+    /// Gets the value of an OSC parameter as a <see cref="Vector3"/>.
+    /// </summary>
+    /// <param name="address">The address of the OSC parameter.</param>
+    /// <returns>The value of the OSC parameter as a <see cref="Vector3"/>, or <see langword="null"/> if the value cannot be converted to a <see cref="Vector3"/>.</returns>
     internal static Vector3? GetValueAsVector3(string address)
     {
         Parameters.TryGetValue(address, out var value);
@@ -57,6 +67,11 @@ public static partial class OscParameter
         return new(x, y, z);
     }
 
+    /// <summary>
+    /// Gets the value of an OSC parameter.
+    /// </summary>
+    /// <param name="address">The address of the OSC parameter.</param>
+    /// <returns>The value of the OSC parameter, or <see langword="null"/> if the parameter does not exist.</returns>
     public static object? GetValue(string address)
     {
         Parameters.TryGetValue(address, out var value);
