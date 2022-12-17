@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">net6.0;net461</TargetFrameworks>
-    <TargetFramework Condition="!$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">net6.0</TargetFramework>
+    <TargetFrameworks Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">net6.0;net7.0;net461</TargetFrameworks>
+    <TargetFramework Condition="!$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))">net6.0;net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>BuildSoft.VRChat.Osc.Test</RootNamespace>
     <LangVersion>11.0</LangVersion>
