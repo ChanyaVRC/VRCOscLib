@@ -62,6 +62,11 @@ public class OscParameterTests
         Assert.AreEqual(10, value.ReadIntElementUnchecked(0));
         value = null;
 
+        OscParameter.SendAvatarParameter(ParamName, 1234567890123456789);
+        await LoopWhile(() => value == null, LatencyTimeout);
+        Assert.AreEqual(1234567890123456789, value.ReadInt64ElementUnchecked(0));
+        value = null;
+
         OscParameter.SendAvatarParameter(ParamName, true);
         await LoopWhile(() => value == null, LatencyTimeout);
         Assert.AreEqual(true, value.ReadBooleanElement(0));
@@ -137,6 +142,11 @@ public class OscParameterTests
         OscParameter.SendValue(Address, 10);
         await LoopWhile(() => value == null, LatencyTimeout);
         Assert.AreEqual(10, value.ReadIntElementUnchecked(0));
+        value = null;
+
+        OscParameter.SendValue(Address, 1234567890123456789);
+        await LoopWhile(() => value == null, LatencyTimeout);
+        Assert.AreEqual(1234567890123456789, value.ReadInt64ElementUnchecked(0));
         value = null;
 
         OscParameter.SendValue(Address, true);

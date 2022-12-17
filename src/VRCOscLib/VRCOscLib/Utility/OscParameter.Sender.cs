@@ -63,16 +63,16 @@ public static partial class OscParameter
         SendValue(address, value);
     }
 
-    ///// <summary>
-    ///// Sends an OSC message with the specified <see cref="long"/> value to the specified OSC address.
-    ///// </summary>
-    ///// <param name="name">The name of the OSC parameter.</param>
-    ///// <param name="value">The value of the OSC parameter.</param>
-    //public static void SendAvatarParameter(string name, long value)
-    //{
-    //    string address = OscConst.AvatarParameterAddressSpace + name;
-    //    SendValue(address, value);
-    //}
+    /// <summary>
+    /// Sends an OSC message with the specified <see cref="long"/> value to the specified OSC address.
+    /// </summary>
+    /// <param name="name">The name of the OSC parameter.</param>
+    /// <param name="value">The value of the OSC parameter.</param>
+    public static void SendAvatarParameter(string name, long value)
+    {
+        string address = OscConst.AvatarParameterAddressSpace + name;
+        SendValue(address, value);
+    }
 
     /// <summary>
     /// Sends an OSC message with the specified <see cref="Vector2"/> value to the specified OSC address.
@@ -208,16 +208,16 @@ public static partial class OscParameter
         OscUtility.Client.Send(address, value);
     }
 
-    ///// <summary>
-    ///// Sends an OSC message with the specified <see cref="long"/> value to the specified OSC address.
-    ///// </summary>
-    ///// <param name="address">The OSC address to send the message to.</param>
-    ///// <param name="value">The value to send in the OSC message.</param>
-    //public static void SendValue(string address, long value)
-    //{
-    //    Parameters[address] = value;
-    //    OscUtility.Client.Send(address, value);
-    //}
+    /// <summary>
+    /// Sends an OSC message with the specified <see cref="long"/> value to the specified OSC address.
+    /// </summary>
+    /// <param name="address">The OSC address to send the message to.</param>
+    /// <param name="value">The value to send in the OSC message.</param>
+    public static void SendValue(string address, long value)
+    {
+        Parameters[address] = value;
+        OscUtility.Client.Send(address, value);
+    }
 
     /// <summary>
     /// Sends an OSC message with the specified <see cref="Vector2"/> value to the specified OSC address.
