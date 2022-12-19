@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BuildSoft.OscCore" Version="1.1.3" />
+    <PackageReference Include="BuildSoft.OscCore" Version="1.2.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
