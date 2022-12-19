@@ -49,6 +49,12 @@ public static class OscAvatarUtility
         => _commonParameters.ToDictionary(s => s, GetCommonParameterValue);
 
     /// <summary>
+    /// Enumerates common avatar parameters.
+    /// </summary>
+    public static IEnumerable<string> CommonParameterNames
+        => _commonParameters.OrderBy(s => s);
+
+    /// <summary>
     /// Gets the current <see cref="OscAvatar"/>.
     /// </summary>
     public static OscAvatar CurrentAvatar => _currentAvatar;
