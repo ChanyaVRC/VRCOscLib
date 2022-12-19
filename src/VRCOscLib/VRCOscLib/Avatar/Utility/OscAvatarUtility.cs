@@ -13,9 +13,6 @@ public static class OscAvatarUtility
     /// </summary>
     internal static readonly HashSet<string> _commonParameters = new()
     {
-        "VRCFaceBlendV",
-        "VRCFaceBlendH",
-        "VRCEmote",
         "VelocityY",
         "VelocityX",
         "VelocityZ",
@@ -25,6 +22,7 @@ public static class OscAvatarUtility
         "Upright",
         "AngularY",
         "Grounded",
+        "Earmuffs",
         "MuteSelf",
         "VRMode",
         "TrackingType",
