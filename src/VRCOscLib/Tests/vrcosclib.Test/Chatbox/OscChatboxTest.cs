@@ -13,27 +13,25 @@ public class OscChatboxTest
     [SetUp]
     public void Setup()
     {
-        _server = new OscServer(OscUtility.SendPort);
-
         OscParameter.Parameters.Clear();
     }
 
     [TearDown]
     public void TearDown()
     {
-        _server.Dispose();
+
     }
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-
+        _server = new OscServer(OscUtility.SendPort);
     }
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-
+        _server.Dispose();
     }
 
 

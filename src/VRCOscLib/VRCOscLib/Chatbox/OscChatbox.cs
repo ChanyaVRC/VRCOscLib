@@ -12,12 +12,12 @@ public static class OscChatbox
     /// <summary>
     /// The OSC address for sending chatbox input messages.
     /// </summary>
-    public static string InputAddress = "/chatbox/input";
+    public static readonly string InputAddress = "/chatbox/input";
 
     /// <summary>
     /// The OSC address for sending typing notifications.
     /// </summary>
-    public static string TypingAddress = "/chatbox/typing";
+    public static readonly string TypingAddress = "/chatbox/typing";
 
     /// <summary>
     /// Sends a message to the VRChat chatbox.
