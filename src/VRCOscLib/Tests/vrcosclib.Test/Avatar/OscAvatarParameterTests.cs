@@ -31,4 +31,10 @@ public class OscAvatarParameterTests
         Assert.IsNull(parameter3.Output);
         Assert.AreEqual(input.Address, parameter3.ReadableAddress);
     }
+
+    [Test]
+    public void Ctor_BothNullTest()
+    {
+        Assert.Throws<ArgumentException>(() => new OscAvatarParameter("param", null, null));
+    }
 }

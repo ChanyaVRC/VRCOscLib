@@ -3,14 +3,17 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Nullable>enable</Nullable>
-	  <RootNamespace>BuildSoft.VRChat.Osc</RootNamespace>
-    <LangVersion>10.0</LangVersion>
+    <RootNamespace>BuildSoft.VRChat.Osc</RootNamespace>
+    <LangVersion>11.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
-    
+
     <BaseOutputPath>..\..\..\artifacts\bin</BaseOutputPath>
-    
+
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>..\..\..\artifacts\xml\$(AssemblyName).xml</DocumentationFile>
+
     <PackageId>VRCOscLib</PackageId>
-    <Version>1.4.2</Version>
+    <Version>1.4.3</Version>
     <Authors>ChanyaKushima</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageDescription>A OSC library for VRChat</PackageDescription>
@@ -19,16 +22,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BuildSoft.OscCore" Version="1.1.2" />
+    <PackageReference Include="BuildSoft.OscCore" Version="1.2.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
   </ItemGroup>
-  
+
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
-  
+
   <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
     <ItemGroup>
       <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(AssemblyName).dll" />
