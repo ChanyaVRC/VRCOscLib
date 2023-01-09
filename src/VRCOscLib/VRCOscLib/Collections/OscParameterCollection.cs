@@ -10,7 +10,7 @@ namespace BuildSoft.VRChat.Osc;
 /// <summary>
 /// A collection of OSC parameters that can be accessed using a string address.
 /// </summary>
-public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOscParameterCollection
+internal class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOscParameterCollection
 {
     private readonly Dictionary<string, object?> _items = new();
 
