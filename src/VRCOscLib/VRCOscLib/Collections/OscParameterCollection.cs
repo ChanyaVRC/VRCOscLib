@@ -20,15 +20,17 @@ internal class OscParameterCollection : IDictionary<string, object?>, IReadOnlyO
     public object? this[string address]
     {
         get => _items[address];
-        set
+        set => SetValue(address, value, ValueSource.Application);
+    }
+
+    internal void SetValue(string address, object? value, ValueSource valueSource)
+    {
+        bool containsValue = _items.TryGetValue(address, out var oldValue);
+        if (!containsValue || !OscUtility.AreEqual(oldValue, value))
         {
-            bool containsValue = _items.TryGetValue(address, out var oldValue);
-            if (!containsValue || !OscUtility.AreEqual(oldValue, value))
-            {
-                _items[address] = value;
-                var reason = containsValue ? ValueChangedReason.Substituted : ValueChangedReason.Added;
-                OnValueChanged(new ParameterChangedEventArgs(oldValue, value, address, reason));
-            }
+            _items[address] = value;
+            var reason = containsValue ? ValueChangedReason.Substituted : ValueChangedReason.Added;
+            OnValueChanged(new ParameterChangedEventArgs(oldValue, value, address, reason, valueSource));
         }
     }
 
@@ -48,7 +50,7 @@ internal class OscParameterCollection : IDictionary<string, object?>, IReadOnlyO
     public void Add(string address, object? value)
     {
         _items.Add(address, value);
-        OnValueChanged(new ParameterChangedEventArgs(null, value, address, ValueChangedReason.Added));
+        OnValueChanged(new ParameterChangedEventArgs(null, value, address, ValueChangedReason.Added, ValueSource.Application));
     }
 
     /// <inheritdoc/>
@@ -62,7 +64,7 @@ internal class OscParameterCollection : IDictionary<string, object?>, IReadOnlyO
         _items.Clear();
         for (int i = 0; i < copiedItems.Length; i++)
         {
-            OnValueChanged(new ParameterChangedEventArgs(copiedItems[i].Value, null, copiedItems[i].Key, ValueChangedReason.Removed));
+            OnValueChanged(new ParameterChangedEventArgs(copiedItems[i].Value, null, copiedItems[i].Key, ValueChangedReason.Removed, ValueSource.Application));
         }
     }
 
@@ -82,7 +84,7 @@ internal class OscParameterCollection : IDictionary<string, object?>, IReadOnlyO
             bool removed = item.Remove(key);
             if (removed)
             {
-                OnValueChanged(new ParameterChangedEventArgs(value, null, key, ValueChangedReason.Removed));
+                OnValueChanged(new ParameterChangedEventArgs(value, null, key, ValueChangedReason.Removed, ValueSource.Application));
             }
             return removed;
         }

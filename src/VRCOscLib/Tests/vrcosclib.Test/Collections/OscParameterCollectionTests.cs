@@ -64,7 +64,7 @@ public class OscParameterCollectionTests
             isCalledValueChanged = true;
         };
 
-        expected = new(null, value1, address, ValueChangedReason.Added);
+        expected = new(null, value1, address, ValueChangedReason.Added, ValueSource.Application);
         parameters[address] = value1;
         Assert.IsTrue(isCalledValueChanged);
         isCalledValueChanged = false;
@@ -74,7 +74,7 @@ public class OscParameterCollectionTests
         Assert.IsFalse(isCalledValueChanged);
         isCalledValueChanged = false;
 
-        expected = OscUtility.AreEqual(value1, value2) ? null : new(value1, value2, address, ValueChangedReason.Substituted);
+        expected = OscUtility.AreEqual(value1, value2) ? null : new(value1, value2, address, ValueChangedReason.Substituted, ValueSource.Application);
         parameters[address] = value2;
         Assert.AreNotEqual(OscUtility.AreEqual(value1, value2), isCalledValueChanged);
         isCalledValueChanged = false;
@@ -138,11 +138,11 @@ public class OscParameterCollectionTests
             isCalledValueChanged = false;
         }
 
-        TestValueChangedEvent(new(null, value, Address1, ValueChangedReason.Added), () => parameters.Add(Address1, value));
+        TestValueChangedEvent(new(null, value, Address1, ValueChangedReason.Added, ValueSource.Application), () => parameters.Add(Address1, value));
         TestValueChangedEvent(null, () => Assert.Throws<ArgumentException>(() => parameters.Add(Address1, value)));
         TestValueChangedEvent(null, () => parameters.Remove(Address2));
-        TestValueChangedEvent(new(null, value, Address2, ValueChangedReason.Added), () => parameters.Add(Address2, value));
-        TestValueChangedEvent(new(value, null, Address2, ValueChangedReason.Removed), () => parameters.Remove(Address2));
+        TestValueChangedEvent(new(null, value, Address2, ValueChangedReason.Added, ValueSource.Application), () => parameters.Add(Address2, value));
+        TestValueChangedEvent(new(value, null, Address2, ValueChangedReason.Removed, ValueSource.Application), () => parameters.Remove(Address2));
         TestValueChangedEvent(null, () => parameters.Remove(Address2));
     }
 
