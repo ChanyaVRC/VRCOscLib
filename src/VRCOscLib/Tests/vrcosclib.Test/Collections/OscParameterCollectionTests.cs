@@ -217,62 +217,62 @@ public class OscParameterCollectionTests
         const string Address1 = "/test/address1";
         const string Address2 = "/test/address2";
 
-        var pararmeters = CreateParameterCollectionForTest();
+        var parameters = CreateParameterCollectionForTest();
         ValueChangedEventArgs? expectedArgs = null;
         int calledCount = 0;
-        pararmeters.ValueChanged += (sender, e) =>
+        parameters.ValueChanged += (sender, e) =>
         {
             expectedArgs = e;
             calledCount = 0;
         };
         void TestEvent(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
         {
-            Assert.AreSame(pararmeters, sender);
+            Assert.AreSame(parameters, sender);
             Assert.AreSame(expectedArgs, e);
             calledCount++;
         }
 
-        pararmeters.AddValueChangedEventByAddress(Address1, TestEvent);
-        pararmeters[Address1] = 10;
+        parameters.AddValueChangedEventByAddress(Address1, TestEvent);
+        parameters[Address1] = 10;
         Assert.AreEqual(1, calledCount);
 
         calledCount = 0;
-        pararmeters[Address1] = 10;
+        parameters[Address1] = 10;
         Assert.AreEqual(0, calledCount);
 
-        pararmeters.AddValueChangedEventByAddress(Address1, TestEvent);
-        pararmeters[Address1] = 20;
+        parameters.AddValueChangedEventByAddress(Address1, TestEvent);
+        parameters[Address1] = 20;
         Assert.AreEqual(2, calledCount);
 
         calledCount = 0;
-        pararmeters[Address2] = 30;
+        parameters[Address2] = 30;
         Assert.AreEqual(0, calledCount);
 
-        pararmeters.AddValueChangedEventByAddress(Address2, TestEvent);
-        pararmeters[Address2] = 40;
+        parameters.AddValueChangedEventByAddress(Address2, TestEvent);
+        parameters[Address2] = 40;
         Assert.AreEqual(1, calledCount);
 
-        Assert.IsTrue(pararmeters.RemoveValueChangedEventByAddress(Address1, TestEvent));
-        pararmeters[Address1] = 40;
+        Assert.IsTrue(parameters.RemoveValueChangedEventByAddress(Address1, TestEvent));
+        parameters[Address1] = 40;
         Assert.AreEqual(1, calledCount);
 
-        Assert.IsTrue(pararmeters.RemoveValueChangedEventByAddress(Address1, TestEvent));
-        pararmeters[Address1] = 50;
+        Assert.IsTrue(parameters.RemoveValueChangedEventByAddress(Address1, TestEvent));
+        parameters[Address1] = 50;
         Assert.AreEqual(0, calledCount);
 
-        Assert.IsFalse(pararmeters.RemoveValueChangedEventByAddress(Address1, TestEvent));
-        pararmeters[Address1] = 60;
+        Assert.IsFalse(parameters.RemoveValueChangedEventByAddress(Address1, TestEvent));
+        parameters[Address1] = 60;
         Assert.AreEqual(0, calledCount);
     }
 
     [Test]
     public void TestLinq()
     {
-        var pararmeters = CreateParameterCollectionForTest();
-        pararmeters["/address/to/parameter1"] = 10;
-        pararmeters["/address/to/parameter2"] = 10f;
-        pararmeters["/address/to/parameter3"] = false;
-        Assert.DoesNotThrow(() => pararmeters.OrderBy(v => v.Key).ToArray());
+        var parameters = CreateParameterCollectionForTest();
+        parameters["/address/to/parameter1"] = 10;
+        parameters["/address/to/parameter2"] = 10f;
+        parameters["/address/to/parameter3"] = false;
+        Assert.DoesNotThrow(() => parameters.OrderBy(v => v.Key).ToArray());
     }
 
 

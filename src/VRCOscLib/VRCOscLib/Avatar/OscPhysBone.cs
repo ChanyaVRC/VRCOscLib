@@ -10,7 +10,7 @@ namespace BuildSoft.VRChat.Osc.Avatar;
 /// </summary>
 public class OscPhysBone
 {
-    private readonly OscAvatarParametorContainer _parameters;
+    private readonly OscAvatarParameterContainer _parameters;
 
     /// <summary>
     /// Gets the name of the parameter that represents this VRCPhysBone.
@@ -52,7 +52,7 @@ public class OscPhysBone
     /// </summary>
     /// <param name="parameters">The parameter container that the VRCPhysBone belongs to.</param>
     /// <param name="paramName">The name of the parameter that represents this VRCPhysBone.</param>
-    internal OscPhysBone(OscAvatarParametorContainer parameters, string paramName)
+    internal OscPhysBone(OscAvatarParameterContainer parameters, string paramName)
         : this(parameters, paramName, true, nameof(parameters))
     {
     }
@@ -64,7 +64,7 @@ public class OscPhysBone
     /// <param name="paramName">The name of the parameter that represents this VRCPhysBone.</param>
     /// <param name="needCheck">Indicates whether to check if the specified parameter exists in the parameter container.</param>
     /// <param name="checkedParamName">The name of the parameter to include in the exception message if the check fails.</param>
-    internal OscPhysBone(OscAvatarParametorContainer parameters, string paramName, bool needCheck, string checkedParamName = "parameters")
+    internal OscPhysBone(OscAvatarParameterContainer parameters, string paramName, bool needCheck, string checkedParamName = "parameters")
     {
         (string Name, OscType Type)[] actualParam = {
             (paramName + "_" + nameof(IsGrabbed), OscType.Bool ),
@@ -96,7 +96,7 @@ public class OscPhysBone
     /// <param name="actualParam">An array of tuples containing the names and types of the expected parameters.</param>
     /// <param name="checkedParamName">The name of the parameter to include in the exception message if the check fails.</param>
     private static void ThrowArgumentException_IfNotExistParameters(
-        OscAvatarParametorContainer parameters,
+        OscAvatarParameterContainer parameters,
         string paramName,
         (string Name, OscType Type)[] actualParam,
         string checkedParamName)
