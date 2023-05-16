@@ -8,14 +8,15 @@ using NUnit.Framework;
 
 namespace BuildSoft.VRChat.Osc.Avatar.Test;
 
-[TestOf(typeof(OscAvatarParametorContainer))]
-public class OscAvatarParametorContainerTest
+[TestOf(typeof(OscAvatarParameterContainer))]
+public class OscAvatarParameterContainerTests
+
 {
     private const string AvatarId = "avtr_TestAvatar";
     string _configFile = null!;
     OscAvatarConfig _config = null!;
     OscClient _client = null!;
-    private OscAvatarParametorContainer _parameters = null!;
+    private OscAvatarParameterContainer _parameters = null!;
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
@@ -100,12 +101,12 @@ public class OscAvatarParametorContainerTest
     [Test]
     public void PhysBonesTest()
     {
-        var physbones = _parameters.PhysBones;
+        var physBones = _parameters.PhysBones;
 
-        Assert.IsNotNull(physbones);
+        Assert.IsNotNull(physBones);
         CollectionAssert.AreEquivalent(
             new[] { "ValidParam1", "ValidParam2", "ValidParam3", },
-            physbones.Select(v => v.ParamName));
+            physBones.Select(v => v.ParamName));
     }
 
     [Test]
@@ -124,7 +125,7 @@ public class OscAvatarParametorContainerTest
     }
 
     [Test]
-    public async Task OnParameterChanged_NotExistParameterRecievedTest()
+    public async Task OnParameterChanged_NotExistParameterReceivedTest()
     {
         bool isCalled = false;
 

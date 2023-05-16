@@ -45,19 +45,19 @@ public class OscChatboxTest
         OscMessageValues value = null!;
         void valueReadMethod(OscMessageValues v) => value = v;
         _server.TryAddMethod(OscChatbox.InputAddress, valueReadMethod);
-        byte[] recievedMessage = new byte[2024];
+        byte[] receivedMessage = new byte[2024];
 
 
         OscChatbox.SendMessage(message, direct, messageComplete);
         await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
-        int length = value.ReadStringElementBytes(0, recievedMessage);
-        bool recievedDirect = value.ReadBooleanElement(1);
-        bool recievedMessageComplete = value.ReadBooleanElement(2);
+        int length = value.ReadStringElementBytes(0, receivedMessage);
+        bool receivedDirect = value.ReadBooleanElement(1);
+        bool receivedMessageComplete = value.ReadBooleanElement(2);
 
 
-        Assert.AreEqual(message, Encoding.UTF8.GetString(recievedMessage, 0, length));
-        Assert.AreEqual(direct, recievedDirect);
-        Assert.AreEqual(messageComplete, recievedMessageComplete);
+        Assert.AreEqual(message, Encoding.UTF8.GetString(receivedMessage, 0, length));
+        Assert.AreEqual(direct, receivedDirect);
+        Assert.AreEqual(messageComplete, receivedMessageComplete);
     }
 
     [TestCase(true)]
@@ -71,10 +71,10 @@ public class OscChatboxTest
 
         OscChatbox.SetIsTyping(isTyping);
         await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
-        bool recievedIsTyping = value.ReadBooleanElement(0);
+        bool receivedIsTyping = value.ReadBooleanElement(0);
 
 
-        Assert.AreEqual(isTyping, recievedIsTyping);
+        Assert.AreEqual(isTyping, receivedIsTyping);
     }
 
 }

@@ -11,7 +11,7 @@ namespace BuildSoft.VRChat.Osc.Avatar;
 /// <summary>
 /// This class represents a container for avatar parameters in VRChat.
 /// </summary>
-public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
+public class OscAvatarParameterContainer : IReadOnlyDictionary<string, object?>
 {
     #region Static methods(s)
     /// <summary>
@@ -25,7 +25,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     /// <summary>
     /// Initialize static members.
     /// </summary>
-    static OscAvatarParametorContainer()
+    static OscAvatarParameterContainer()
     {
         Initialize();
     }
@@ -34,10 +34,10 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     #region Constructor(s)
 
     /// <summary>
-    /// Creates a new instance of <see cref="OscAvatarParametorContainer"/> with the specified avatar parameters.
+    /// Creates a new instance of <see cref="OscAvatarParameterContainer"/> with the specified avatar parameters.
     /// </summary>
     /// <param name="parameters">The avatar parameters to be contained in this instance.</param>
-    public OscAvatarParametorContainer(ImmutableArray<OscAvatarParameter> parameters)
+    public OscAvatarParameterContainer(ImmutableArray<OscAvatarParameter> parameters)
     {
         Items = parameters;
 
@@ -52,10 +52,10 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     }
 
     /// <summary>
-    /// Creates a new instance of <see cref="OscAvatarParametorContainer"/> with the specified avatar parameters.
+    /// Creates a new instance of <see cref="OscAvatarParameterContainer"/> with the specified avatar parameters.
     /// </summary>
     /// <param name="parameters">The avatar parameters to be contained in this instance.</param>
-    public OscAvatarParametorContainer(IEnumerable<OscAvatarParameter> parameters)
+    public OscAvatarParameterContainer(IEnumerable<OscAvatarParameter> parameters)
         : this(parameters.ToImmutableArray())
     {
     }
@@ -85,7 +85,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
     /// <summary>
     /// Gets a collection of the unique avatar parameters contained in this instance.
     /// </summary>
-    public IEnumerable<OscAvatarParameter> UniqueParameters => Items.Where(parm => !OscAvatarUtility.IsCommonParameter(parm.Name));
+    public IEnumerable<OscAvatarParameter> UniqueParameters => Items.Where(param => !OscAvatarUtility.IsCommonParameter(param.Name));
 
     /// <summary>
     /// Gets a collection of the values of the unique avatar parameters contained in this instance.
@@ -150,7 +150,7 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
             ("_" + nameof(OscPhysBone.Stretch),     OscType.Float),
         };
 
-        Dictionary<string, int> dictionay = new();
+        Dictionary<string, int> dictionary = new();
         var items = Items;
         var builder = ImmutableArray.CreateBuilder<OscPhysBone>();
 
@@ -174,8 +174,8 @@ public class OscAvatarParametorContainer : IReadOnlyDictionary<string, object?>
                 }
 
                 string baseName = paramName.Substring(0, paramName.Length - info.Suffix.Length);
-                int count = dictionay.ContainsKey(baseName) ? dictionay[baseName] + 1 : 1;
-                dictionay[baseName] = count;
+                int count = dictionary.ContainsKey(baseName) ? dictionary[baseName] + 1 : 1;
+                dictionary[baseName] = count;
 
                 if (count == paramInfos.Length)
                 {

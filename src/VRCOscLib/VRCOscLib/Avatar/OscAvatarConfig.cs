@@ -37,13 +37,13 @@ public class OscAvatarConfig
     public string Name => _name;
 
     [JsonIgnore]
-    private OscAvatarParametorContainer? _parameters;
+    private OscAvatarParameterContainer? _parameters;
 
     /// <summary>
     /// Gets the list of avatar parameters.
     /// </summary>
     [JsonIgnore]
-    public OscAvatarParametorContainer Parameters => _parameters ??= new(_parametersList);
+    public OscAvatarParameterContainer Parameters => _parameters ??= new(_parametersList);
 
     /// <summary>
     /// Gets a value indicating whether the avatar parameters have been created.
@@ -60,7 +60,7 @@ public class OscAvatarConfig
     [JsonConstructor]
     private OscAvatarConfig()
     {
-        OscAvatarUtility.RegisterAvaterConfig(this);
+        OscAvatarUtility.RegisterAvatarConfig(this);
     }
 
     /// <summary>

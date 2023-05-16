@@ -37,7 +37,7 @@ public static class OscAvatarUtility
     private static List<WeakReference<OscAvatarConfig>>? _avatarConfigs;
     internal static List<WeakReference<OscAvatarConfig>> AvatarConfigs => _avatarConfigs ??= new();
 
-    internal static void RegisterAvaterConfig(OscAvatarConfig avatarConfig)
+    internal static void RegisterAvatarConfig(OscAvatarConfig avatarConfig)
     {
         AvatarConfigs.Add(new WeakReference<OscAvatarConfig>(avatarConfig));
     }
