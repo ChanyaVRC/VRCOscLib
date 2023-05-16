@@ -23,7 +23,7 @@ public static partial class OscParameter
         }
         if (values.ElementCount == 1)
         {
-            Parameters[addressString] = values.ReadValue(0);
+            Parameters.SetValue(addressString, values.ReadValue(0), ValueSource.VRChat);
             return;
         }
 
@@ -32,7 +32,7 @@ public static partial class OscParameter
         {
             objects[i] = values.ReadValue(i);
         }
-        Parameters[addressString] = objects;
+        Parameters.SetValue(addressString, objects, ValueSource.VRChat);
     }
 
     /// <summary>

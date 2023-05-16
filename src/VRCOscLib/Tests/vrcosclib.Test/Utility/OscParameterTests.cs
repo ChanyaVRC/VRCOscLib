@@ -1,9 +1,11 @@
 ﻿#nullable disable
 
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using BuildSoft.OscCore;
 using BuildSoft.OscCore.UnityObjects;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 using static BuildSoft.VRChat.Osc.Test.TestUtility;
@@ -258,5 +260,43 @@ public class OscParameterTests
         await LoopWhile(() => !OscParameter.Parameters.ContainsKey(Address), LatencyTimeout);
 
         CollectionAssert.AreEqual(value, (byte[])OscParameter.Parameters[Address]!);
+    }
+
+    [Test]
+    public async Task ChangedEventArgsTest()
+    {
+        const string Address = "/test/address";
+        ParameterChangedEventArgs expected = null;
+        bool isCalledValueChanged = false;
+
+        var parameters = OscParameter.Parameters;
+        parameters.ValueChanged += valueChangedAssertion;
+
+        await TestValueChangedEvent(new(null, 1, Address, ValueChangedReason.Added, ValueSource.VRChat), () => _client.Send(Address, 1));
+        await TestValueChangedEvent(null, () => _client.Send(Address, 1));
+        await TestValueChangedEvent(new(1, 2, Address, ValueChangedReason.Substituted, ValueSource.VRChat), () => _client.Send(Address, 2));
+        await TestValueChangedEvent(new(2, 1, Address, ValueChangedReason.Substituted, ValueSource.VRChat), () => _client.Send(Address, 1));
+
+        parameters.ValueChanged -= valueChangedAssertion;
+
+
+        void valueChangedAssertion(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
+        {
+            Assert.AreEqual(expected!.NewValue, e.NewValue);
+            Assert.AreEqual(expected!.OldValue, e.OldValue);
+            Assert.AreEqual(expected!.Reason, e.Reason);
+            Assert.AreEqual(expected!.Address, e.Address);
+            Assert.AreEqual(expected!.ValueSource, e.ValueSource);
+            isCalledValueChanged = true;
+        }
+
+        async Task TestValueChangedEvent(ParameterChangedEventArgs expectedEventArgs, Action testAction)
+        {
+            expected = expectedEventArgs;
+            testAction();
+            await Task.Delay(LatencyTimeout);
+            Assert.AreEqual(expectedEventArgs != null, isCalledValueChanged);
+            isCalledValueChanged = false;
+        }
     }
 }

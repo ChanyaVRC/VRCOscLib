@@ -34,7 +34,7 @@ public static class OscChatbox
         writer.Reset();
         writer.Write(InputAddress);
         writer.Write((direct ? ",sT" : ",sF") + (complete ? "T" : "F"));
-        writer.WriteUtfString(message);
+        writer.WriteUtf8String(message);
         socket.Send(writer.Buffer, writer.Length, SocketFlags.None);
     }
 
@@ -52,7 +52,7 @@ public static class OscChatbox
     /// </summary>
     /// <param name="writer">The OSC message writer to write the string to.</param>
     /// <param name="data">The string to write.</param>
-    private static void WriteUtfString(this OscWriter writer, string data)
+    private static void WriteUtf8String(this OscWriter writer, string data)
     {
         var utf8String = Encoding.UTF8.GetBytes(data);
         Array.Resize(ref utf8String, utf8String.Length + (4 - utf8String.Length % 4));
