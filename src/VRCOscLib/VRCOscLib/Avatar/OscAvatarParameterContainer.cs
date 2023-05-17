@@ -146,8 +146,10 @@ public class OscAvatarParameterContainer : IReadOnlyDictionary<string, object?>
         (string Suffix, OscType Type)[] paramInfos =
         [
             ("_" + nameof(OscPhysBone.IsGrabbed),   OscType.Bool),
+            ("_" + nameof(OscPhysBone.IsPosed),     OscType.Bool),
             ("_" + nameof(OscPhysBone.Angle),       OscType.Float),
             ("_" + nameof(OscPhysBone.Stretch),     OscType.Float),
+            ("_" + nameof(OscPhysBone.Squish),      OscType.Float),
         ];
 
         Dictionary<string, int> dictionary = [];
