@@ -53,8 +53,10 @@ public static class TestUtility
             new OscAvatarConfigJson(avatarId, name, new OscAvatarParameterJson[] {
                 new("TestParam",                OscType.Int,   hasInput: true),
                 new("PhysBoneParam_IsGrabbed",  OscType.Bool,  hasInput: true),
+                new("PhysBoneParam_IsPosed",    OscType.Bool,  hasInput: true),
                 new("PhysBoneParam_Angle",      OscType.Float, hasInput: true),
                 new("PhysBoneParam_Stretch",    OscType.Float, hasInput: true),
+                new("PhysBoneParam_Squish",     OscType.Float, hasInput: true),
                 new("PhysBoneParam__IsGrabbed", OscType.Float, hasInput: true),
                 new("PhysBoneParam__Angle",     OscType.Float, hasInput: true),
                 new("PhysBoneParam__Stretch",   OscType.Bool,  hasInput: true),
