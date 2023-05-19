@@ -23,6 +23,11 @@ public class OscPhysBone
     public bool IsGrabbed => GetParameterValue<bool>(nameof(IsGrabbed));
 
     /// <summary>
+    /// Gets a value indicating whether this VRCPhysBone been posed.
+    /// </summary>
+    public bool IsPosed => GetParameterValue<bool>(nameof(IsPosed));
+
+    /// <summary>
     /// Gets the angle of this VRCPhysBone.
     /// </summary>
     public float Angle => GetParameterValue<float>(nameof(Angle));
@@ -31,6 +36,11 @@ public class OscPhysBone
     /// Gets the stretch of this VRCPhysBone.
     /// </summary>
     public float Stretch => GetParameterValue<float>(nameof(Stretch));
+
+    /// <summary>
+    /// Gets the squish of this VRCPhysBone.
+    /// </summary>
+    public float Squish => GetParameterValue<float>(nameof(Squish));
 
     /// <summary>
     /// Occurs when a parameter of this VRCPhysBone changes.
@@ -68,8 +78,10 @@ public class OscPhysBone
     {
         (string Name, OscType Type)[] actualParam = {
             (paramName + "_" + nameof(IsGrabbed), OscType.Bool ),
+            (paramName + "_" + nameof(IsPosed),   OscType.Bool ),
             (paramName + "_" + nameof(Angle),     OscType.Float),
             (paramName + "_" + nameof(Stretch),   OscType.Float),
+            (paramName + "_" + nameof(Squish),    OscType.Float),
         };
 
         if (needCheck)
