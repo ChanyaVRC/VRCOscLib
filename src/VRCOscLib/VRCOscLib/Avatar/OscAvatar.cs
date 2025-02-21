@@ -25,7 +25,7 @@ public struct OscAvatar
     /// Changes an avatar in VRChat with <see cref="Id"/>.
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown if <see cref="Id"/> is <see langword="null"/>.</exception>
-    public void Change()
+    public readonly void Change()
     {
         if (Id == null)
         {
@@ -35,10 +35,10 @@ public struct OscAvatar
     }
 
     /// <inheritdoc/>
-    public override bool Equals(object? obj) => obj is OscAvatar avatar && Id == avatar.Id;
+    public override readonly bool Equals(object? obj) => obj is OscAvatar avatar && Id == avatar.Id;
 
     /// <inheritdoc/>
-    public override int GetHashCode() => 2108858624 + EqualityComparer<string?>.Default.GetHashCode(Id);
+    public override readonly int GetHashCode() => 2108858624 + EqualityComparer<string?>.Default.GetHashCode(Id);
 
     /// <summary>
     /// Determines whether two specified <see cref="OscAvatar"/> have the same value.

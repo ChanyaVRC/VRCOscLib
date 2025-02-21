@@ -230,11 +230,7 @@ public class OscAvatarParameterContainer : IReadOnlyDictionary<string, object?>
     /// <param name="value">The value to set the avatar parameter to.</param>
     public void SetAs<T>(string name, T value)
     {
-        var inputInterface = Get(name).Input;
-        if (inputInterface == null)
-        {
-            throw new InvalidOperationException($"{name} dosen't has a input interface.");
-        }
+        var inputInterface = Get(name).Input ?? throw new InvalidOperationException($"{name} dosen't has a input interface.");
 
         switch (value)
         {
