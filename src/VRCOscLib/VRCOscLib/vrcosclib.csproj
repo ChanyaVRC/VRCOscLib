@@ -32,10 +32,6 @@
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Collections\" />
-  </ItemGroup>
-
   <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
     <ItemGroup>
       <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(AssemblyName).dll" />
