@@ -13,7 +13,7 @@
     <DocumentationFile>..\..\..\artifacts\xml\$(AssemblyName).xml</DocumentationFile>
 
     <PackageId>VRCOscLib</PackageId>
-    <Version>1.4.3</Version>
+    <Version>1.5.0</Version>
     <Authors>ChanyaKushima</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageDescription>A OSC library for VRChat</PackageDescription>
