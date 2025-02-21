@@ -33,4 +33,20 @@ public struct OscAvatar
         }
         OscAvatarUtility.ChangeAvatar(Id);
     }
+
+    /// <summary>
+    /// Determines whether two specified <see cref="OscAvatar"/> have the same value.
+    /// </summary>
+    /// <param name="left">The first <see cref="OscAvatar"/> to compare.</param>
+    /// <param name="right">The second <see cref="OscAvatar"/> to compare.</param>
+    /// <returns></returns>
+    public static bool operator ==(OscAvatar left, OscAvatar right) => left.Id == right.Id;
+
+    /// <summary>
+    /// Determines whether two specified <see cref="OscAvatar"/> have different values.
+    /// </summary>
+    /// <param name="left">The first <see cref="OscAvatar"/> to compare.</param>
+    /// <param name="right">The second <see cref="OscAvatar"/> to compare.</param>
+    /// <returns></returns>
+    public static bool operator !=(OscAvatar left, OscAvatar right) => left.Id != right.Id;
 }

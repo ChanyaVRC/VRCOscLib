@@ -102,6 +102,8 @@ public static class OscAvatarUtility
     /// </summary>
     public static void ChangeAvatar(string id)
     {
+        // If OSC is temporarily disabled or for some other reason the current avatar in VRChat
+        // may differ from _currentAvatar. Therefore, when ChangeAvatar is called, /avatar/change will always be sent.
         OscParameter.SendValue(OscConst.AvatarIdAddress, id);
         CallOnAvatarChanged(_currentAvatar, new OscAvatar() { Id = id });
     }
@@ -135,6 +137,15 @@ public static class OscAvatarUtility
 
     private static void CallOnAvatarChanged(OscAvatar oldAvatar, OscAvatar newAvatar)
     {
+        // If OSC is temporarily disabled or for some other reason the current avatar in VRChat
+        // may differ from _currentAvatar. Therefore, when ChangeAvatar is called, /avatar/change will always be sent.
+        // However, if it is determined that the old and new avatars are the same,
+        // the callback for the change will not be invoked because it would be impossible
+        // to reliably obtain the 'definitely correct' old avatar.
+        if (oldAvatar == newAvatar)
+        {
+            return;
+        }
         _currentAvatar = newAvatar;
         AvatarChanged?.Invoke(newAvatar, new ValueChangedEventArgs<OscAvatar>(oldAvatar, newAvatar));
     }
