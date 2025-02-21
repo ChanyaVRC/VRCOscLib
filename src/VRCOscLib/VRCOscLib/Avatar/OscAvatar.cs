@@ -21,6 +21,10 @@ public struct OscAvatar
     /// </returns>
     public readonly OscAvatarConfig? ToConfig() => Id == null ? null : OscAvatarConfig.Create(Id);
 
+    /// <summary>
+    /// Changes an avatar in VRChat with <see cref="Id"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown if <see cref="Id"/> is <see langword="null"/>.</exception>
     public void Change()
     {
         if (Id == null)

@@ -97,6 +97,9 @@ public static class OscAvatarUtility
         }
     }
 
+    /// <summary>
+    /// Changes an avatar in VRChat with <paramref name="id"/>.
+    /// </summary>
     public static void ChangeAvatar(string id)
     {
         OscParameter.SendValue(OscConst.AvatarIdAddress, id);

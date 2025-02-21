@@ -91,6 +91,9 @@ public class OscAvatarConfig
         _parametersList.AddRange(parameters);
     }
 
+    /// <summary>
+    /// Changes an avatar in VRChat with <see cref="Id"/>.
+    /// </summary>
     public void Change()
     {
         OscAvatarUtility.ChangeAvatar(_id);
