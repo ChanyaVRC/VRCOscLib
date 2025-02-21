@@ -206,7 +206,10 @@ public class OscAvatarConfigTests
         const string AvatarId = "avtr_change_test";
 
         var config = new OscAvatarConfig(AvatarId, Name, _parameters);
-        Assert.DoesNotThrow(() => config.Change());
+        using (new OscServer(OscConnectionSettings.SendPort))
+        {
+            Assert.DoesNotThrow(() => config.Change());
+        }
         Assert.AreEqual(AvatarId, OscAvatarUtility.CurrentAvatar.Id);
     }
 
