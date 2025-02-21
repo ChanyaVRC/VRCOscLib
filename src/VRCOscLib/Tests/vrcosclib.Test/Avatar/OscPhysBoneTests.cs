@@ -34,7 +34,7 @@ public class OscPhysBoneTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        _server = new OscServer(OscUtility.SendPort);
+        _server = new OscServer(OscConnectionSettings.SendPort);
     }
 
     [OneTimeTearDown]

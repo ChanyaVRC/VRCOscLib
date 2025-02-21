@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 namespace BuildSoft.VRChat.Osc.Test.Utility;
 
@@ -20,7 +21,7 @@ public static class TestHelper
         }
     }
 
-    public static async Task LoopWhile(Func<bool> conditions, TimeSpan timeout)
+    public static async Task WaitWhile(Func<bool> conditions, TimeSpan timeout)
     {
         await Task.Run(() => { while (conditions()) ; }).WaitAsync(timeout);
     }
@@ -72,21 +73,21 @@ public static class TestHelper
     }
 
 
-    static readonly string _destDirName = OscUtility.VRChatOscPath + "_Renamed";
+    static readonly string _destinationDirName = OscUtility.VRChatOscPath + "_Renamed";
 
     public static void StashOscDirectory()
     {
         Directory.CreateDirectory(OscUtility.VRChatOscPath);
-        Directory.Move(OscUtility.VRChatOscPath, _destDirName);
+        Directory.Move(OscUtility.VRChatOscPath, _destinationDirName);
         Directory.CreateDirectory(OscUtility.VRChatOscPath);
     }
 
     public static void RestoreOscDirectory()
     {
-        if (Directory.Exists(_destDirName))
+        if (Directory.Exists(_destinationDirName))
         {
             Directory.Delete(OscUtility.VRChatOscPath, true);
-            Directory.Move(_destDirName, OscUtility.VRChatOscPath);
+            Directory.Move(_destinationDirName, OscUtility.VRChatOscPath);
         }
     }
 
@@ -125,4 +126,14 @@ public static class TestHelper
         return source;
     }
 #endif
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static TEnum[] GetValues<TEnum>() where TEnum: struct, Enum
+    {
+#if NET8_0_OR_GREATER
+        return Enum.GetValues<TEnum>();
+#else
+        return (TEnum[])Enum.GetValues(typeof(TEnum));
+#endif
+    }
 }

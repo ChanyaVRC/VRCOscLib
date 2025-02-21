@@ -75,7 +75,7 @@ public class OscAvatarParameterContainerTests
         ]), Path.Combine(OscUtility.VRChatOscPath, "Test"));
 
         _config = new OscAvatar { Id = AvatarId }.ToConfig()!;
-        _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
+        _client = new OscClient("127.0.0.1", OscConnectionSettings.ReceivePort);
         _parameters = _config.Parameters;
     }
 
@@ -102,7 +102,7 @@ public class OscAvatarParameterContainerTests
         _parameters.ParameterChanged += Handler;
 
         _client.Send(OscConst.AvatarParameterAddressSpace + "TestParam", newValue);
-        await TestHelper.LoopWhile(() => !isCalled, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => !isCalled, TestHelper.LatencyTimeout);
 
         _parameters.ParameterChanged -= Handler;
 
@@ -150,11 +150,11 @@ public class OscAvatarParameterContainerTests
         _parameters.ParameterChanged += MonitorCalledHandler;
 
         _client.Send(OscConst.AvatarParameterAddressSpace + "TestParam", 1);
-        await TestHelper.LoopWhile(() => !isCalled, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => !isCalled, TestHelper.LatencyTimeout);
         isCalled = false;
 
         _client.Send(OscConst.AvatarParameterAddressSpace + "TestParam", 2);
-        await TestHelper.LoopWhile(() => !isCalled, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => !isCalled, TestHelper.LatencyTimeout);
         isCalled = false;
 
         _parameters.ParameterChanged -= ThrowExceptionHandler;

@@ -12,6 +12,11 @@ public class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOsc
 
     private Dictionary<string, List<ParamChangedHandler>>? _handlersPerAddress;
 
+    internal OscParameterCollection()
+    {
+        
+    }
+
     /// <inheritdoc/>
     public object? this[string address]
     {

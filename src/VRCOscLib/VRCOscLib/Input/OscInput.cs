@@ -131,9 +131,8 @@ public static class OscInput
     /// <returns>A collection of active fields of the specified type.</returns>
     private static IEnumerable<T> CreateActiveFields<T>() where T : Enum
     {
-        return typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static)
+        return [.. typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static)
             .Where(s => !s.IsDefined(typeof(ObsoleteAttribute), true))
-            .Select(s => (T)s.GetValue(null))
-            .ToArray();
+            .Select(s => (T)s.GetValue(null))];
     }
 }

@@ -27,7 +27,7 @@ public static class OscChatbox
     /// <param name="complete">Indicates whether the message uses to trigger the notification SFX.</param>
     public static void SendMessage(string message, bool direct, bool complete = false)
     {
-        OscClient client = OscUtility.Client;
+        OscClient client = OscConnectionSettings.Client;
         OscWriter writer = client.Writer;
         var socket = client.Socket;
 

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Avatar;
 using BuildSoft.VRChat.Osc.Test.Utility;
 using NUnit.Framework;
 
@@ -46,7 +47,7 @@ public class OscConnectionSettingsTests
         using (var client = new OscClient("127.0.0.1", OscConnectionSettings.ReceivePort))
         {
             client.Send(OscConst.AvatarIdAddress, TestAvatarId);
-            await LoopWhile(() => Avatar.OscAvatarUtility.CurrentAvatar.Id == null, LatencyTimeout);
+            await WaitWhile(() => OscAvatarUtility.CurrentAvatar.Id == null, LatencyTimeout);
         }
 
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetCurrentOscAvatarConfigPath());
@@ -76,7 +77,7 @@ public class OscConnectionSettingsTests
     }
 
     [Test]
-    public void TestGetCurrentAvatarConfigPathes()
+    public void TestGetCurrentAvatarConfigPaths()
     {
         Assert.That(OscUtility.GetOscAvatarConfigPathes(), Is.Empty);
 
@@ -182,11 +183,11 @@ public class OscConnectionSettingsTests
         using (var client = new OscClient("127.0.0.1", 12345))
         {
             client.Send("/value/send", 1);
-            await LoopWhile(() => value == 0, LatencyTimeout);
+            await WaitWhile(() => value == 0, LatencyTimeout);
             Assert.That(value, Is.EqualTo(1));
 
             client.Send("/value/send", 1);
-            await LoopWhile(() => value == 1, LatencyTimeout);
+            await WaitWhile(() => value == 1, LatencyTimeout);
             Assert.That(value, Is.EqualTo(2));
         }
 
@@ -194,7 +195,7 @@ public class OscConnectionSettingsTests
         using (var client = new OscClient("127.0.0.1", 54321))
         {
             client.Send("/value/send", 1);
-            await LoopWhile(() => value == 2, LatencyTimeout);
+            await WaitWhile(() => value == 2, LatencyTimeout);
             Assert.That(value, Is.EqualTo(3));
         }
 

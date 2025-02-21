@@ -26,7 +26,7 @@ public class OscChatboxTest
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        _server = new OscServer(OscUtility.SendPort);
+        _server = new OscServer(OscConnectionSettings.SendPort);
     }
 
     [OneTimeTearDown]
@@ -50,7 +50,7 @@ public class OscChatboxTest
 
 
         OscChatbox.SendMessage(message, direct, messageComplete);
-        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => value == null, TestHelper.LatencyTimeout);
         var length = value.ReadStringElementBytes(0, receivedMessage);
         var receivedDirect = value.ReadBooleanElement(1);
         var receivedMessageComplete = value.ReadBooleanElement(2);
@@ -71,7 +71,7 @@ public class OscChatboxTest
 
 
         OscChatbox.SetIsTyping(isTyping);
-        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => value == null, TestHelper.LatencyTimeout);
         var receivedIsTyping = value.ReadBooleanElement(0);
 
 

@@ -27,8 +27,8 @@ public class OscTrackingTest
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
-        _server = new OscServer(OscUtility.SendPort);
+        _client = new OscClient("127.0.0.1", OscConnectionSettings.ReceivePort);
+        _server = new OscServer(OscConnectionSettings.SendPort);
     }
 
     [OneTimeTearDown]
@@ -60,7 +60,7 @@ public class OscTrackingTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
 
         headTracker.Position = expected;
-        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => value == null, TestHelper.LatencyTimeout);
 
         Assert.That(headTracker.Position, Is.EqualTo(expected));
         Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
@@ -80,7 +80,7 @@ public class OscTrackingTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
 
         headTracker.Rotation = expected;
-        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => value == null, TestHelper.LatencyTimeout);
 
         Assert.That(headTracker.Rotation, Is.EqualTo(expected));
         Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
@@ -97,15 +97,15 @@ public class OscTrackingTest
 
         OscMessageValues value = null!;
         void valueReadMethod(OscMessageValues v) => value = v;
-        OscUtility.Server.TryAddMethod(headTracker.PositionAddress, valueReadMethod);
+        OscConnectionSettings.Server.TryAddMethod(headTracker.PositionAddress, valueReadMethod);
 
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
         _client.Send(headTracker.PositionAddress, expected);
 
-        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => value == null, TestHelper.LatencyTimeout);
         Assert.That(headTracker.Position, Is.EqualTo(expected));
 
-        OscUtility.Server.RemoveMethod(headTracker.PositionAddress, valueReadMethod);
+        OscConnectionSettings.Server.RemoveMethod(headTracker.PositionAddress, valueReadMethod);
     }
 
     [Test]
@@ -116,15 +116,15 @@ public class OscTrackingTest
 
         OscMessageValues value = null!;
         void valueReadMethod(OscMessageValues v) => value = v;
-        OscUtility.Server.TryAddMethod(headTracker.RotationAddress, valueReadMethod);
+        OscConnectionSettings.Server.TryAddMethod(headTracker.RotationAddress, valueReadMethod);
 
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
         _client.Send(headTracker.RotationAddress, expected);
 
-        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => value == null, TestHelper.LatencyTimeout);
         Assert.That(headTracker.Rotation, Is.EqualTo(expected));
 
-        OscUtility.Server.RemoveMethod(headTracker.RotationAddress, valueReadMethod);
+        OscConnectionSettings.Server.RemoveMethod(headTracker.RotationAddress, valueReadMethod);
     }
 
 

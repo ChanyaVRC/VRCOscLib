@@ -4,15 +4,8 @@ namespace BuildSoft.VRChat.Osc;
 
 public static partial class OscUtility
 {
-    /// <inheritdoc cref="OscConnectionSettings.Server"/>
-    internal static OscServer Server => OscConnectionSettings.Server;
-
-    /// <inheritdoc cref="OscConnectionSettings.Client"/>
-    internal static OscClient Client => OscConnectionSettings.Client;
-
-
     /// <inheritdoc cref="OscConnectionSettings.ReceivePort"/>
-    [Obsolete($"Use '{nameof(OscConnectionSettings)}.{nameof(OscConnectionSettings.ReceivePort)}'")]
+    [Obsolete($"Use '{nameof(OscConnectionSettings)}.{nameof(OscConnectionSettings.ReceivePort)}'", true)]
     public static int ReceivePort
     {
         get => OscConnectionSettings.ReceivePort;
@@ -20,7 +13,7 @@ public static partial class OscUtility
     }
 
     /// <inheritdoc cref="OscConnectionSettings.SendPort"/>
-    [Obsolete($"Use '{nameof(OscConnectionSettings)}.{nameof(OscConnectionSettings.SendPort)}'")]
+    [Obsolete($"Use '{nameof(OscConnectionSettings)}.{nameof(OscConnectionSettings.SendPort)}'", true)]
     public static int SendPort
     {
         get => OscConnectionSettings.SendPort;
@@ -28,7 +21,7 @@ public static partial class OscUtility
     }
 
     /// <inheritdoc cref="OscConnectionSettings.VrcIPAddress"/>
-    [Obsolete($"Use '{nameof(OscConnectionSettings)}.{nameof(OscConnectionSettings.VrcIPAddress)}'")]
+    [Obsolete($"Use '{nameof(OscConnectionSettings)}.{nameof(OscConnectionSettings.VrcIPAddress)}'", true)]
     public static string VrcIPAddress
     {
         get => OscConnectionSettings.VrcIPAddress;
@@ -42,7 +35,7 @@ public static partial class OscUtility
     public static void RegisterMonitorCallback(MonitorCallback callback)
     {
         var callbacks = OscConnectionSettings.MonitorCallbacks;
-        Server.AddMonitorCallback(callback);
+        OscConnectionSettings.Server.AddMonitorCallback(callback);
         callbacks.Add(callback);
     }
 
@@ -53,7 +46,7 @@ public static partial class OscUtility
     public static void UnregisterMonitorCallback(MonitorCallback callback)
     {
         var callbacks = OscConnectionSettings.MonitorCallbacks;
-        Server.RemoveMonitorCallback(callback);
+        OscConnectionSettings.Server.RemoveMonitorCallback(callback);
         callbacks.Remove(callback);
     }
 }

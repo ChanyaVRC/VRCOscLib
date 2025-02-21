@@ -49,8 +49,8 @@ public class OscTrackerTest
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
-        _server = new OscServer(OscUtility.SendPort);
+        _client = new OscClient("127.0.0.1", OscConnectionSettings.ReceivePort);
+        _server = new OscServer(OscConnectionSettings.SendPort);
     }
 
     [OneTimeTearDown]
@@ -94,7 +94,7 @@ public class OscTrackerTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
 
         tracker.Position = expected;
-        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => value == null, TestHelper.LatencyTimeout);
 
         Assert.That(tracker.Position, Is.EqualTo(expected));
         Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
@@ -117,7 +117,7 @@ public class OscTrackerTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
 
         tracker.Rotation = expected;
-        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        await TestHelper.WaitWhile(() => value == null, TestHelper.LatencyTimeout);
 
         Assert.That(tracker.Rotation, Is.EqualTo(expected));
         Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
