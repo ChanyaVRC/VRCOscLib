@@ -27,7 +27,7 @@ public static partial class OscUtility
     /// <summary>
     /// A list of exceptions that were thrown during the initialization of the OSC utility.
     /// </summary>
-    internal static readonly List<Exception> _initializationExceptions = new();
+    internal static readonly List<Exception> _initializationExceptions = [];
 
     /// <summary>
     /// Indicates whether the OSC utility failed to initialize automatically.

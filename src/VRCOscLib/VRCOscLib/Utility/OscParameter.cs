@@ -15,7 +15,7 @@ public static partial class OscParameter
     /// <summary>
     /// A collection of OSC parameters.
     /// </summary>
-    internal static OscParameterCollection Parameters { get; } = new();
+    internal static OscParameterCollection Parameters { get; } = [];
 
     /// <summary>
     /// An event that is raised when the value of an OSC parameter is changed.

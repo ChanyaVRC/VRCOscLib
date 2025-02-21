@@ -71,7 +71,7 @@ public static partial class OscUtility
     {
         if (!Directory.Exists(VRChatOscPath))
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
 
         try
@@ -81,7 +81,7 @@ public static partial class OscUtility
         }
         catch (DirectoryNotFoundException)
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
     }
 }

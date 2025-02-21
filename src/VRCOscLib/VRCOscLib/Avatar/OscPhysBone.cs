@@ -66,11 +66,11 @@ public class OscPhysBone
     /// <param name="checkedParamName">The name of the parameter to include in the exception message if the check fails.</param>
     internal OscPhysBone(OscAvatarParameterContainer parameters, string paramName, bool needCheck, string checkedParamName = "parameters")
     {
-        (string Name, OscType Type)[] actualParam = {
+        (string Name, OscType Type)[] actualParam = [
             (paramName + "_" + nameof(IsGrabbed), OscType.Bool ),
             (paramName + "_" + nameof(Angle),     OscType.Float),
             (paramName + "_" + nameof(Stretch),   OscType.Float),
-        };
+        ];
 
         if (needCheck)
         {

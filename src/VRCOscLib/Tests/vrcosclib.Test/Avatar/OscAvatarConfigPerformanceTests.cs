@@ -10,7 +10,7 @@ public class OscAvatarConfigPerformanceTests
     {
         get
         {
-            List<OscAvatarParameterJson> parameters = new();
+            List<OscAvatarParameterJson> parameters = [];
 
             for (int j = 0; j < 10000; j++)
             {
@@ -20,7 +20,7 @@ public class OscAvatarConfigPerformanceTests
                 {
                     parameters.Add(new OscAvatarParameterJson($"param{k}", OscType.Float));
                 }
-                yield return new OscAvatarConfigJson($"avtr_{j}", $"name{j}", parameters.ToArray());
+                yield return new OscAvatarConfigJson($"avtr_{j}", $"name{j}", [.. parameters]);
             }
         }
     }

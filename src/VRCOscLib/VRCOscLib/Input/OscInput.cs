@@ -11,12 +11,12 @@ public static class OscInput
     /// <summary>
     /// A cache of OSC addresses for <see cref="OscAxisInput"/> values.
     /// </summary>
-    private static readonly Dictionary<OscAxisInput, string> _axisInputAddressCache = new();
+    private static readonly Dictionary<OscAxisInput, string> _axisInputAddressCache = [];
 
     /// <summary>
     /// A cache of OSC addresses for <see cref="OscButtonInput"/> values.
     /// </summary>
-    private static readonly Dictionary<OscButtonInput, string> _buttonInputAddressCache = new();
+    private static readonly Dictionary<OscButtonInput, string> _buttonInputAddressCache = [];
 
     /// <summary>
     /// The active button inputs.

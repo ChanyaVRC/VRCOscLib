@@ -110,7 +110,7 @@ public class OscParameterTests
         Assert.AreEqual(new MidiMessage(1, 2, 3, 4), value.ReadMidiElementUnchecked(0));
         value = null;
 
-        OscParameter.SendAvatarParameter(ParamName, new byte[] { 1, 2, 3, 4 });
+        OscParameter.SendAvatarParameter(ParamName, [1, 2, 3, 4]);
         await LoopWhile(() => value == null, LatencyTimeout);
         CollectionAssert.AreEqual(new byte[] { 1, 2, 3, 4 }, value.ReadBlobElement(0));
         value = null;
@@ -192,7 +192,7 @@ public class OscParameterTests
         Assert.AreEqual(new MidiMessage(1, 2, 3, 4), value.ReadMidiElementUnchecked(0));
         value = null;
 
-        OscParameter.SendValue(Address, new byte[] { 1, 2, 3, 4 });
+        OscParameter.SendValue(Address, [1, 2, 3, 4]);
         await LoopWhile(() => value == null, LatencyTimeout);
         CollectionAssert.AreEqual(new byte[] { 1, 2, 3, 4 }, value.ReadBlobElement(0));
         value = null;

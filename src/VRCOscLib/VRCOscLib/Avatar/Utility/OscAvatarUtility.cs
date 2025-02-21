@@ -11,8 +11,8 @@ public static class OscAvatarUtility
     /// <summary>
     /// A list of common avatar parameters.
     /// </summary>
-    internal static readonly HashSet<string> _commonParameters = new()
-    {
+    internal static readonly HashSet<string> _commonParameters =
+    [
         "VelocityY",
         "VelocityX",
         "VelocityZ",
@@ -32,10 +32,10 @@ public static class OscAvatarUtility
         "GestureLeft",
         "Voice",
         "Viseme",
-    };
+    ];
 
     private static List<WeakReference<OscAvatarConfig>>? _avatarConfigs;
-    internal static List<WeakReference<OscAvatarConfig>> AvatarConfigs => _avatarConfigs ??= new();
+    internal static List<WeakReference<OscAvatarConfig>> AvatarConfigs => _avatarConfigs ??= [];
 
     internal static void RegisterAvatarConfig(OscAvatarConfig avatarConfig)
     {

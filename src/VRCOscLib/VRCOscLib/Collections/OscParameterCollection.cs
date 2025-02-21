@@ -12,7 +12,7 @@ namespace BuildSoft.VRChat.Osc;
 /// </summary>
 internal class OscParameterCollection : IDictionary<string, object?>, IReadOnlyOscParameterCollection
 {
-    private readonly Dictionary<string, object?> _items = new();
+    private readonly Dictionary<string, object?> _items = [];
 
     private Dictionary<string, List<ParamChangedHandler>>? _handlersPerAddress;
 
@@ -171,7 +171,7 @@ internal class OscParameterCollection : IDictionary<string, object?>, IReadOnlyO
         var dict = _handlersPerAddress;
         if (dict == null)
         {
-            dict = new();
+            dict = [];
             _handlersPerAddress = dict;
         }
         else if (dict.TryGetValue(address, out var list))
@@ -179,7 +179,7 @@ internal class OscParameterCollection : IDictionary<string, object?>, IReadOnlyO
             list.Add(handler);
             return;
         }
-        dict.Add(address, new() { handler });
+        dict.Add(address, [handler]);
     }
 
     /// <inheritdoc/>

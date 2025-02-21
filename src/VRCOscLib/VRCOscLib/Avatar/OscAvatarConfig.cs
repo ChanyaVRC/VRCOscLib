@@ -25,7 +25,7 @@ public class OscAvatarConfig
     /// The list of avatar parameters.
     /// </summary>
     [JsonProperty("parameters", Required = Required.Always)]
-    private readonly List<OscAvatarParameter> _parametersList = new();
+    private readonly List<OscAvatarParameter> _parametersList = [];
 
     /// <summary>
     /// Gets the unique ID of the avatar.
@@ -54,7 +54,7 @@ public class OscAvatarConfig
     /// Gets any additional information that was not explicitly defined in the <see cref="OscAvatarConfig"/> class, but was present in the avatar configuration file.
     /// </summary>
     [field: JsonExtensionData]
-    public Dictionary<string, object> Extra { get; } = new();
+    public Dictionary<string, object> Extra { get; } = [];
 
 
     [JsonConstructor]
@@ -134,11 +134,7 @@ public class OscAvatarConfig
     public static async ValueTask<OscAvatarConfig> WaitAndCreateAtCurrentAsync()
     {
         var path = await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync();
-        var config = GetAvatarConfig(path);
-        if (config == null)
-        {
-            throw new JsonSerializationException("Json Serialization failed.");
-        }
+        var config = GetAvatarConfig(path) ?? throw new JsonSerializationException("Json Serialization failed.");
         return config;
     }
 
