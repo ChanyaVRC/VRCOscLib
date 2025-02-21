@@ -19,6 +19,12 @@ public class OscAvatarConfig
     /// </summary>
     [JsonProperty("name", Required = Required.Always)]
     private string _name = string.Empty;
+
+    /// <summary>
+    /// The hash of the avatar.
+    /// </summary>
+    [JsonProperty("hash", Required = Required.Always)]
+    private int _hash = -1;
 #pragma warning restore IDE0044 // Add readonly modifier
 
     /// <summary>
@@ -35,6 +41,10 @@ public class OscAvatarConfig
     /// Gets the name of the avatar.
     /// </summary>
     public string Name => _name;
+    /// <summary>
+    /// Gets the hash value of the avatar defined by VRChat.
+    /// </summary>
+    public int Hash => _hash;
 
     [JsonIgnore]
     private OscAvatarParameterContainer? _parameters;

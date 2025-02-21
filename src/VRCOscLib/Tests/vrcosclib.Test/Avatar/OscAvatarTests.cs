@@ -39,7 +39,7 @@ public class OscAvatarTests
         Assert.That(default(OscAvatar).ToConfig(), Is.Null);
         Assert.Throws<FileNotFoundException>(() => new OscAvatar { Id = AvatarId }.ToConfig());
 
-        TestHelper.CreateConfigFileForTest(AvatarId, "Test Avatar", TestHelper.GetAvatarConfigDirectory());
+        TestHelper.CreateConfigFileForTest(AvatarId, "Test Avatar", TestHelper.GetAvatarConfigDirectory(), 123456);
         var config = new OscAvatar { Id = AvatarId }.ToConfig();
         Assert.That(config, Is.Not.Null);
         Assert.That(config!.Id, Is.EqualTo(AvatarId));

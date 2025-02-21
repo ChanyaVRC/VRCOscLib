@@ -72,7 +72,7 @@ public class OscAvatarParameterContainerTests
             new("InvalidParam7Squish",     OscType.Float, hasInput: true),
 
             new("TestParam",               OscType.Float, hasInput: true),
-        ]), Path.Combine(OscUtility.VRChatOscPath, "Test"));
+        ], 123456), Path.Combine(OscUtility.VRChatOscPath, "Test"));
 
         _config = new OscAvatar { Id = AvatarId }.ToConfig()!;
         _client = new OscClient("127.0.0.1", OscConnectionSettings.ReceivePort);

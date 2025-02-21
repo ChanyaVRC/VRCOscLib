@@ -33,7 +33,7 @@ public static class TestHelper
         return Path.Combine(OscUtility.VRChatOscPath, userId, "Avatars");
     }
 
-    public static string CreateConfigFileForTest(string avatarId, string name, string directory, bool empty = false)
+    public static string CreateConfigFileForTest(string avatarId, string name, string directory, int hash, bool empty = false)
     {
         Directory.CreateDirectory(directory);
 
@@ -55,7 +55,7 @@ public static class TestHelper
                 new("PhysBoneParam__Angle",     OscType.Float, hasInput: true),
                 new("PhysBoneParam__Stretch",   OscType.Bool,  hasInput: true),
                 new("VelocityZ",                OscType.Float, hasInput: false),
-            ]));
+            ], hash));
         writer.Write(configJson);
         return path;
     }

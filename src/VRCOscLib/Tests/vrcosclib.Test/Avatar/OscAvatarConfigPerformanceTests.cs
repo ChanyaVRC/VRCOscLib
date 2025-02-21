@@ -21,7 +21,7 @@ public class OscAvatarConfigPerformanceTests
                 {
                     parameters.Add(new OscAvatarParameterJson($"param{k}", OscType.Float));
                 }
-                yield return new OscAvatarConfigJson($"avtr_{j}", $"name{j}", [.. parameters]);
+                yield return new OscAvatarConfigJson($"avtr_{j}", $"name{j}", [.. parameters], j);
             }
         }
     }

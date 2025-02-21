@@ -12,6 +12,7 @@ public class OscAvatarConfigTests
 
     private const string Id = "avtr_id";
     private const string Name = "avatar";
+    private const int Hash = 123456;
 
     private readonly IEnumerable<OscAvatarParameter> _parameters =
     [
@@ -43,7 +44,7 @@ public class OscAvatarConfigTests
                     {
                         parameters.Add(new OscAvatarParameterJson($"param{k}", OscType.Float));
                     }
-                    configs.Add(new OscAvatarConfigJson($"avtr_{j}", $"name{j}", [.. parameters]));
+                    configs.Add(new OscAvatarConfigJson($"avtr_{j}", $"name{j}", [.. parameters], j));
                 }
                 yield return configs.ToArray();
             }
@@ -99,7 +100,8 @@ public class OscAvatarConfigTests
         var result = OscAvatarConfig.CreateAll();
 
         Assert.That(result, Is.All.Not.Null);
-        Assert.That(result.Select(v => (v.Id, v.Name)), Is.EquivalentTo(configJsons.Select(v => (v.id, v.name))));
+        Assert.That(result.Select(v => (v.Id, v.Name, v.Hash)), 
+            Is.EquivalentTo(configJsons.Select(v => (v.id, v.name, v.hash))));
 
         foreach (var config in result)
         {
@@ -139,13 +141,14 @@ public class OscAvatarConfigTests
             client.Send(OscConst.AvatarIdAddress, Id);
             await TestHelper.WaitWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestHelper.LatencyTimeout);
         }
-        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
+        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"), Hash);
 
         var currentConfig = OscAvatarConfig.CreateAtCurrent();
 
         Assert.That(currentConfig, Is.Not.Null);
         Assert.That(currentConfig!.Id, Is.EqualTo(Id));
         Assert.That(currentConfig!.Name, Is.EqualTo(Name));
+        Assert.That(currentConfig!.Hash, Is.EqualTo(Hash));
     }
 
     [Test]
@@ -153,13 +156,14 @@ public class OscAvatarConfigTests
     {
         Assert.Throws<FileNotFoundException>(() => OscAvatarConfig.Create(Id));
 
-        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
+        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"), Hash);
 
         var config = OscAvatarConfig.Create(Id);
 
         Assert.That(config, Is.Not.Null);
         Assert.That(config!.Id, Is.EqualTo(Id));
         Assert.That(config!.Name, Is.EqualTo(Name));
+        Assert.That(config!.Hash, Is.EqualTo(Hash));
     }
 
     [Test]
@@ -177,7 +181,7 @@ public class OscAvatarConfigTests
         }
         Assert.ThrowsAsync<FileNotFoundException>(async () => await OscAvatarConfig.WaitAndCreateAtCurrentAsync().AsTask().WaitAsync(timeout));
 
-        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
+        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"), Hash);
         Assert.DoesNotThrowAsync(async () => await OscAvatarConfig.WaitAndCreateAtCurrentAsync().AsTask().WaitAsync(timeout));
     }
 
@@ -189,13 +193,14 @@ public class OscAvatarConfigTests
             client.Send(OscConst.AvatarIdAddress, Id);
             await TestHelper.WaitWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestHelper.LatencyTimeout);
         }
-        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
+        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"), Hash);
 
         var config = await OscAvatarConfig.WaitAndCreateAtCurrentAsync();
 
         Assert.That(config, Is.Not.Null);
         Assert.That(config!.Id, Is.EqualTo(Id));
         Assert.That(config!.Name, Is.EqualTo(Name));
+        Assert.That(config!.Hash, Is.EqualTo(Hash));
     }
 
     [Test]

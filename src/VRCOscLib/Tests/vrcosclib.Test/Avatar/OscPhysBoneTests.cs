@@ -18,7 +18,7 @@ public class OscPhysBoneTests
     {
         TestHelper.StashOscDirectory();
 
-        TestHelper.CreateConfigFileForTest(AvatarId, "Test Avatar", TestHelper.GetAvatarConfigDirectory());
+        TestHelper.CreateConfigFileForTest(AvatarId, "Test Avatar", TestHelper.GetAvatarConfigDirectory(), 123456);
         _avatar = OscAvatarConfig.Create(AvatarId)!;
 
 
