@@ -22,14 +22,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BuildSoft.OscCore" Version="1.2.1" />
+    <PackageReference Include="BuildSoft.OscCore" Version="1.2.1.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Collections.Immutable" Version="9.0.2" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.0" />
   </ItemGroup>
 
   <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
