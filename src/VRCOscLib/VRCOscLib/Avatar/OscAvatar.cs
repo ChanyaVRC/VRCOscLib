@@ -34,6 +34,12 @@ public struct OscAvatar
         OscAvatarUtility.ChangeAvatar(Id);
     }
 
+    /// <inheritdoc/>
+    public override bool Equals(object? obj) => obj is OscAvatar avatar && Id == avatar.Id;
+
+    /// <inheritdoc/>
+    public override int GetHashCode() => 2108858624 + EqualityComparer<string?>.Default.GetHashCode(Id);
+
     /// <summary>
     /// Determines whether two specified <see cref="OscAvatar"/> have the same value.
     /// </summary>
