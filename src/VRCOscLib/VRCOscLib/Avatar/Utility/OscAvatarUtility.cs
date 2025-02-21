@@ -60,7 +60,6 @@ public static class OscAvatarUtility
     public static OscAvatar CurrentAvatar => _currentAvatar;
 
     private static OscAvatar _currentAvatar;
-    private static OscAvatar _changedAvatar;
 
 
     /// <summary>
@@ -98,10 +97,20 @@ public static class OscAvatarUtility
         }
     }
 
+    /// <summary>
+    /// Changes an avatar in VRChat with <paramref name="id"/>.
+    /// </summary>
+    public static void ChangeAvatar(string id)
+    {
+        // If OSC is temporarily disabled or for some other reason the current avatar in VRChat
+        // may differ from _currentAvatar. Therefore, when ChangeAvatar is called, /avatar/change will always be sent.
+        OscParameter.SendValue(OscConst.AvatarIdAddress, id);
+        CallOnAvatarChanged(_currentAvatar, new OscAvatar() { Id = id });
+    }
+
     private static void ReadAvatarIdFromApp(IReadOnlyOscParameterCollection sender, ValueChangedEventArgs e)
     {
-        _changedAvatar.Id = (string?)e.NewValue;
-        CallOnAvatarChanged();
+        CallOnAvatarChanged(_currentAvatar, new OscAvatar() { Id = (string?)e.NewValue });
     }
 
     /// <summary>
@@ -126,14 +135,18 @@ public static class OscAvatarUtility
     public static IEnumerable<object?> GetCommonParameterValues()
         => _commonParameters.Select(GetCommonParameterValue);
 
-    private static void CallOnAvatarChanged()
+    private static void CallOnAvatarChanged(OscAvatar oldAvatar, OscAvatar newAvatar)
     {
-        var oldAvatar = _currentAvatar;
-        var newAvatar = _changedAvatar;
-
+        // If OSC is temporarily disabled or for some other reason the current avatar in VRChat
+        // may differ from _currentAvatar. Therefore, when ChangeAvatar is called, /avatar/change will always be sent.
+        // However, if it is determined that the old and new avatars are the same,
+        // the callback for the change will not be invoked because it would be impossible
+        // to reliably obtain the 'definitely correct' old avatar.
+        if (oldAvatar == newAvatar)
+        {
+            return;
+        }
         _currentAvatar = newAvatar;
-        _changedAvatar = default;
-
-        AvatarChanged?.Invoke(_currentAvatar, new ValueChangedEventArgs<OscAvatar>(oldAvatar, newAvatar));
+        AvatarChanged?.Invoke(newAvatar, new ValueChangedEventArgs<OscAvatar>(oldAvatar, newAvatar));
     }
 }

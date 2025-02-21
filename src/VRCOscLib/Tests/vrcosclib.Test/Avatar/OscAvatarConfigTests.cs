@@ -200,6 +200,20 @@ public class OscAvatarConfigTests
         Assert.AreEqual(Name, config!.Name);
     }
 
+    [Test]
+    public void TestChange()
+    {
+        const string AvatarId = "avtr_change_test";
+
+        var config = new OscAvatarConfig(AvatarId, Name, _parameters);
+        using (new OscServer(OscConnectionSettings.SendPort))
+        {
+            Assert.DoesNotThrow(() => config.Change());
+        }
+        Assert.AreEqual(AvatarId, OscAvatarUtility.CurrentAvatar.Id);
+    }
+
+
     private static async ValueTask MakeCurrentAvatarIdToNull()
     {
         if (OscAvatarUtility.CurrentAvatar.Id != null)

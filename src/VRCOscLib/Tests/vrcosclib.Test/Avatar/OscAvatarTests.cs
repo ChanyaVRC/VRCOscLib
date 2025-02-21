@@ -1,4 +1,5 @@
-﻿using BuildSoft.VRChat.Osc.Test;
+﻿using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Test;
 using NUnit.Framework;
 
 namespace BuildSoft.VRChat.Osc.Avatar.Test;
@@ -41,5 +42,17 @@ public class OscAvatarTests
         var config = new OscAvatar { Id = AvatarId }.ToConfig();
         Assert.IsNotNull(config);
         Assert.AreEqual(AvatarId, config!.Id);
+    }
+
+    [Test]
+    public void TestChange()
+    {
+        const string AvatarId = "avtr_id_for_test";
+        Assert.Throws<InvalidOperationException>(() => default(OscAvatar).Change());
+        using (new OscServer(OscConnectionSettings.SendPort))
+        {
+            Assert.DoesNotThrow(() => new OscAvatar { Id = AvatarId }.Change());
+        }
+        Assert.AreEqual(AvatarId, OscAvatarUtility.CurrentAvatar.Id);
     }
 }

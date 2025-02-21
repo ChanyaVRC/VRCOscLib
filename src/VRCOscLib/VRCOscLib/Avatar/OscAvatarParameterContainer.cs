@@ -146,8 +146,10 @@ public class OscAvatarParameterContainer : IReadOnlyDictionary<string, object?>
         (string Suffix, OscType Type)[] paramInfos =
         [
             ("_" + nameof(OscPhysBone.IsGrabbed),   OscType.Bool),
+            ("_" + nameof(OscPhysBone.IsPosed),     OscType.Bool),
             ("_" + nameof(OscPhysBone.Angle),       OscType.Float),
             ("_" + nameof(OscPhysBone.Stretch),     OscType.Float),
+            ("_" + nameof(OscPhysBone.Squish),      OscType.Float),
         ];
 
         Dictionary<string, int> dictionary = [];
@@ -228,11 +230,7 @@ public class OscAvatarParameterContainer : IReadOnlyDictionary<string, object?>
     /// <param name="value">The value to set the avatar parameter to.</param>
     public void SetAs<T>(string name, T value)
     {
-        var inputInterface = Get(name).Input;
-        if (inputInterface == null)
-        {
-            throw new InvalidOperationException($"{name} dosen't has a input interface.");
-        }
+        var inputInterface = Get(name).Input ?? throw new InvalidOperationException($"{name} dosen't has a input interface.");
 
         switch (value)
         {
