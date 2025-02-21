@@ -21,8 +21,8 @@ public class OscAvatarParameterContainerTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        _configFile = TestUtility.CreateConfigFileForTest(new(AvatarId, "TestAvatar", new OscAvatarParameterJson[]
-        {
+        _configFile = TestUtility.CreateConfigFileForTest(new(AvatarId, "TestAvatar",
+        [
             new("ValidParam1_IsGrabbed",   OscType.Bool,  hasInput: true),
             new("ValidParam1_Angle",       OscType.Float, hasInput: true),
             new("ValidParam1_Stretch",     OscType.Float, hasInput: true),
@@ -55,7 +55,7 @@ public class OscAvatarParameterContainerTests
             new("InvalidParam7Stretch",    OscType.Float, hasInput: true),
 
             new("TestParam",               OscType.Float, hasInput: true),
-        }), Path.Combine(OscUtility.VRChatOscPath, "Test"));
+        ]), Path.Combine(OscUtility.VRChatOscPath, "Test"));
 
         _config = new OscAvatar { Id = AvatarId }.ToConfig()!;
         _client = new OscClient("127.0.0.1", OscUtility.ReceivePort);

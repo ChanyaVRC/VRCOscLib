@@ -136,5 +136,5 @@ public static class OscConnectionSettings
     /// <summary>
     /// A list of callbacks to be invoked when an OSC message is received.
     /// </summary>
-    internal static List<MonitorCallback> MonitorCallbacks { get; } = new List<MonitorCallback>();
+    internal static List<MonitorCallback> MonitorCallbacks { get; } = [];
 }

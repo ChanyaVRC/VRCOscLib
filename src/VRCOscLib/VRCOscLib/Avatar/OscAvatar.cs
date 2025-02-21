@@ -17,5 +17,5 @@ public struct OscAvatar
     /// An <see cref="OscAvatarConfig"/> object representing the avatar,
     /// or null if the avatar does not have a valid ID.
     /// </returns>
-    public OscAvatarConfig? ToConfig() => Id == null ? null : OscAvatarConfig.Create(Id);
+    public readonly OscAvatarConfig? ToConfig() => Id == null ? null : OscAvatarConfig.Create(Id);
 }

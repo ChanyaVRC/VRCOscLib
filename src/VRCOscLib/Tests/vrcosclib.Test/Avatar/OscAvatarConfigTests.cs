@@ -15,8 +15,8 @@ public class OscAvatarConfigTests
     private const string Id = "avtr_id";
     private const string Name = "avatar";
 
-    private readonly IEnumerable<OscAvatarParameter> _parameters = new OscAvatarParameter[]
-    {
+    private readonly IEnumerable<OscAvatarParameter> _parameters =
+    [
         new("param1", new("address/to/param1", OscType.Float), new("address/to/param1", OscType.Float)),
         new("param2", new("address/to/param2", OscType.Float), new("address/to/param2", OscType.Float)),
         new("param3", new("address/to/param3", OscType.Float), new("address/to/param3", OscType.Float)),
@@ -24,14 +24,14 @@ public class OscAvatarConfigTests
         new("param5", new("address/to/param5", OscType.Float), new("address/to/param5", OscType.Float)),
         new("param6", new("address/to/param6", OscType.Float), new("address/to/param6", OscType.Float)),
         new("param7", new("address/to/param7", OscType.Float), new("address/to/param7", OscType.Float)),
-    };
+    ];
 
     private static IEnumerable<OscAvatarConfigJson[]> ConfigJsons
     {
         get
         {
-            List<OscAvatarConfigJson> configs = new();
-            List<OscAvatarParameterJson> parameters = new();
+            List<OscAvatarConfigJson> configs = [];
+            List<OscAvatarParameterJson> parameters = [];
 
             for (int i = 0; i < 5; i++)
             {
@@ -45,7 +45,7 @@ public class OscAvatarConfigTests
                     {
                         parameters.Add(new OscAvatarParameterJson($"param{k}", OscType.Float));
                     }
-                    configs.Add(new OscAvatarConfigJson($"avtr_{j}", $"name{j}", parameters.ToArray()));
+                    configs.Add(new OscAvatarConfigJson($"avtr_{j}", $"name{j}", [.. parameters]));
                 }
                 yield return configs.ToArray();
             }

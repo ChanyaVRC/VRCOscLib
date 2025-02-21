@@ -5,7 +5,7 @@ namespace BuildSoft.VRChat.Osc.Test;
 [TestOf(typeof(OscParameterCollection))]
 public class OscParameterCollectionTests
 {
-    private static readonly object?[] _valuesForTestCase = { null, 1, 2, 1.0, 1.2, "somevalue", "something" };
+    private static readonly object?[] _valuesForTestCase = [null, 1, 2, 1.0, 1.2, "somevalue", "something"];
 
     private static IEnumerable<TestCaseData> ValuesCaseSource => _valuesForTestCase.Select(x => new TestCaseData(x));
     private static IEnumerable<TestCaseData> NewOldCaseSource
@@ -184,7 +184,7 @@ public class OscParameterCollectionTests
 
     private static OscParameterCollection CreateParameterCollectionForTest()
     {
-        OscParameterCollection parameters = new();
+        OscParameterCollection parameters = [];
         parameters.ValueChanged += (sender, e) =>
          {
              Assert.AreEqual(parameters, sender);

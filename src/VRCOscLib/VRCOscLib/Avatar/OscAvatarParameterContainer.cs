@@ -144,13 +144,13 @@ public class OscAvatarParameterContainer : IReadOnlyDictionary<string, object?>
     private ImmutableArray<OscPhysBone> CreatePhysBones()
     {
         (string Suffix, OscType Type)[] paramInfos =
-        {
+        [
             ("_" + nameof(OscPhysBone.IsGrabbed),   OscType.Bool),
             ("_" + nameof(OscPhysBone.Angle),       OscType.Float),
             ("_" + nameof(OscPhysBone.Stretch),     OscType.Float),
-        };
+        ];
 
-        Dictionary<string, int> dictionary = new();
+        Dictionary<string, int> dictionary = [];
         var items = Items;
         var builder = ImmutableArray.CreateBuilder<OscPhysBone>();
 
