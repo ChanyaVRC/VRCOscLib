@@ -6,7 +6,7 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  publish-to-nuget.org:
+  publish-to-nuget-org:
     if: github.repository == 'ChanyaVRC/VRCOscLib'
     runs-on: ubuntu-latest
 
