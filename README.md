@@ -134,6 +134,30 @@ await Task.Delay(3000);
 OscChatbox.SendMessage("some message", direct: true);
 ```
 
+### How to change an avatar
+Can be changed an avatar by one of the following methods.
+* use `OscAvatarUtility.ChangeAvatar(id)`
+* use `OscAvatarConfig.Change()`
+* use `OscAvatar.Change()`
+
+#### e.g) Change avatar
+```cs
+using BuildSoft.VRChat.Osc.Avatar;
+
+OscAvatarUtility.ChangeAvatar("avtr_XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX");
+```
+or
+```cs
+using BuildSoft.VRChat.Osc.Chatbox;
+using System.Threading.Tasks;
+
+var avatar = await OscAvatarConfig.WaitAndCreateAtCurrentAsync();
+
+await Task.Delay(1000);
+
+avatar.Change();
+```
+
 
 <!-- ## Contact
 * Twitter: [@ChanyaVRChat1](https://twitter.com/ChanyaVRChat1)
