@@ -35,13 +35,13 @@ public class OscAvatarTests
     public void TestToConfig()
     {
         const string AvatarId = "avtr_id_for_test";
-        Assert.AreEqual(null, default(OscAvatar).ToConfig());
+        Assert.That(default(OscAvatar).ToConfig(), Is.Null);
         Assert.Throws<FileNotFoundException>(() => new OscAvatar { Id = AvatarId }.ToConfig());
 
         TestUtility.CreateConfigFileForTest(AvatarId, "Test Avatar", TestUtility.GetAvatarConfigDirectory());
         var config = new OscAvatar { Id = AvatarId }.ToConfig();
-        Assert.IsNotNull(config);
-        Assert.AreEqual(AvatarId, config!.Id);
+        Assert.That(config, Is.Not.Null);
+        Assert.That(config!.Id, Is.EqualTo(AvatarId));
     }
 
     [Test]
@@ -53,6 +53,6 @@ public class OscAvatarTests
         {
             Assert.DoesNotThrow(() => new OscAvatar { Id = AvatarId }.Change());
         }
-        Assert.AreEqual(AvatarId, OscAvatarUtility.CurrentAvatar.Id);
+        Assert.That(OscAvatarUtility.CurrentAvatar.Id, Is.EqualTo(AvatarId));
     }
 }

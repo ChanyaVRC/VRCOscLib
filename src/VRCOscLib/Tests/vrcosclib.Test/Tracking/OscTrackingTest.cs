@@ -43,8 +43,8 @@ public class OscTrackingTest
     {
         var headTracker = OscTracking.HeadTracker;
 
-        Assert.AreEqual("/tracking/trackers/head/position", headTracker.PositionAddress);
-        Assert.AreEqual("/tracking/trackers/head/rotation", headTracker.RotationAddress);
+        Assert.That(headTracker.PositionAddress, Is.EqualTo("/tracking/trackers/head/position"));
+        Assert.That(headTracker.RotationAddress, Is.EqualTo("/tracking/trackers/head/rotation"));
     }
 
     [Test]
@@ -61,10 +61,10 @@ public class OscTrackingTest
         headTracker.Position = expected;
         await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
 
-        Assert.AreEqual(expected, headTracker.Position);
-        Assert.AreEqual(expected.x, value.ReadFloatElement(0));
-        Assert.AreEqual(expected.y, value.ReadFloatElement(1));
-        Assert.AreEqual(expected.z, value.ReadFloatElement(2));
+        Assert.That(headTracker.Position, Is.EqualTo(expected));
+        Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
+        Assert.That(value.ReadFloatElement(1), Is.EqualTo(expected.y));
+        Assert.That(value.ReadFloatElement(2), Is.EqualTo(expected.z));
     }
 
     [Test]
@@ -81,10 +81,10 @@ public class OscTrackingTest
         headTracker.Rotation = expected;
         await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
 
-        Assert.AreEqual(expected, headTracker.Rotation);
-        Assert.AreEqual(expected.x, value.ReadFloatElement(0));
-        Assert.AreEqual(expected.y, value.ReadFloatElement(1));
-        Assert.AreEqual(expected.z, value.ReadFloatElement(2));
+        Assert.That(headTracker.Rotation, Is.EqualTo(expected));
+        Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
+        Assert.That(value.ReadFloatElement(1), Is.EqualTo(expected.y));
+        Assert.That(value.ReadFloatElement(2), Is.EqualTo(expected.z));
     }
 
 
@@ -92,7 +92,7 @@ public class OscTrackingTest
     public async Task HeadTracker_PositionGetTest()
     {
         var headTracker = OscTracking.HeadTracker;
-        Assert.AreEqual(new Vector3(), headTracker.Position);
+        Assert.That(headTracker.Position, Is.EqualTo(new Vector3()));
 
         OscMessageValues value = null!;
         void valueReadMethod(OscMessageValues v) => value = v;
@@ -102,7 +102,7 @@ public class OscTrackingTest
         _client.Send(headTracker.PositionAddress, expected);
 
         await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(expected, headTracker.Position);
+        Assert.That(headTracker.Position, Is.EqualTo(expected));
 
         OscUtility.Server.RemoveMethod(headTracker.PositionAddress, valueReadMethod);
     }
@@ -111,7 +111,7 @@ public class OscTrackingTest
     public async Task HeadTracker_RotationGetTest()
     {
         var headTracker = OscTracking.HeadTracker;
-        Assert.AreEqual(new Vector3(), headTracker.Position);
+        Assert.That(headTracker.Position, Is.EqualTo(new Vector3()));
 
         OscMessageValues value = null!;
         void valueReadMethod(OscMessageValues v) => value = v;
@@ -121,7 +121,7 @@ public class OscTrackingTest
         _client.Send(headTracker.RotationAddress, expected);
 
         await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(expected, headTracker.Rotation);
+        Assert.That(headTracker.Rotation, Is.EqualTo(expected));
 
         OscUtility.Server.RemoveMethod(headTracker.RotationAddress, valueReadMethod);
     }
@@ -132,14 +132,14 @@ public class OscTrackingTest
     {
         var trackers = OscTracking.Trackers;
 
-        Assert.AreEqual(OscTracker.SupportedTrackerCount, trackers.Length);
-        Assert.AreEqual("/tracking/trackers/1/position", trackers[0].PositionAddress);
-        Assert.AreEqual("/tracking/trackers/1/rotation", trackers[0].RotationAddress);
+        Assert.That(trackers.Length, Is.EqualTo(OscTracker.SupportedTrackerCount));
+        Assert.That(trackers[0].PositionAddress, Is.EqualTo("/tracking/trackers/1/position"));
+        Assert.That(trackers[0].RotationAddress, Is.EqualTo("/tracking/trackers/1/rotation"));
 
         for (int i = 0; i < OscTracker.SupportedTrackerCount; i++)
         {
-            Assert.AreEqual($"/tracking/trackers/{i + 1}/position", trackers[i].PositionAddress);
-            Assert.AreEqual($"/tracking/trackers/{i + 1}/rotation", trackers[i].RotationAddress);
+            Assert.That(trackers[i].PositionAddress, Is.EqualTo($"/tracking/trackers/{i + 1}/position"));
+            Assert.That(trackers[i].RotationAddress, Is.EqualTo($"/tracking/trackers/{i + 1}/rotation"));
         }
     }
 }

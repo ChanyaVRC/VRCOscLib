@@ -16,20 +16,20 @@ public class OscAvatarParameterTests
         var parameter2 = new OscAvatarParameter("param2", output: output);
         var parameter3 = new OscAvatarParameter("param3", input: input);
 
-        Assert.AreEqual("param1", parameter1.Name);
-        Assert.AreSame(input, parameter1.Input);
-        Assert.AreSame(output, parameter1.Output);
-        Assert.AreEqual(output.Address, parameter1.ReadableAddress);
+        Assert.That(parameter1.Name, Is.EqualTo("param1"));
+        Assert.That(parameter1.Input, Is.SameAs(input));
+        Assert.That(parameter1.Output, Is.SameAs(output));
+        Assert.That(parameter1.ReadableAddress, Is.EqualTo(output.Address));
 
-        Assert.AreEqual("param2", parameter2.Name);
-        Assert.IsNull(parameter2.Input);
-        Assert.AreSame(output, parameter2.Output);
-        Assert.AreEqual(output.Address, parameter2.ReadableAddress);
+        Assert.That(parameter2.Name, Is.EqualTo("param2"));
+        Assert.That(parameter2.Input, Is.Null);
+        Assert.That(parameter2.Output, Is.SameAs(output));
+        Assert.That(parameter2.ReadableAddress, Is.EqualTo(output.Address));
 
-        Assert.AreEqual("param3", parameter3.Name);
-        Assert.AreSame(input, parameter3.Input);
-        Assert.IsNull(parameter3.Output);
-        Assert.AreEqual(input.Address, parameter3.ReadableAddress);
+        Assert.That(parameter3.Name, Is.EqualTo("param3"));
+        Assert.That(parameter3.Input, Is.SameAs(input));
+        Assert.That(parameter3.Output, Is.Null);
+        Assert.That(parameter3.ReadableAddress, Is.EqualTo(input.Address));
     }
 
     [Test]

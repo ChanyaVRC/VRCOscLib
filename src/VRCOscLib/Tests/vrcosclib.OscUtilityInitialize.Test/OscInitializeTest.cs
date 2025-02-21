@@ -36,11 +36,11 @@ public class OscInitializeTest
     [Test]
     public void InitializeTest()
     {
-        Assert.IsTrue(OscUtility.IsFailedAutoInitialization);
+        Assert.That(OscUtility.IsFailedAutoInitialization);
         Assert.Throws<SocketException>(() => OscUtility.Initialize());
 
         OscConnectionSettings.ReceivePort = 9003;
         Assert.DoesNotThrow(() => OscUtility.Initialize());
-        Assert.IsTrue(OscUtility.IsFailedAutoInitialization);
+        Assert.That(OscUtility.IsFailedAutoInitialization);
     }
 }

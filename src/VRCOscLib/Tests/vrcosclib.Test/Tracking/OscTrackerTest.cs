@@ -66,8 +66,8 @@ public class OscTrackerTest
         Assert.DoesNotThrow(() => new OscTracker(index));
 
         OscTracker tracker = new(index);
-        Assert.AreEqual($"/tracking/trackers/{index + 1}/position", tracker.PositionAddress);
-        Assert.AreEqual($"/tracking/trackers/{index + 1}/rotation", tracker.RotationAddress);
+        Assert.That(tracker.PositionAddress, Is.EqualTo($"/tracking/trackers/{index + 1}/position"));
+        Assert.That(tracker.RotationAddress, Is.EqualTo($"/tracking/trackers/{index + 1}/rotation"));
     }
 
     [TestCaseSource(nameof(InvalidRangeSource))]
@@ -75,8 +75,8 @@ public class OscTrackerTest
     {
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new OscTracker(index));
 
-        Assert.NotNull(exception);
-        Assert.AreEqual("index", exception!.ParamName);
+        Assert.That(exception, Is.Not.Null);
+        Assert.That(exception!.ParamName, Is.EqualTo("index"));
     }
 
 
@@ -84,7 +84,7 @@ public class OscTrackerTest
     public async Task PositionTest()
     {
         var tracker = new OscTracker(0);
-        Assert.AreEqual(new Vector3(), tracker.Position);
+        Assert.That(tracker.Position, Is.EqualTo(new Vector3()));
 
         OscMessageValues value = null!;
         void valueReadMethod(OscMessageValues v) => value = v;
@@ -95,19 +95,19 @@ public class OscTrackerTest
         tracker.Position = expected;
         await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
 
-        Assert.AreEqual(expected, tracker.Position);
-        Assert.AreEqual(expected.x, value.ReadFloatElement(0));
-        Assert.AreEqual(expected.y, value.ReadFloatElement(1));
-        Assert.AreEqual(expected.z, value.ReadFloatElement(2));
+        Assert.That(tracker.Position, Is.EqualTo(expected));
+        Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
+        Assert.That(value.ReadFloatElement(1), Is.EqualTo(expected.y));
+        Assert.That(value.ReadFloatElement(2), Is.EqualTo(expected.z));
 
-        Assert.AreEqual(expected, new OscTracker(0).Position);
+        Assert.That(new OscTracker(0).Position, Is.EqualTo(expected));
     }
 
     [Test]
     public async Task RotationTest()
     {
         var tracker = new OscTracker(0);
-        Assert.AreEqual(new Vector3(), tracker.Rotation);
+        Assert.That(tracker.Rotation, Is.EqualTo(new Vector3()));
 
         OscMessageValues value = null!;
         void valueReadMethod(OscMessageValues v) => value = v;
@@ -118,11 +118,11 @@ public class OscTrackerTest
         tracker.Rotation = expected;
         await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
 
-        Assert.AreEqual(expected, tracker.Rotation);
-        Assert.AreEqual(expected.x, value.ReadFloatElement(0));
-        Assert.AreEqual(expected.y, value.ReadFloatElement(1));
-        Assert.AreEqual(expected.z, value.ReadFloatElement(2));
+        Assert.That(tracker.Rotation, Is.EqualTo(expected));
+        Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
+        Assert.That(value.ReadFloatElement(1), Is.EqualTo(expected.y));
+        Assert.That(value.ReadFloatElement(2), Is.EqualTo(expected.z));
 
-        Assert.AreEqual(expected, new OscTracker(0).Rotation);
+        Assert.That(new OscTracker(0).Rotation, Is.EqualTo(expected));
     }
 }

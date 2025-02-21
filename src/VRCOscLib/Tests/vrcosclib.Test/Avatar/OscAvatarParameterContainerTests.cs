@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using BuildSoft.OscCore;
 using BuildSoft.VRChat.Osc.Test;
@@ -111,9 +112,9 @@ public class OscAvatarParameterContainerTests
 
         void Handler(OscAvatarParameter param, ValueChangedEventArgs e)
         {
-            Assert.AreEqual("TestParam", param.Name);
-            Assert.IsNull(e.OldValue);
-            Assert.AreEqual(newValue, e.NewValue);
+            Assert.That(param.Name, Is.EqualTo(param.Name));
+            Assert.That(e.OldValue, Is.Null);
+            Assert.That(e.NewValue, Is.EqualTo(newValue));
             isCalled = true;
         }
     }
@@ -123,19 +124,19 @@ public class OscAvatarParameterContainerTests
     {
         var physBones = _parameters.PhysBones;
 
-        Assert.IsNotNull(physBones);
-        CollectionAssert.AreEquivalent(
-            new[] { "ValidParam1", "ValidParam2", "ValidParam3", },
-            physBones.Select(v => v.ParamName));
+        Assert.That(physBones, Is.Not.Null);
+        Assert.That(
+            physBones.Select(v => v.ParamName),
+            Is.EquivalentTo(["ValidParam1", "ValidParam2", "ValidParam3"]));
     }
 
     [Test]
     public void Get_ExistParameterTest()
     {
         var param = _parameters.Get("TestParam");
-        Assert.AreEqual("TestParam", param.Name);
-        Assert.AreEqual(OscType.Float, param.Input!.OscType);
-        Assert.AreEqual(OscType.Float, param.Output!.OscType);
+        Assert.That(param.Name, Is.EqualTo("TestParam"));
+        Assert.That(param.Input!.OscType, Is.EqualTo(OscType.Float));
+        Assert.That(param.Output!.OscType, Is.EqualTo(OscType.Float));
     }
 
     [Test]

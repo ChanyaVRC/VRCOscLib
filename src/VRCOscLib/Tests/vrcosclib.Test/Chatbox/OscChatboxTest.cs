@@ -55,9 +55,9 @@ public class OscChatboxTest
         bool receivedMessageComplete = value.ReadBooleanElement(2);
 
 
-        Assert.AreEqual(message, Encoding.UTF8.GetString(receivedMessage, 0, length));
-        Assert.AreEqual(direct, receivedDirect);
-        Assert.AreEqual(messageComplete, receivedMessageComplete);
+        Assert.That(message, Is.EqualTo(Encoding.UTF8.GetString(receivedMessage, 0, length)));
+        Assert.That(direct, Is.EqualTo(receivedDirect));
+        Assert.That(messageComplete, Is.EqualTo(receivedMessageComplete));
     }
 
     [TestCase(true)]
@@ -74,7 +74,7 @@ public class OscChatboxTest
         bool receivedIsTyping = value.ReadBooleanElement(0);
 
 
-        Assert.AreEqual(isTyping, receivedIsTyping);
+        Assert.That(receivedIsTyping, Is.EqualTo(isTyping));
     }
 
 }

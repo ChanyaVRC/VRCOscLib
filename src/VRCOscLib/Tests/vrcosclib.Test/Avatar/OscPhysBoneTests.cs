@@ -47,33 +47,33 @@ public class OscPhysBoneTests
     public void TestCtor1()
     {
         var physBone = new OscPhysBone(_avatar, PhysBoneParam);
-        Assert.AreEqual(PhysBoneParam, physBone.ParamName);
-        Assert.IsFalse(physBone.IsGrabbed);
-        Assert.Zero(physBone.Angle);
-        Assert.Zero(physBone.Stretch);
+        Assert.That(physBone.ParamName, Is.EqualTo(PhysBoneParam));
+        Assert.That(physBone.IsGrabbed, Is.False);
+        Assert.That(physBone.Angle, Is.Zero);
+        Assert.That(physBone.Stretch, Is.Zero);
 
         var exception = Assert.Throws<ArgumentException>(() => new OscPhysBone(_avatar, PhysBoneParam + "_"));
-        Assert.AreEqual("avatar", exception?.ParamName);
+        Assert.That(exception?.ParamName, Is.EqualTo("avatar"));
     }
 
     [Test]
     public void TestCtor2()
     {
         var physBone = new OscPhysBone(_avatar.Parameters, PhysBoneParam);
-        Assert.AreEqual(PhysBoneParam, physBone.ParamName);
-        Assert.IsFalse(physBone.IsGrabbed);
-        Assert.Zero(physBone.Angle);
-        Assert.Zero(physBone.Stretch);
+        Assert.That(physBone.ParamName, Is.EqualTo(PhysBoneParam));
+        Assert.That(physBone.IsGrabbed, Is.False);
+        Assert.That(physBone.Angle, Is.Zero);
+        Assert.That(physBone.Stretch, Is.Zero);
 
         var exception = Assert.Throws<ArgumentException>(() => new OscPhysBone(_avatar.Parameters, PhysBoneParam + "_"));
-        Assert.AreEqual("parameters", exception?.ParamName);
+        Assert.That(exception?.ParamName, Is.EqualTo("parameters"));
     }
 
     [Test]
     public void TestIsGrabbed()
     {
         var physBone = new OscPhysBone(_avatar, PhysBoneParam);
-        Assert.IsFalse(physBone.IsGrabbed);
+        Assert.That(physBone.IsGrabbed, Is.False);
 
         const string IsGrabbedParamName = PhysBoneParam + "_IsGrabbed";
         var parameters = _avatar.Parameters;
@@ -82,23 +82,23 @@ public class OscPhysBoneTests
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {
-            Assert.AreEqual(isGrabbedParam, sender);
+            Assert.That(sender, Is.EqualTo(isGrabbedParam));
             passedCount++;
         }
 
         physBone.ParameterChanged += Handler;
 
         parameters[IsGrabbedParamName] = true;
-        Assert.IsTrue(physBone.IsGrabbed);
-        Assert.AreEqual(1, passedCount);
+        Assert.That(physBone.IsGrabbed, Is.True);
+        Assert.That(passedCount, Is.EqualTo(1));
 
         parameters[IsGrabbedParamName] = false;
-        Assert.IsFalse(physBone.IsGrabbed);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.IsGrabbed, Is.False);
+        Assert.That(passedCount, Is.EqualTo(2));
 
         parameters[IsGrabbedParamName] = false;
-        Assert.IsFalse(physBone.IsGrabbed);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.IsGrabbed, Is.False);
+        Assert.That(passedCount, Is.EqualTo(2));
 
         physBone.ParameterChanged -= Handler;
     }
@@ -107,7 +107,7 @@ public class OscPhysBoneTests
     public void TestIsPosed()
     {
         var physBone = new OscPhysBone(_avatar, PhysBoneParam);
-        Assert.IsFalse(physBone.IsPosed);
+        Assert.That(physBone.IsPosed, Is.False);
 
         const string IsPosedParamName = PhysBoneParam + "_IsPosed";
         var parameters = _avatar.Parameters;
@@ -116,23 +116,23 @@ public class OscPhysBoneTests
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {
-            Assert.AreEqual(IsPosedParam, sender);
+            Assert.That(sender, Is.EqualTo(IsPosedParam));
             passedCount++;
         }
 
         physBone.ParameterChanged += Handler;
 
         parameters[IsPosedParamName] = true;
-        Assert.IsTrue(physBone.IsPosed);
-        Assert.AreEqual(1, passedCount);
+        Assert.That(physBone.IsPosed, Is.True);
+        Assert.That(passedCount, Is.EqualTo(1));
 
         parameters[IsPosedParamName] = false;
-        Assert.IsFalse(physBone.IsPosed);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.IsPosed, Is.False);
+        Assert.That(passedCount, Is.EqualTo(2));
 
         parameters[IsPosedParamName] = false;
-        Assert.IsFalse(physBone.IsPosed);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.IsPosed, Is.False);
+        Assert.That(passedCount, Is.EqualTo(2));
 
         physBone.ParameterChanged -= Handler;
     }
@@ -141,7 +141,7 @@ public class OscPhysBoneTests
     public void TestAngle()
     {
         var physBone = new OscPhysBone(_avatar, PhysBoneParam);
-        Assert.AreEqual(0f, physBone.Angle);
+        Assert.That(physBone.Angle, Is.EqualTo(0f));
 
         const string AngleParamName = PhysBoneParam + "_Angle";
         var parameters = _avatar.Parameters;
@@ -150,23 +150,23 @@ public class OscPhysBoneTests
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {
-            Assert.AreEqual(angleParam, sender);
+            Assert.That(sender, Is.EqualTo(angleParam));
             passedCount++;
         }
 
         physBone.ParameterChanged += Handler;
 
         parameters[AngleParamName] = 0.1f;
-        Assert.AreEqual(0.1f, physBone.Angle);
-        Assert.AreEqual(1, passedCount);
+        Assert.That(physBone.Angle, Is.EqualTo(0.1f));
+        Assert.That(passedCount, Is.EqualTo(1));
 
         parameters[AngleParamName] = -1.2345f;
-        Assert.AreEqual(-1.2345f, physBone.Angle);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.Angle, Is.EqualTo(-1.2345f));
+        Assert.That(passedCount, Is.EqualTo(2));
 
         parameters[AngleParamName] = -1.2345f;
-        Assert.AreEqual(-1.2345f, physBone.Angle);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.Angle, Is.EqualTo(-1.2345f));
+        Assert.That(passedCount, Is.EqualTo(2));
 
         physBone.ParameterChanged -= Handler;
     }
@@ -175,7 +175,7 @@ public class OscPhysBoneTests
     public void TestStretch()
     {
         var physBone = new OscPhysBone(_avatar, PhysBoneParam);
-        Assert.AreEqual(0f, physBone.Stretch);
+        Assert.That(physBone.Stretch, Is.EqualTo(0f));
 
         const string StretchParamName = PhysBoneParam + "_Stretch";
         var parameters = _avatar.Parameters;
@@ -184,23 +184,23 @@ public class OscPhysBoneTests
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {
-            Assert.AreEqual(stretchParam, sender);
+            Assert.That(sender, Is.EqualTo(stretchParam));
             passedCount++;
         }
 
         physBone.ParameterChanged += Handler;
 
         parameters[StretchParamName] = 0.1f;
-        Assert.AreEqual(0.1f, physBone.Stretch);
-        Assert.AreEqual(1, passedCount);
+        Assert.That(physBone.Stretch, Is.EqualTo(0.1f));
+        Assert.That(passedCount, Is.EqualTo(1));
 
         parameters[StretchParamName] = -1.2345f;
-        Assert.AreEqual(-1.2345f, physBone.Stretch);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.Stretch, Is.EqualTo(-1.2345f));
+        Assert.That(passedCount, Is.EqualTo(2));
 
         parameters[StretchParamName] = -1.2345f;
-        Assert.AreEqual(-1.2345f, physBone.Stretch);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.Stretch, Is.EqualTo(-1.2345f));
+        Assert.That(passedCount, Is.EqualTo(2));
 
         physBone.ParameterChanged -= Handler;
     }
@@ -209,7 +209,7 @@ public class OscPhysBoneTests
     public void TestSquish()
     {
         var physBone = new OscPhysBone(_avatar, PhysBoneParam);
-        Assert.AreEqual(0f, physBone.Squish);
+        Assert.That(physBone.Squish, Is.EqualTo(0f));
 
         const string SquishParamName = PhysBoneParam + "_Squish";
         var parameters = _avatar.Parameters;
@@ -218,23 +218,23 @@ public class OscPhysBoneTests
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {
-            Assert.AreEqual(squishParam, sender);
+            Assert.That(sender, Is.EqualTo(squishParam));
             passedCount++;
         }
 
         physBone.ParameterChanged += Handler;
 
         parameters[SquishParamName] = 0.1f;
-        Assert.AreEqual(0.1f, physBone.Squish);
-        Assert.AreEqual(1, passedCount);
+        Assert.That(physBone.Squish, Is.EqualTo(0.1f));
+        Assert.That(passedCount, Is.EqualTo(1));
 
         parameters[SquishParamName] = -1.2345f;
-        Assert.AreEqual(-1.2345f, physBone.Squish);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.Squish, Is.EqualTo(-1.2345f));
+        Assert.That(passedCount, Is.EqualTo(2));
 
         parameters[SquishParamName] = -1.2345f;
-        Assert.AreEqual(-1.2345f, physBone.Squish);
-        Assert.AreEqual(2, passedCount);
+        Assert.That(physBone.Squish, Is.EqualTo(-1.2345f));
+        Assert.That(passedCount, Is.EqualTo(2));
 
         physBone.ParameterChanged -= Handler;
     }

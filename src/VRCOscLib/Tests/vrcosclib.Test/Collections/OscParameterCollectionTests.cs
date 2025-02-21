@@ -30,19 +30,19 @@ public class OscParameterCollectionTests
         var parameters = new OscParameterCollection();
 
         Assert.Throws<KeyNotFoundException>(() => _ = parameters[address]);
-        Assert.AreEqual(0, parameters.Count);
+        Assert.That(parameters.Count, Is.EqualTo(0));
 
         parameters[address] = value1;
-        Assert.AreEqual(value1, parameters[address]);
-        Assert.AreEqual(1, parameters.Count);
+        Assert.That(parameters[address], Is.EqualTo(value1));
+        Assert.That(parameters.Count, Is.EqualTo(1));
 
         parameters[address] = value1;
-        Assert.AreEqual(value1, parameters[address]);
-        Assert.AreEqual(1, parameters.Count);
+        Assert.That(parameters[address], Is.EqualTo(value1));
+        Assert.That(parameters.Count, Is.EqualTo(1));
 
         parameters[address] = value2;
-        Assert.AreEqual(value2, parameters[address]);
-        Assert.AreEqual(1, parameters.Count);
+        Assert.That(parameters[address], Is.EqualTo(value2));
+        Assert.That(parameters.Count, Is.EqualTo(1));
     }
 
     [TestCaseSource(nameof(NewOldCaseSource))]
@@ -56,27 +56,27 @@ public class OscParameterCollectionTests
         var parameters = CreateParameterCollectionForTest();
         parameters.ValueChanged += (sender, e) =>
         {
-            Assert.IsNotNull(expected);
-            Assert.AreEqual(expected!.NewValue, e.NewValue);
-            Assert.AreEqual(expected!.OldValue, e.OldValue);
-            Assert.AreEqual(expected!.Reason, e.Reason);
-            Assert.AreEqual(expected!.Address, e.Address);
+            Assert.That(expected, Is.Not.Null);
+            Assert.That(e.NewValue, Is.EqualTo(expected!.NewValue));
+            Assert.That(e.OldValue, Is.EqualTo(expected!.OldValue));
+            Assert.That(e.Reason, Is.EqualTo(expected!.Reason));
+            Assert.That(e.Address, Is.EqualTo(expected!.Address));
             isCalledValueChanged = true;
         };
 
         expected = new(null, value1, address, ValueChangedReason.Added, ValueSource.Application);
         parameters[address] = value1;
-        Assert.IsTrue(isCalledValueChanged);
+        Assert.That(isCalledValueChanged, Is.True);
         isCalledValueChanged = false;
 
         expected = null;
         parameters[address] = value1;
-        Assert.IsFalse(isCalledValueChanged);
+        Assert.That(isCalledValueChanged, Is.False);
         isCalledValueChanged = false;
 
         expected = OscUtility.AreEqual(value1, value2) ? null : new(value1, value2, address, ValueChangedReason.Substituted, ValueSource.Application);
         parameters[address] = value2;
-        Assert.AreNotEqual(OscUtility.AreEqual(value1, value2), isCalledValueChanged);
+        Assert.That(isCalledValueChanged, Is.Not.EqualTo(OscUtility.AreEqual(value1, value2)));
         isCalledValueChanged = false;
     }
 
@@ -87,28 +87,28 @@ public class OscParameterCollectionTests
         const string Address2 = "/test/address2";
 
         var parameters = new OscParameterCollection();
-        Assert.AreEqual(0, parameters.Count);
+        Assert.That(parameters.Count, Is.EqualTo(0));
 
         parameters.Add(Address1, value);
-        Assert.AreEqual(parameters[Address1], value);
-        Assert.AreEqual(1, parameters.Count);
+        Assert.That(parameters[Address1], Is.EqualTo(value));
+        Assert.That(parameters.Count, Is.EqualTo(1));
 
         Assert.Throws<ArgumentException>(() => parameters.Add(Address1, value));
-        Assert.AreEqual(1, parameters.Count);
+        Assert.That(parameters.Count, Is.EqualTo(1));
 
-        Assert.IsFalse(parameters.Remove(Address2));
-        Assert.AreEqual(1, parameters.Count);
-
-        parameters.Add(Address2, value);
-        Assert.AreEqual(2, parameters.Count);
-        Assert.AreEqual(parameters[Address2], value);
-
-        Assert.IsTrue(parameters.Remove(Address2));
-        Assert.AreEqual(1, parameters.Count);
+        Assert.That(parameters.Remove(Address2), Is.False);
+        Assert.That(parameters.Count, Is.EqualTo(1));
 
         parameters.Add(Address2, value);
-        Assert.AreEqual(2, parameters.Count);
-        Assert.AreEqual(parameters[Address2], value);
+        Assert.That(parameters.Count, Is.EqualTo(2));
+        Assert.That(parameters[Address2], Is.EqualTo(value));
+
+        Assert.That(parameters.Remove(Address2), Is.True);
+        Assert.That(parameters.Count, Is.EqualTo(1));
+
+        parameters.Add(Address2, value);
+        Assert.That(parameters.Count, Is.EqualTo(2));
+        Assert.That(parameters[Address2], Is.EqualTo(value));
     }
 
     [TestCaseSource(nameof(ValuesCaseSource))]
@@ -123,10 +123,10 @@ public class OscParameterCollectionTests
         var parameters = CreateParameterCollectionForTest();
         parameters.ValueChanged += (sender, e) =>
         {
-            Assert.AreEqual(expected!.NewValue, e.NewValue);
-            Assert.AreEqual(expected!.OldValue, e.OldValue);
-            Assert.AreEqual(expected!.Reason, e.Reason);
-            Assert.AreEqual(expected!.Address, e.Address);
+            Assert.That(e.NewValue, Is.EqualTo(expected!.NewValue));
+            Assert.That(e.OldValue, Is.EqualTo(expected!.OldValue));
+            Assert.That(e.Reason, Is.EqualTo(expected!.Reason));
+            Assert.That(e.Address, Is.EqualTo(expected!.Address));
             isCalledValueChanged = true;
         };
 
@@ -134,7 +134,7 @@ public class OscParameterCollectionTests
         {
             expected = expectedEventArgs;
             testAction();
-            Assert.AreEqual(expectedEventArgs != null, isCalledValueChanged);
+            Assert.That(isCalledValueChanged, Is.EqualTo(expectedEventArgs != null));
             isCalledValueChanged = false;
         }
 
@@ -162,14 +162,14 @@ public class OscParameterCollectionTests
             {
                 return;
             }
-            Assert.IsNotNull(e.OldValue);
-            Assert.AreEqual(ValueChangedReason.Removed, e.Reason);
+            Assert.That(e.OldValue, Is.Not.Null);
+            Assert.That(e.Reason, Is.EqualTo(ValueChangedReason.Removed));
             calledCount++;
         };
 
         parameters.Clear();
-        Assert.AreEqual(0, calledCount);
-        Assert.AreEqual(0, parameters.Count);
+        Assert.That(calledCount, Is.EqualTo(0));
+        Assert.That(parameters.Count, Is.EqualTo(0));
 
         creatingTestSource = true;
         parameters.Add(Address1, 123);
@@ -177,8 +177,8 @@ public class OscParameterCollectionTests
         creatingTestSource = false;
 
         parameters.Clear();
-        Assert.AreEqual(2, calledCount);
-        Assert.AreEqual(0, parameters.Count);
+        Assert.That(calledCount, Is.EqualTo(2));
+        Assert.That(parameters.Count, Is.EqualTo(0));
     }
 
 
@@ -187,20 +187,20 @@ public class OscParameterCollectionTests
         OscParameterCollection parameters = [];
         parameters.ValueChanged += (sender, e) =>
          {
-             Assert.AreEqual(parameters, sender);
+             Assert.That(sender, Is.EqualTo(parameters));
              switch (e.Reason)
              {
                  case ValueChangedReason.Added:
-                     Assert.IsNull(e.OldValue);
-                     Assert.IsTrue(parameters.ContainsKey(e.Address));
+                     Assert.That(e.OldValue, Is.Null);
+                     Assert.That(parameters.ContainsKey(e.Address), Is.True);
                      break;
                  case ValueChangedReason.Removed:
-                     Assert.IsNull(e.NewValue);
-                     Assert.IsFalse(parameters.ContainsKey(e.Address));
+                     Assert.That(e.NewValue, Is.Null);
+                     Assert.That(parameters.ContainsKey(e.Address), Is.False);
                      break;
                  case ValueChangedReason.Substituted:
-                     Assert.IsFalse(OscUtility.AreEqual(e.OldValue, e.NewValue));
-                     Assert.IsTrue(parameters.ContainsKey(e.Address));
+                     Assert.That(OscUtility.AreEqual(e.OldValue, e.NewValue), Is.False);
+                     Assert.That(parameters.ContainsKey(e.Address), Is.True);
                      break;
                  default:
                      Assert.Fail();
@@ -227,42 +227,42 @@ public class OscParameterCollectionTests
         };
         void TestEvent(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
         {
-            Assert.AreSame(parameters, sender);
-            Assert.AreSame(expectedArgs, e);
+            Assert.That(sender, Is.EqualTo(parameters));
+            Assert.That(e, Is.SameAs(expectedArgs));
             calledCount++;
         }
 
         parameters.AddValueChangedEventByAddress(Address1, TestEvent);
         parameters[Address1] = 10;
-        Assert.AreEqual(1, calledCount);
+        Assert.That(calledCount, Is.EqualTo(1));
 
         calledCount = 0;
         parameters[Address1] = 10;
-        Assert.AreEqual(0, calledCount);
+        Assert.That(calledCount, Is.EqualTo(0));
 
         parameters.AddValueChangedEventByAddress(Address1, TestEvent);
         parameters[Address1] = 20;
-        Assert.AreEqual(2, calledCount);
+        Assert.That(calledCount, Is.EqualTo(2));
 
         calledCount = 0;
         parameters[Address2] = 30;
-        Assert.AreEqual(0, calledCount);
+        Assert.That(calledCount, Is.EqualTo(0));
 
         parameters.AddValueChangedEventByAddress(Address2, TestEvent);
         parameters[Address2] = 40;
-        Assert.AreEqual(1, calledCount);
+        Assert.That(calledCount, Is.EqualTo(1));
 
-        Assert.IsTrue(parameters.RemoveValueChangedEventByAddress(Address1, TestEvent));
+        Assert.That(parameters.RemoveValueChangedEventByAddress(Address1, TestEvent));
         parameters[Address1] = 40;
-        Assert.AreEqual(1, calledCount);
+        Assert.That(calledCount, Is.EqualTo(1));
 
-        Assert.IsTrue(parameters.RemoveValueChangedEventByAddress(Address1, TestEvent));
+        Assert.That(parameters.RemoveValueChangedEventByAddress(Address1, TestEvent));
         parameters[Address1] = 50;
-        Assert.AreEqual(0, calledCount);
+        Assert.That(calledCount, Is.EqualTo(0));
 
-        Assert.IsFalse(parameters.RemoveValueChangedEventByAddress(Address1, TestEvent));
+        Assert.That(parameters.RemoveValueChangedEventByAddress(Address1, TestEvent), Is.False);
         parameters[Address1] = 60;
-        Assert.AreEqual(0, calledCount);
+        Assert.That(calledCount, Is.EqualTo(0));
     }
 
     [Test]
@@ -289,6 +289,6 @@ public class OscParameterCollectionTests
 
         parameters[Address] = 1;
 
-        Assert.AreEqual(2, calledCount);
+        Assert.That(calledCount, Is.EqualTo(2));
     }
 }

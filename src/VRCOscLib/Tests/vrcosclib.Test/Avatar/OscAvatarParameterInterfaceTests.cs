@@ -12,10 +12,10 @@ public class OscAvatarParameterInterfaceTests
         const string Address = "/address/to/parameter";
         var parameterInterface1 = new OscAvatarParameterInterface(Address, OscType.Bool);
 
-        Assert.AreEqual(Address, parameterInterface1.Address);
-        Assert.AreEqual(new BlobString(Address), parameterInterface1.AddressBlob);
+        Assert.That(parameterInterface1.Address, Is.EqualTo(Address));
+        Assert.That(parameterInterface1.AddressBlob, Is.EqualTo(new BlobString(Address)));
 
-        Assert.AreEqual(OscType.Bool, parameterInterface1.OscType);
-        Assert.AreEqual("Bool", parameterInterface1.Type);
+        Assert.That(parameterInterface1.OscType, Is.EqualTo(OscType.Bool));
+        Assert.That(parameterInterface1.Type, Is.EqualTo("Bool"));
     }
 }

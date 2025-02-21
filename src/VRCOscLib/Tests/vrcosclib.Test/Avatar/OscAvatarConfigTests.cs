@@ -83,9 +83,9 @@ public class OscAvatarConfigTests
     {
         var config = new OscAvatarConfig(Id, Name, _parameters);
 
-        Assert.AreEqual(Id, config.Id);
-        Assert.AreEqual(Name, config.Name);
-        CollectionAssert.AreEquivalent(_parameters, config.Parameters.Items);
+        Assert.That(config.Id, Is.EqualTo(Id));
+        Assert.That(config.Name, Is.EqualTo(Name));
+        Assert.That(config.Parameters.Items, Is.EquivalentTo(_parameters));
     }
 
 
@@ -100,14 +100,14 @@ public class OscAvatarConfigTests
 
         var result = OscAvatarConfig.CreateAll();
 
-        CollectionAssert.AllItemsAreNotNull(result);
-        CollectionAssert.AreEquivalent(configJsons.Select(v => (v.id, v.name)), result.Select(v => (v.Id, v.Name)));
+        Assert.That(result, Is.All.Not.Null);
+        Assert.That(result.Select(v => (v.Id, v.Name)), Is.EquivalentTo(configJsons.Select(v => (v.id, v.name))));
 
         foreach (var config in result)
         {
             var expected = configJsons.First(v => v.id == config.Id).parameters.Select(v => v.name);
             var actual = config.Parameters.Items.Select(v => v.Name);
-            CollectionAssert.AreEquivalent(expected, actual);
+            Assert.That(actual, Is.EquivalentTo(actual));
         }
     }
 
@@ -118,7 +118,7 @@ public class OscAvatarConfigTests
 
         var currentConfig = OscAvatarConfig.CreateAtCurrent();
 
-        Assert.IsNull(currentConfig);
+        Assert.That(currentConfig, Is.Null);
     }
 
     [Test]
@@ -145,9 +145,9 @@ public class OscAvatarConfigTests
 
         var currentConfig = OscAvatarConfig.CreateAtCurrent();
 
-        Assert.IsNotNull(currentConfig);
-        Assert.AreEqual(Id, currentConfig!.Id);
-        Assert.AreEqual(Name, currentConfig!.Name);
+        Assert.That(currentConfig, Is.Not.Null);
+        Assert.That(currentConfig!.Id, Is.EqualTo(Id));
+        Assert.That(currentConfig!.Name, Is.EqualTo(Name));
     }
 
     [Test]
@@ -159,9 +159,9 @@ public class OscAvatarConfigTests
 
         var config = OscAvatarConfig.Create(Id);
 
-        Assert.IsNotNull(config);
-        Assert.AreEqual(Id, config!.Id);
-        Assert.AreEqual(Name, config!.Name);
+        Assert.That(config, Is.Not.Null);
+        Assert.That(config!.Id, Is.EqualTo(Id));
+        Assert.That(config!.Name, Is.EqualTo(Name));
     }
 
     [Test]
@@ -195,9 +195,9 @@ public class OscAvatarConfigTests
 
         var config = await OscAvatarConfig.WaitAndCreateAtCurrentAsync();
 
-        Assert.IsNotNull(config);
-        Assert.AreEqual(Id, config!.Id);
-        Assert.AreEqual(Name, config!.Name);
+        Assert.That(config, Is.Not.Null);
+        Assert.That(config!.Id, Is.EqualTo(Id));
+        Assert.That(config!.Name, Is.EqualTo(Name));
     }
 
     [Test]
@@ -210,7 +210,7 @@ public class OscAvatarConfigTests
         {
             Assert.DoesNotThrow(() => config.Change());
         }
-        Assert.AreEqual(AvatarId, OscAvatarUtility.CurrentAvatar.Id);
+        Assert.That(OscAvatarUtility.CurrentAvatar.Id, Is.EqualTo(AvatarId));
     }
 
 

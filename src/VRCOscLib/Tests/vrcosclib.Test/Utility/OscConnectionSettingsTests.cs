@@ -37,7 +37,7 @@ public class OscConnectionSettingsTests
     [Test]
     public async Task TestAroundGetCurrentAvatarConfigPath()
     {
-        Assert.IsNull(OscUtility.GetCurrentOscAvatarConfigPath());
+        Assert.That(OscUtility.GetCurrentOscAvatarConfigPath(), Is.Null);
         Assert.ThrowsAsync<TaskCanceledException>(async () => await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync(CanceledToken));
 
         const string TestAvatarId = "avtr_test_avatar_id";
@@ -57,8 +57,8 @@ public class OscConnectionSettingsTests
         var configPath = OscUtility.GetCurrentOscAvatarConfigPath();
         var configPathAsync = await OscUtility.WaitAndGetCurrentOscAvatarConfigPathAsync();
 
-        Assert.AreEqual(path, configPath);
-        Assert.AreEqual(path, configPathAsync);
+        Assert.That(configPath, Is.EqualTo(path));
+        Assert.That(configPathAsync, Is.EqualTo(path));
     }
 
     [Test]
@@ -71,23 +71,23 @@ public class OscConnectionSettingsTests
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetOscAvatarConfigPath(TestAvatarId));
 
         var path = CreateConfigFileForTest(TestAvatarId, "TestAvatar", testAvatarDirectory, true);
-        Assert.AreEqual(path, OscUtility.GetOscAvatarConfigPath(TestAvatarId));
+        Assert.That(OscUtility.GetOscAvatarConfigPath(TestAvatarId), Is.EqualTo(path));
     }
 
     [Test]
     public void TestGetCurrentAvatarConfigPathes()
     {
-        CollectionAssert.IsEmpty(OscUtility.GetOscAvatarConfigPathes());
+        Assert.That(OscUtility.GetOscAvatarConfigPathes(), Is.Empty);
 
         var testAvatarDirectory = Path.Combine(OscUtility.VRChatOscPath, @"usr_test_user_id", "Avatars");
         Directory.CreateDirectory(testAvatarDirectory);
 
-        CollectionAssert.IsEmpty(OscUtility.GetOscAvatarConfigPathes());
+        Assert.That(OscUtility.GetOscAvatarConfigPathes(), Is.Empty);
 
         var path1 = CreateConfigFileForTest("avtr_test_avatar_id1", "TestAvatar", testAvatarDirectory, true);
-        CollectionAssert.AreEqual(new[] { path1 }, OscUtility.GetOscAvatarConfigPathes());
+        Assert.That(OscUtility.GetOscAvatarConfigPathes(), Is.EqualTo(new[] { path1 }));
         var path2 = CreateConfigFileForTest("avtr_test_avatar_id2", "TestAvatar", testAvatarDirectory, true);
-        CollectionAssert.AreEqual(new[] { path1, path2 }, OscUtility.GetOscAvatarConfigPathes().Sort());
+        Assert.That(OscUtility.GetOscAvatarConfigPathes().Sort(), Is.EqualTo(new[] { path1, path2 }));
     }
 
     [TestCase(0)]
@@ -99,9 +99,9 @@ public class OscConnectionSettingsTests
         var oldClient = OscConnectionSettings.Client;
 
         OscConnectionSettings.SendPort = port;
-        Assert.AreEqual(port, OscConnectionSettings.SendPort);
-        Assert.AreEqual(port, OscConnectionSettings.Client.Destination.Port);
-        Assert.AreNotSame(oldClient, OscConnectionSettings.Client);
+        Assert.That(OscConnectionSettings.SendPort, Is.EqualTo(port));
+        Assert.That(OscConnectionSettings.Client.Destination.Port, Is.EqualTo(port));
+        Assert.That(OscConnectionSettings.Client, Is.Not.SameAs(oldClient));
 
         OscConnectionSettings.SendPort = oldPort;
     }
@@ -113,7 +113,7 @@ public class OscConnectionSettingsTests
         int oldPort = OscConnectionSettings.SendPort;
 
         Assert.Throws<ArgumentOutOfRangeException>(() => OscConnectionSettings.SendPort = port);
-        Assert.AreEqual(oldPort, OscConnectionSettings.SendPort);
+        Assert.That(OscConnectionSettings.SendPort, Is.EqualTo(oldPort));
     }
 
     [TestCase(0)]
@@ -122,8 +122,8 @@ public class OscConnectionSettingsTests
     public void TestReceivePort(int port)
     {
         OscConnectionSettings.ReceivePort = port;
-        Assert.AreEqual(port, OscConnectionSettings.ReceivePort);
-        Assert.AreEqual(port, OscConnectionSettings.Server.Port);
+        Assert.That(OscConnectionSettings.ReceivePort, Is.EqualTo(port));
+        Assert.That(OscConnectionSettings.Server.Port, Is.EqualTo(port));
     }
 
     [TestCase(-1)]
@@ -132,8 +132,8 @@ public class OscConnectionSettingsTests
     {
         int oldPort = OscConnectionSettings.ReceivePort;
         Assert.Throws<ArgumentOutOfRangeException>(() => OscConnectionSettings.ReceivePort = port);
-        Assert.AreEqual(oldPort, OscConnectionSettings.ReceivePort);
-        Assert.AreEqual(oldPort, OscConnectionSettings.Server.Port);
+        Assert.That(OscConnectionSettings.ReceivePort, Is.EqualTo(oldPort));
+        Assert.That(OscConnectionSettings.Server.Port, Is.EqualTo(oldPort));
     }
 
     [TestCase("127.0.0.1")]
@@ -144,8 +144,8 @@ public class OscConnectionSettingsTests
         string oldAddress = OscConnectionSettings.VrcIPAddress;
 
         OscConnectionSettings.VrcIPAddress = ipAddress;
-        Assert.AreEqual(ipAddress, OscConnectionSettings.VrcIPAddress);
-        Assert.AreEqual(ipAddress, OscConnectionSettings.Client.Destination.Address.ToString());
+        Assert.That(OscConnectionSettings.VrcIPAddress, Is.EqualTo(ipAddress));
+        Assert.That(OscConnectionSettings.Client.Destination.Address.ToString(), Is.EqualTo(ipAddress));
 
         OscConnectionSettings.VrcIPAddress = oldAddress;
     }
@@ -157,7 +157,7 @@ public class OscConnectionSettingsTests
         string oldAddress = OscConnectionSettings.VrcIPAddress;
 
         Assert.Throws<FormatException>(() => OscConnectionSettings.VrcIPAddress = ipAddress);
-        Assert.AreEqual(oldAddress, OscConnectionSettings.VrcIPAddress);
+        Assert.That(OscConnectionSettings.VrcIPAddress, Is.EqualTo(oldAddress));
     }
 
     [Test]
@@ -166,7 +166,7 @@ public class OscConnectionSettingsTests
         string oldAddress = OscConnectionSettings.VrcIPAddress;
 
         Assert.Throws<ArgumentNullException>(() => OscConnectionSettings.VrcIPAddress = null!);
-        Assert.AreEqual(oldAddress, OscConnectionSettings.VrcIPAddress);
+        Assert.That(OscConnectionSettings.VrcIPAddress, Is.EqualTo(oldAddress));
     }
 
     [Test]
@@ -182,11 +182,11 @@ public class OscConnectionSettingsTests
         {
             client.Send("/value/send", 1);
             await LoopWhile(() => value == 0, LatencyTimeout);
-            Assert.AreEqual(1, value);
+            Assert.That(value, Is.EqualTo(1));
 
             client.Send("/value/send", 1);
             await LoopWhile(() => value == 1, LatencyTimeout);
-            Assert.AreEqual(2, value);
+            Assert.That(value, Is.EqualTo(2));
         }
 
         OscConnectionSettings.ReceivePort = 54321;
@@ -194,7 +194,7 @@ public class OscConnectionSettingsTests
         {
             client.Send("/value/send", 1);
             await LoopWhile(() => value == 2, LatencyTimeout);
-            Assert.AreEqual(3, value);
+            Assert.That(value, Is.EqualTo(3));
         }
 
         OscConnectionSettings.ReceivePort = oldPort;
@@ -210,7 +210,7 @@ public class OscConnectionSettingsTests
         {
             OscParameter.SendValue("/value/send", 1);
             var result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
-            Assert.AreEqual(OscConnectionSettings.VrcIPAddress, result.RemoteEndPoint.Address.ToString());
+            Assert.That(result.RemoteEndPoint.Address.ToString(), Is.EqualTo(OscConnectionSettings.VrcIPAddress));
         }
 
         OscConnectionSettings.SendPort = 54321;
@@ -218,7 +218,7 @@ public class OscConnectionSettingsTests
         {
             OscParameter.SendValue("/value/send", 1);
             var result = await client.ReceiveAsync().WaitAsync(LatencyTimeout);
-            Assert.AreEqual(OscConnectionSettings.VrcIPAddress, result.RemoteEndPoint.Address.ToString());
+            Assert.That(result.RemoteEndPoint.Address.ToString(), Is.EqualTo(OscConnectionSettings.VrcIPAddress));
         }
 
         OscConnectionSettings.SendPort = oldPort;

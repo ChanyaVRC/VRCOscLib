@@ -73,20 +73,20 @@ public class OscInputTests
 
         buttonInput.Send();
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(1, values.ReadIntElementUnchecked(0));
-        Assert.AreEqual(buttonInput.CreateAddress(), address);
+        Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(1));
+        Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
         values = null;
 
         buttonInput.Send(true);
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(1, values.ReadIntElementUnchecked(0));
-        Assert.AreEqual(buttonInput.CreateAddress(), address);
+        Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(1));
+        Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
         values = null;
 
         buttonInput.Send(false);
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(0, values.ReadIntElementUnchecked(0));
-        Assert.AreEqual(buttonInput.CreateAddress(), address);
+        Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(0));
+        Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
         values = null;
 
         _server.RemoveMonitorCallback(Callback);
@@ -105,8 +105,8 @@ public class OscInputTests
 
         axisInput.Send(value);
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(axisInput.CreateAddress(), address);
-        Assert.IsTrue(_server.RemoveMonitorCallback(Callback));
+        Assert.That(address, Is.EqualTo(axisInput.CreateAddress()));
+        Assert.That(_server.RemoveMonitorCallback(Callback), Is.True);
 
         return values.ReadFloatElement(0);
     }
@@ -123,14 +123,14 @@ public class OscInputTests
 
         buttonInput.Press();
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(buttonInput.CreateAddress(), address);
-        Assert.AreEqual(1, values.ReadIntElementUnchecked(0));
+        Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
+        Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(1));
         values = null;
 
         buttonInput.Release();
         await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
-        Assert.AreEqual(buttonInput.CreateAddress(), address);
-        Assert.AreEqual(0, values.ReadIntElementUnchecked(0));
+        Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
+        Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(0));
         values = null;
 
         _server.RemoveMonitorCallback(Callback);
@@ -139,15 +139,15 @@ public class OscInputTests
     [TestCaseSource(nameof(AllOscButtonInput))]
     public void TestCreateAddress(OscButtonInput buttonInput)
     {
-        Assert.AreEqual("/input/" + buttonInput.ToString(), buttonInput.CreateAddress());
-        Assert.AreEqual("/input/" + buttonInput.ToString(), buttonInput.CreateAddress());
+        Assert.That(buttonInput.CreateAddress(), Is.EqualTo("/input/" + buttonInput.ToString()));
+        Assert.That(buttonInput.CreateAddress(), Is.EqualTo("/input/" + buttonInput.ToString()));
     }
 
     [TestCaseSource(nameof(AllOscAxisInput))]
     public void TestCreateAddress(OscAxisInput axisInput)
     {
-        Assert.AreEqual("/input/" + axisInput.ToString(), axisInput.CreateAddress());
-        Assert.AreEqual("/input/" + axisInput.ToString(), axisInput.CreateAddress());
+        Assert.That(axisInput.CreateAddress(), Is.EqualTo("/input/" + axisInput.ToString()));
+        Assert.That(axisInput.CreateAddress(), Is.EqualTo("/input/" + axisInput.ToString()));
     }
 
 
@@ -156,7 +156,7 @@ public class OscInputTests
     {
         bool hasObsoleteAttribute = typeof(OscAxisInput).GetField(axisInput.ToString()).IsDefined(typeof(ObsoleteAttribute), true);
 
-        Assert.AreEqual(!hasObsoleteAttribute, OscInput.ActiveAxisInputs.Contains(axisInput));
+        Assert.That(OscInput.ActiveAxisInputs.Contains(axisInput), Is.Not.EqualTo(hasObsoleteAttribute));
     }
 
     [TestCaseSource(nameof(AllOscButtonInput))]
@@ -164,6 +164,6 @@ public class OscInputTests
     {
         bool hasObsoleteAttribute = typeof(OscButtonInput).GetField(axisInput.ToString()).IsDefined(typeof(ObsoleteAttribute), true);
 
-        Assert.AreEqual(!hasObsoleteAttribute, OscInput.ActiveButtonInputs.Contains(axisInput));
+        Assert.That(OscInput.ActiveButtonInputs.Contains(axisInput), Is.Not.EqualTo(hasObsoleteAttribute));
     }
 }
