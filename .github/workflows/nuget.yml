@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 9.x
 
       - name: Restore dependencies
         run: dotnet restore -p:Platform="For Test"
@@ -25,7 +25,7 @@ jobs:
         run: dotnet test -p:Platform="For Test" --no-build --verbosity normal
       - name: Pack
         if: ${{ success() }}
-        run: dotnet pack -o "nupkgs" -c Release -p:Platform="For Test" -p:PackageVersion=${{ GITHUB_REF/refs\/tags\// }} --no-restore
+        run: dotnet pack -o "nupkgs" -c Release -p:Platform="For Test" -p:PackageVersion=${GITHUB_REF/v//} --no-restore
       - name: Publish
         if: ${{ success() }}
         run: dotnet nuget push "nupkgs/*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
