@@ -42,4 +42,13 @@ public class OscAvatarTests
         Assert.IsNotNull(config);
         Assert.AreEqual(AvatarId, config!.Id);
     }
+
+    [Test]
+    public void TestChange()
+    {
+        const string AvatarId = "avtr_id_for_test";
+        Assert.Throws<InvalidOperationException>(() => default(OscAvatar).Change());
+        Assert.DoesNotThrow(() => new OscAvatar { Id = AvatarId }.Change());
+        Assert.AreEqual(AvatarId, OscAvatarUtility.CurrentAvatar.Id);
+    }
 }

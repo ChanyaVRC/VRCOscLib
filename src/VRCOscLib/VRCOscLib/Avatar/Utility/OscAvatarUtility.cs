@@ -60,7 +60,6 @@ public static class OscAvatarUtility
     public static OscAvatar CurrentAvatar => _currentAvatar;
 
     private static OscAvatar _currentAvatar;
-    private static OscAvatar _changedAvatar;
 
 
     /// <summary>
@@ -98,10 +97,15 @@ public static class OscAvatarUtility
         }
     }
 
+    public static void ChangeAvatar(string id)
+    {
+        OscParameter.SendValue(OscConst.AvatarIdAddress, id);
+        CallOnAvatarChanged(_currentAvatar, new OscAvatar() { Id = id });
+    }
+
     private static void ReadAvatarIdFromApp(IReadOnlyOscParameterCollection sender, ValueChangedEventArgs e)
     {
-        _changedAvatar.Id = (string?)e.NewValue;
-        CallOnAvatarChanged();
+        CallOnAvatarChanged(_currentAvatar, new OscAvatar() { Id = (string?)e.NewValue });
     }
 
     /// <summary>
@@ -126,14 +130,9 @@ public static class OscAvatarUtility
     public static IEnumerable<object?> GetCommonParameterValues()
         => _commonParameters.Select(GetCommonParameterValue);
 
-    private static void CallOnAvatarChanged()
+    private static void CallOnAvatarChanged(OscAvatar oldAvatar, OscAvatar newAvatar)
     {
-        var oldAvatar = _currentAvatar;
-        var newAvatar = _changedAvatar;
-
         _currentAvatar = newAvatar;
-        _changedAvatar = default;
-
-        AvatarChanged?.Invoke(_currentAvatar, new ValueChangedEventArgs<OscAvatar>(oldAvatar, newAvatar));
+        AvatarChanged?.Invoke(newAvatar, new ValueChangedEventArgs<OscAvatar>(oldAvatar, newAvatar));
     }
 }

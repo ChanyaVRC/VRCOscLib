@@ -91,6 +91,10 @@ public class OscAvatarConfig
         _parametersList.AddRange(parameters);
     }
 
+    public void Change()
+    {
+        OscAvatarUtility.ChangeAvatar(_id);
+    }
 
     /// <summary>
     /// Creates an array of all <see cref="OscAvatarConfig"/> instances in the current directory.

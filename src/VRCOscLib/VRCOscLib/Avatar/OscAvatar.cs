@@ -1,4 +1,6 @@
-﻿namespace BuildSoft.VRChat.Osc.Avatar;
+﻿using System.Security.Cryptography;
+
+namespace BuildSoft.VRChat.Osc.Avatar;
 
 /// <summary>
 /// Represents a VRChat avatar, as identified by its unique ID.
@@ -18,4 +20,13 @@ public struct OscAvatar
     /// or null if the avatar does not have a valid ID.
     /// </returns>
     public readonly OscAvatarConfig? ToConfig() => Id == null ? null : OscAvatarConfig.Create(Id);
+
+    public void Change()
+    {
+        if (Id == null)
+        {
+            throw new InvalidOperationException("Id not set.");
+        }
+        OscAvatarUtility.ChangeAvatar(Id);
+    }
 }
