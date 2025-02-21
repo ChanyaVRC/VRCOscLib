@@ -157,7 +157,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, float value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -168,7 +168,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, int value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -179,7 +179,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, bool value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -190,7 +190,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, string value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -201,7 +201,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, double value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -212,7 +212,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, long value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -223,7 +223,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, Vector2 value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -234,7 +234,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, Vector3 value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -245,7 +245,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, Color32 value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -256,7 +256,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, MidiMessage value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
 
@@ -267,7 +267,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, byte[] value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value, value.Length);
     }
 
@@ -278,7 +278,7 @@ public static partial class OscParameter
     /// <param name="value">The value to send in the OSC message.</param>
     public static void SendValue(string address, char value)
     {
-        Parameters[address] = value;
+        Items[address] = value;
         OscConnectionSettings.Client.Send(address, value);
     }
     #endregion

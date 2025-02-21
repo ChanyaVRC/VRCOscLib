@@ -38,7 +38,7 @@ public class OscAvatarParameterContainer : IReadOnlyDictionary<string, object?>
     {
         Items = parameters;
 
-        var allParams = OscParameter.Parameters;
+        var allParams = OscParameter.Items;
         for (int i = 0; i < parameters.Length; i++)
         {
             var param = parameters[i];
@@ -91,7 +91,7 @@ public class OscAvatarParameterContainer : IReadOnlyDictionary<string, object?>
     {
         get
         {
-            var allParams = OscParameter.Parameters;
+            var allParams = OscParameter.Items;
             foreach (var item in UniqueParameters)
             {
                 var address = item.ReadableAddress;
@@ -211,7 +211,7 @@ public class OscAvatarParameterContainer : IReadOnlyDictionary<string, object?>
     public T? GetAs<T>(string name) where T : notnull
     {
         var param = Get(name);
-        var allParams = OscParameter.Parameters;
+        var allParams = OscParameter.Items;
         if (allParams.TryGetValue(param.ReadableAddress, out var value))
         {
             return (T?)value;

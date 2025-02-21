@@ -22,7 +22,7 @@ public class OscPhysBoneTests
         _avatar = OscAvatarConfig.Create(AvatarId)!;
 
 
-        OscParameter.Parameters.Clear();
+        OscParameter.Items.Clear();
     }
 
     [TearDown]

@@ -87,7 +87,7 @@ public class OscPhysBone
         _parameters = parameters;
         ParamName = paramName;
 
-        var allParams = OscParameter.Parameters;
+        var allParams = OscParameter.Items;
         for (int i = 0; i < actualParam.Length; i++)
         {
             var address = OscConst.AvatarParameterAddressSpace + actualParam[i].Name;

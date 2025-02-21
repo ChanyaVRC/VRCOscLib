@@ -27,7 +27,7 @@ public class OscConnectionSettingsTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        OscParameter.Parameters.Clear();
+        OscParameter.Items.Clear();
     }
 
     [OneTimeTearDown]

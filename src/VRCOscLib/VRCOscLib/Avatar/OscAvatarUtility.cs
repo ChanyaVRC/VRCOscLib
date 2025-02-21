@@ -70,7 +70,7 @@ public static class OscAvatarUtility
     public static void Initialize()
     {
         OscParameter.Initialize();
-        var parameters = OscParameter.Parameters;
+        var parameters = OscParameter.Items;
 
         OscParameterChangedEventHandler<IReadOnlyOscParameterCollection> readAvatarIdFromApp = ReadAvatarIdFromApp;
         parameters.RemoveValueChangedEventByAddress(OscConst.AvatarIdAddress, readAvatarIdFromApp);

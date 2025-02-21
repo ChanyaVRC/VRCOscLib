@@ -27,7 +27,7 @@ public class OscUtilityTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        OscParameter.Parameters.Clear();
+        OscParameter.Items.Clear();
     }
 
     [OneTimeTearDown]

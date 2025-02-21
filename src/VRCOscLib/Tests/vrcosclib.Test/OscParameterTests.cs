@@ -18,7 +18,7 @@ public class OscParameterTests
     [SetUp]
     public void Setup()
     {
-        OscParameter.Parameters.Clear();
+        OscParameter.Items.Clear();
     }
 
     [TearDown]
@@ -212,7 +212,7 @@ public class OscParameterTests
         const string ParamName = "paramName";
         const string Address = OscConst.AvatarParameterAddressSpace + ParamName;
         OscParameter.SendAvatarParameter(ParamName, value);
-        Assert.That(OscParameter.Parameters[Address], Is.EqualTo(value));
+        Assert.That(OscParameter.Items[Address], Is.EqualTo(value));
     }
 
     [TestCase(new byte[] { 1, 2, 3, 4 })]
@@ -222,7 +222,7 @@ public class OscParameterTests
         const string Address = OscConst.AvatarParameterAddressSpace + ParamName;
         OscParameter.SendAvatarParameter(ParamName, value);
 
-        Assert.That((byte[])OscParameter.Parameters[Address]!, Is.EqualTo(value));
+        Assert.That((byte[])OscParameter.Items[Address]!, Is.EqualTo(value));
         Assert.That((byte[])OscParameter.GetValue(Address)!, Is.EqualTo(value));
     }
 
@@ -236,13 +236,13 @@ public class OscParameterTests
     {
         const string ParamName = "paramName";
         const string Address = OscConst.AvatarParameterAddressSpace + ParamName;
-        OscParameter.Parameters.Remove(Address);
+        OscParameter.Items.Remove(Address);
 
         _client.Send(Address, (dynamic)value);
 
-        await WaitWhile(() => !OscParameter.Parameters.ContainsKey(Address), LatencyTimeout);
+        await WaitWhile(() => !OscParameter.Items.ContainsKey(Address), LatencyTimeout);
 
-        Assert.That(OscParameter.Parameters[Address], Is.EqualTo(value));
+        Assert.That(OscParameter.Items[Address], Is.EqualTo(value));
     }
 
     [TestCase(new byte[] { 1, 2, 3, 4 })]
@@ -250,13 +250,13 @@ public class OscParameterTests
     {
         const string ParamName = "paramName";
         const string Address = OscConst.AvatarParameterAddressSpace + ParamName;
-        OscParameter.Parameters.Remove(Address);
+        OscParameter.Items.Remove(Address);
 
         _client.Send(Address, value, value.Length);
 
-        await WaitWhile(() => !OscParameter.Parameters.ContainsKey(Address), LatencyTimeout);
+        await WaitWhile(() => !OscParameter.Items.ContainsKey(Address), LatencyTimeout);
 
-        Assert.That((byte[])OscParameter.Parameters[Address]!, Is.EqualTo(value));
+        Assert.That((byte[])OscParameter.Items[Address]!, Is.EqualTo(value));
     }
 
     [Test]
@@ -266,7 +266,7 @@ public class OscParameterTests
         ParameterChangedEventArgs expected = null;
         var isCalledValueChanged = false;
 
-        var parameters = OscParameter.Parameters;
+        var parameters = OscParameter.Items;
         parameters.ValueChanged += valueChangedAssertion;
 
         await TestValueChangedEvent(new(null, 1, Address, ValueChangedReason.Added, ValueSource.VRChat), () => _client.Send(Address, 1));

@@ -54,7 +54,7 @@ public class OscInputTests
     [SetUp]
     public void Setup()
     {
-        OscParameter.Parameters.Clear();
+        OscParameter.Items.Clear();
     }
 
     [TearDown]

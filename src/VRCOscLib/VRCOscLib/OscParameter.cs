@@ -11,15 +11,15 @@ public static partial class OscParameter
     /// <summary>
     /// A collection of OSC parameters.
     /// </summary>
-    internal static OscParameterCollection Parameters { get; } = [];
+    internal static OscParameterCollection Items { get; } = [];
 
     /// <summary>
     /// An event that is raised when the value of an OSC parameter is changed.
     /// </summary>
     public static event ParamChangedHandler ValueChanged
     {
-        add => Parameters.ValueChanged += value;
-        remove => Parameters.ValueChanged -= value;
+        add => Items.ValueChanged += value;
+        remove => Items.ValueChanged -= value;
     }
 
     static OscParameter()

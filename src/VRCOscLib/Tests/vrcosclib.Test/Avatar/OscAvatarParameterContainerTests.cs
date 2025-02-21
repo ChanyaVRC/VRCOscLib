@@ -89,7 +89,7 @@ public class OscAvatarParameterContainerTests
     [SetUp]
     public void SetUp()
     {
-        OscParameter.Parameters.Clear();
+        OscParameter.Items.Clear();
     }
 
 

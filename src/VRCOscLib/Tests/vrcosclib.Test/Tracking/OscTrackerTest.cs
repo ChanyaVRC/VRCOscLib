@@ -37,7 +37,7 @@ public class OscTrackerTest
     [SetUp]
     public void Setup()
     {
-        OscParameter.Parameters.Clear();
+        OscParameter.Items.Clear();
     }
 
     [TearDown]

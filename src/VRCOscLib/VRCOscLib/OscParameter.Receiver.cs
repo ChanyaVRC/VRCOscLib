@@ -7,7 +7,7 @@ namespace BuildSoft.VRChat.Osc;
 public static partial class OscParameter
 {
     /// <summary>
-    /// Handles an incoming OSC message by updating the corresponding OSC parameter in the <see cref="Parameters"/> collection.
+    /// Handles an incoming OSC message by updating the corresponding OSC parameter in the <see cref="Items"/> collection.
     /// </summary>
     /// <param name="address">The address of the OSC message.</param>
     /// <param name="values">The values contained in the OSC message.</param>
@@ -20,7 +20,7 @@ public static partial class OscParameter
         }
         if (values.ElementCount == 1)
         {
-            Parameters.SetValue(addressString, values.ReadValue(0), ValueSource.VRChat);
+            Items.SetValue(addressString, values.ReadValue(0), ValueSource.VRChat);
             return;
         }
 
@@ -29,7 +29,7 @@ public static partial class OscParameter
         {
             objects[i] = values.ReadValue(i);
         }
-        Parameters.SetValue(addressString, objects, ValueSource.VRChat);
+        Items.SetValue(addressString, objects, ValueSource.VRChat);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public static partial class OscParameter
     /// <returns>The value of the OSC parameter as a <see cref="Vector3"/>, or <see langword="null"/> if the value cannot be converted to a <see cref="Vector3"/>.</returns>
     internal static Vector3? GetValueAsVector3(string address)
     {
-        Parameters.TryGetValue(address, out var value);
+        Items.TryGetValue(address, out var value);
         if (value is Vector3 vector)
         {
             return vector;
@@ -71,7 +71,7 @@ public static partial class OscParameter
     /// <returns>The value of the OSC parameter, or <see langword="null"/> if the parameter does not exist.</returns>
     public static object? GetValue(string address)
     {
-        Parameters.TryGetValue(address, out var value);
+        Items.TryGetValue(address, out var value);
         return value;
     }
 }
