@@ -1,10 +1,11 @@
 ﻿#nullable disable
 using BlobHandles;
 using BuildSoft.OscCore;
-using BuildSoft.VRChat.Osc.Test;
+using BuildSoft.VRChat.Osc.Input;
+using BuildSoft.VRChat.Osc.Test.Utility;
 using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Input.Test;
+namespace BuildSoft.VRChat.Osc.Test.Input;
 
 [TestOf(typeof(OscInput))]
 public class OscInputTests
@@ -72,19 +73,19 @@ public class OscInputTests
         _server.AddMonitorCallback(Callback);
 
         buttonInput.Send();
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => values == null, TestHelper.LatencyTimeout);
         Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(1));
         Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
         values = null;
 
         buttonInput.Send(true);
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => values == null, TestHelper.LatencyTimeout);
         Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(1));
         Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
         values = null;
 
         buttonInput.Send(false);
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => values == null, TestHelper.LatencyTimeout);
         Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(0));
         Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
         values = null;
@@ -104,7 +105,7 @@ public class OscInputTests
         _server.AddMonitorCallback(Callback);
 
         axisInput.Send(value);
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => values == null, TestHelper.LatencyTimeout);
         Assert.That(address, Is.EqualTo(axisInput.CreateAddress()));
         Assert.That(_server.RemoveMonitorCallback(Callback), Is.True);
 
@@ -122,13 +123,13 @@ public class OscInputTests
         _server.AddMonitorCallback(Callback);
 
         buttonInput.Press();
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => values == null, TestHelper.LatencyTimeout);
         Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
         Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(1));
         values = null;
 
         buttonInput.Release();
-        await TestUtility.LoopWhile(() => values == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => values == null, TestHelper.LatencyTimeout);
         Assert.That(address, Is.EqualTo(buttonInput.CreateAddress()));
         Assert.That(values.ReadIntElementUnchecked(0), Is.EqualTo(0));
         values = null;
@@ -154,7 +155,7 @@ public class OscInputTests
     [TestCaseSource(nameof(AllOscAxisInput))]
     public void TestActiveAxisInputs(OscAxisInput axisInput)
     {
-        bool hasObsoleteAttribute = typeof(OscAxisInput).GetField(axisInput.ToString()).IsDefined(typeof(ObsoleteAttribute), true);
+        var hasObsoleteAttribute = typeof(OscAxisInput).GetField(axisInput.ToString()).IsDefined(typeof(ObsoleteAttribute), true);
 
         Assert.That(OscInput.ActiveAxisInputs.Contains(axisInput), Is.Not.EqualTo(hasObsoleteAttribute));
     }
@@ -162,7 +163,7 @@ public class OscInputTests
     [TestCaseSource(nameof(AllOscButtonInput))]
     public void TestActiveButtonInputs(OscButtonInput axisInput)
     {
-        bool hasObsoleteAttribute = typeof(OscButtonInput).GetField(axisInput.ToString()).IsDefined(typeof(ObsoleteAttribute), true);
+        var hasObsoleteAttribute = typeof(OscButtonInput).GetField(axisInput.ToString()).IsDefined(typeof(ObsoleteAttribute), true);
 
         Assert.That(OscInput.ActiveButtonInputs.Contains(axisInput), Is.Not.EqualTo(hasObsoleteAttribute));
     }

@@ -2,9 +2,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using BlobHandles;
-using BuildSoft.OscCore;
-using BuildSoft.VRChat.Osc.Delegate;
 
 namespace BuildSoft.VRChat.Osc.Avatar;
 

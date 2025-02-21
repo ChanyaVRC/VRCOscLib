@@ -1,7 +1,4 @@
-﻿using BlobHandles;
-using BuildSoft.OscCore;
-
-namespace BuildSoft.VRChat.Osc.Avatar;
+﻿namespace BuildSoft.VRChat.Osc.Avatar;
 
 /// <summary>
 /// A utility class for interacting with VRChat avatars using the OSC protocol.

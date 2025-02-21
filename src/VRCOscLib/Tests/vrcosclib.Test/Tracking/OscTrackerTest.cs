@@ -1,9 +1,10 @@
 ﻿using BuildSoft.OscCore;
 using BuildSoft.OscCore.UnityObjects;
-using BuildSoft.VRChat.Osc.Test;
+using BuildSoft.VRChat.Osc.Test.Utility;
+using BuildSoft.VRChat.Osc.Tracking;
 using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Tracking.Test;
+namespace BuildSoft.VRChat.Osc.Test.Tracking;
 
 [TestOf(typeof(OscTracker))]
 public class OscTrackerTest
@@ -93,7 +94,7 @@ public class OscTrackerTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
 
         tracker.Position = expected;
-        await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
 
         Assert.That(tracker.Position, Is.EqualTo(expected));
         Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
@@ -116,7 +117,7 @@ public class OscTrackerTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
 
         tracker.Rotation = expected;
-        await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
 
         Assert.That(tracker.Rotation, Is.EqualTo(expected));
         Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));

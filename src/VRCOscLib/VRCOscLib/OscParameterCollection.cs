@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using BuildSoft.VRChat.Osc.Delegate;
+﻿using System.Collections;
 using ParamChangedHandler = BuildSoft.VRChat.Osc.OscParameterChangedEventHandler<BuildSoft.VRChat.Osc.IReadOnlyOscParameterCollection>;
 
 namespace BuildSoft.VRChat.Osc;

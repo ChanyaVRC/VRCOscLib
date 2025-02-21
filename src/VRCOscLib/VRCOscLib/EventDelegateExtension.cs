@@ -1,7 +1,7 @@
-﻿namespace BuildSoft.VRChat.Osc.Delegate;
+﻿namespace BuildSoft.VRChat.Osc;
 
 /// <summary>
-/// Extension methods for <see cref="System.Delegate"/>.
+/// Extension methods for <see cref="Delegate"/>.
 /// </summary>
 internal static class EventDelegateExtension
 {
@@ -11,7 +11,7 @@ internal static class EventDelegateExtension
     /// <typeparam name="T">The type of the delegate.</typeparam>
     /// <param name="delegate">The delegate to invoke.</param>
     /// <param name="args">The arguments to pass to the delegate methods.</param>
-    public static void DynamicInvokeAllWithoutException<T>(this T @delegate, params object[] args) where T : System.Delegate
+    public static void DynamicInvokeAllWithoutException<T>(this T @delegate, params object[] args) where T : Delegate
     {
         foreach (var item in @delegate.GetInvocationList())
         {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BuildSoft.VRChat.Osc.Utility;
+﻿namespace BuildSoft.VRChat.Osc.Utility;
 
 /// <summary>
 /// Provide various math utility methods.

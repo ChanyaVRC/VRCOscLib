@@ -1,5 +1,4 @@
-﻿using System;
-using BuildSoft.VRChat.Osc.Chatbox;
+﻿using BuildSoft.VRChat.Osc.Chatbox;
 
 while (true)
 {

@@ -1,7 +1,7 @@
 ﻿using BuildSoft.VRChat.Osc.Avatar;
 using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Avatar.Test;
+namespace BuildSoft.VRChat.Osc.Test.Avatar;
 
 [TestOf(typeof(OscAvatarParameter))]
 public class OscAvatarParameterTests

@@ -1,9 +1,10 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Test.Utility;
 using NUnit.Framework;
 
-using static BuildSoft.VRChat.Osc.Test.TestUtility;
+using static BuildSoft.VRChat.Osc.Test.Utility.TestHelper;
 
 namespace BuildSoft.VRChat.Osc.Test;
 
@@ -95,7 +96,7 @@ public class OscConnectionSettingsTests
     [TestCase(65535)]
     public void TestSendPort(int port)
     {
-        int oldPort = OscConnectionSettings.SendPort;
+        var oldPort = OscConnectionSettings.SendPort;
         var oldClient = OscConnectionSettings.Client;
 
         OscConnectionSettings.SendPort = port;
@@ -110,7 +111,7 @@ public class OscConnectionSettingsTests
     [TestCase(65536)]
     public void TestSendPortOutOfRange(int port)
     {
-        int oldPort = OscConnectionSettings.SendPort;
+        var oldPort = OscConnectionSettings.SendPort;
 
         Assert.Throws<ArgumentOutOfRangeException>(() => OscConnectionSettings.SendPort = port);
         Assert.That(OscConnectionSettings.SendPort, Is.EqualTo(oldPort));
@@ -130,7 +131,7 @@ public class OscConnectionSettingsTests
     [TestCase(65536)]
     public void TestReceivePortOutOfRange(int port)
     {
-        int oldPort = OscConnectionSettings.ReceivePort;
+        var oldPort = OscConnectionSettings.ReceivePort;
         Assert.Throws<ArgumentOutOfRangeException>(() => OscConnectionSettings.ReceivePort = port);
         Assert.That(OscConnectionSettings.ReceivePort, Is.EqualTo(oldPort));
         Assert.That(OscConnectionSettings.Server.Port, Is.EqualTo(oldPort));
@@ -141,7 +142,7 @@ public class OscConnectionSettingsTests
     [TestCase("8.8.8.8")]
     public void TestVrcIPAddress(string ipAddress)
     {
-        string oldAddress = OscConnectionSettings.VrcIPAddress;
+        var oldAddress = OscConnectionSettings.VrcIPAddress;
 
         OscConnectionSettings.VrcIPAddress = ipAddress;
         Assert.That(OscConnectionSettings.VrcIPAddress, Is.EqualTo(ipAddress));
@@ -154,7 +155,7 @@ public class OscConnectionSettingsTests
     [TestCase("ipaddress")]
     public void TestVrcIPAddressInvalidFormat(string ipAddress)
     {
-        string oldAddress = OscConnectionSettings.VrcIPAddress;
+        var oldAddress = OscConnectionSettings.VrcIPAddress;
 
         Assert.Throws<FormatException>(() => OscConnectionSettings.VrcIPAddress = ipAddress);
         Assert.That(OscConnectionSettings.VrcIPAddress, Is.EqualTo(oldAddress));
@@ -163,7 +164,7 @@ public class OscConnectionSettingsTests
     [Test]
     public void TestClientIPAddressNull()
     {
-        string oldAddress = OscConnectionSettings.VrcIPAddress;
+        var oldAddress = OscConnectionSettings.VrcIPAddress;
 
         Assert.Throws<ArgumentNullException>(() => OscConnectionSettings.VrcIPAddress = null!);
         Assert.That(OscConnectionSettings.VrcIPAddress, Is.EqualTo(oldAddress));
@@ -172,10 +173,10 @@ public class OscConnectionSettingsTests
     [Test]
     public async Task TestRegisterMonitorCallback()
     {
-        int value = 0;
+        var value = 0;
         OscUtility.RegisterMonitorCallback((_, _) => value++);
 
-        int oldPort = OscConnectionSettings.ReceivePort;
+        var oldPort = OscConnectionSettings.ReceivePort;
 
         OscConnectionSettings.ReceivePort = 12345;
         using (var client = new OscClient("127.0.0.1", 12345))
@@ -203,7 +204,7 @@ public class OscConnectionSettingsTests
     [Test]
     public async Task TestSendPortWithSending()
     {
-        int oldPort = OscConnectionSettings.SendPort;
+        var oldPort = OscConnectionSettings.SendPort;
 
         OscConnectionSettings.SendPort = 12345;
         using (var client = new UdpClient(12345))
@@ -227,7 +228,7 @@ public class OscConnectionSettingsTests
     [Test]
     public async Task TestVrcIPAddressWithSending()
     {
-        string oldAddress = OscConnectionSettings.VrcIPAddress;
+        var oldAddress = OscConnectionSettings.VrcIPAddress;
 
         using (var client = new UdpClient(new IPEndPoint(
                 IPAddress.Parse("127.0.0.1"),

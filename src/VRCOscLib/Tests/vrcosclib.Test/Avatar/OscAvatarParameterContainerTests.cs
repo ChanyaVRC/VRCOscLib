@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using BuildSoft.OscCore;
-using BuildSoft.VRChat.Osc.Test;
+﻿using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Avatar;
+using BuildSoft.VRChat.Osc.Test.Utility;
 using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Avatar.Test;
+namespace BuildSoft.VRChat.Osc.Test.Avatar;
 
 [TestOf(typeof(OscAvatarParameterContainer))]
 public class OscAvatarParameterContainerTests
@@ -22,7 +18,7 @@ public class OscAvatarParameterContainerTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        _configFile = TestUtility.CreateConfigFileForTest(new(AvatarId, "TestAvatar",
+        _configFile = TestHelper.CreateConfigFileForTest(new(AvatarId, "TestAvatar",
         [
             new("ValidParam1_IsGrabbed",   OscType.Bool,  hasInput: true),
             new("ValidParam1_IsPosed",     OscType.Bool,  hasInput: true),
@@ -100,13 +96,13 @@ public class OscAvatarParameterContainerTests
     [Test]
     public async Task ParameterChangedTest()
     {
-        int newValue = 100;
-        bool isCalled = false;
+        var newValue = 100;
+        var isCalled = false;
 
         _parameters.ParameterChanged += Handler;
 
         _client.Send(OscConst.AvatarParameterAddressSpace + "TestParam", newValue);
-        await TestUtility.LoopWhile(() => !isCalled, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => !isCalled, TestHelper.LatencyTimeout);
 
         _parameters.ParameterChanged -= Handler;
 
@@ -148,17 +144,17 @@ public class OscAvatarParameterContainerTests
     [Test]
     public async Task OnParameterChanged_NotExistParameterReceivedTest()
     {
-        bool isCalled = false;
+        var isCalled = false;
 
         _parameters.ParameterChanged += ThrowExceptionHandler;
         _parameters.ParameterChanged += MonitorCalledHandler;
 
         _client.Send(OscConst.AvatarParameterAddressSpace + "TestParam", 1);
-        await TestUtility.LoopWhile(() => !isCalled, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => !isCalled, TestHelper.LatencyTimeout);
         isCalled = false;
 
         _client.Send(OscConst.AvatarParameterAddressSpace + "TestParam", 2);
-        await TestUtility.LoopWhile(() => !isCalled, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => !isCalled, TestHelper.LatencyTimeout);
         isCalled = false;
 
         _parameters.ParameterChanged -= ThrowExceptionHandler;

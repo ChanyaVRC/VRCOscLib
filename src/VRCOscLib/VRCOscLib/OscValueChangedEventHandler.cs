@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BuildSoft.VRChat.Osc;
+﻿namespace BuildSoft.VRChat.Osc;
 
 /// <summary>
 /// Represents a delegate that handles value change events.

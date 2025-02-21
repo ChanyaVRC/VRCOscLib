@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace BuildSoft.VRChat.Osc.Avatar;
+﻿namespace BuildSoft.VRChat.Osc.Avatar;
 
 /// <summary>
 /// Represents a VRCPhysBone in an avatar.

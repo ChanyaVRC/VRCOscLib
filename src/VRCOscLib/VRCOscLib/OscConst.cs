@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BuildSoft.VRChat.Osc;
+﻿namespace BuildSoft.VRChat.Osc;
 
 /// <summary>
 /// A class containing constants used in the OSC communication.

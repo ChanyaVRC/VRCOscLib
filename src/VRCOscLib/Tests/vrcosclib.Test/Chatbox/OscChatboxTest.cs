@@ -1,9 +1,10 @@
 ﻿using System.Text;
 using BuildSoft.OscCore;
-using BuildSoft.VRChat.Osc.Test;
+using BuildSoft.VRChat.Osc.Chatbox;
+using BuildSoft.VRChat.Osc.Test.Utility;
 using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Chatbox.Test;
+namespace BuildSoft.VRChat.Osc.Test.Chatbox;
 
 [TestOf(typeof(OscChatbox))]
 public class OscChatboxTest
@@ -45,14 +46,14 @@ public class OscChatboxTest
         OscMessageValues value = null!;
         void valueReadMethod(OscMessageValues v) => value = v;
         _server.TryAddMethod(OscChatbox.InputAddress, valueReadMethod);
-        byte[] receivedMessage = new byte[2024];
+        var receivedMessage = new byte[2024];
 
 
         OscChatbox.SendMessage(message, direct, messageComplete);
-        await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
-        int length = value.ReadStringElementBytes(0, receivedMessage);
-        bool receivedDirect = value.ReadBooleanElement(1);
-        bool receivedMessageComplete = value.ReadBooleanElement(2);
+        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        var length = value.ReadStringElementBytes(0, receivedMessage);
+        var receivedDirect = value.ReadBooleanElement(1);
+        var receivedMessageComplete = value.ReadBooleanElement(2);
 
 
         Assert.That(message, Is.EqualTo(Encoding.UTF8.GetString(receivedMessage, 0, length)));
@@ -70,8 +71,8 @@ public class OscChatboxTest
 
 
         OscChatbox.SetIsTyping(isTyping);
-        await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
-        bool receivedIsTyping = value.ReadBooleanElement(0);
+        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
+        var receivedIsTyping = value.ReadBooleanElement(0);
 
 
         Assert.That(receivedIsTyping, Is.EqualTo(isTyping));

@@ -1,9 +1,11 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Avatar;
+using BuildSoft.VRChat.Osc.Test.Utility;
 using NUnit.Framework;
 
-using static BuildSoft.VRChat.Osc.Test.TestUtility;
+using static BuildSoft.VRChat.Osc.Test.Utility.TestHelper;
 
 namespace BuildSoft.VRChat.Osc.Test;
 
@@ -45,7 +47,7 @@ public class OscUtilityTests
         using (var client = new OscClient("127.0.0.1", OscUtility.ReceivePort))
         {
             client.Send(OscConst.AvatarIdAddress, TestAvatarId);
-            await LoopWhile(() => Avatar.OscAvatarUtility.CurrentAvatar.Id == null, LatencyTimeout);
+            await LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id == null, LatencyTimeout);
         }
 
         Assert.Throws<FileNotFoundException>(() => OscUtility.GetCurrentOscAvatarConfigPath());
@@ -95,7 +97,7 @@ public class OscUtilityTests
     [TestCase(65535)]
     public void TestSendPort(int port)
     {
-        int oldPort = OscUtility.SendPort;
+        var oldPort = OscUtility.SendPort;
         var oldClient = OscUtility.Client;
 
         OscUtility.SendPort = port;
@@ -110,7 +112,7 @@ public class OscUtilityTests
     [TestCase(65536)]
     public void TestSendPortOutOfRange(int port)
     {
-        int oldPort = OscUtility.SendPort;
+        var oldPort = OscUtility.SendPort;
 
         Assert.Throws<ArgumentOutOfRangeException>(() => OscUtility.SendPort = port);
         Assert.That(OscUtility.SendPort, Is.EqualTo(oldPort));
@@ -130,7 +132,7 @@ public class OscUtilityTests
     [TestCase(65536)]
     public void TestReceivePortOutOfRange(int port)
     {
-        int oldPort = OscUtility.ReceivePort;
+        var oldPort = OscUtility.ReceivePort;
         Assert.Throws<ArgumentOutOfRangeException>(() => OscUtility.ReceivePort = port);
         Assert.That(OscUtility.ReceivePort, Is.EqualTo(oldPort));
         Assert.That(OscUtility.Server.Port, Is.EqualTo(oldPort));
@@ -141,7 +143,7 @@ public class OscUtilityTests
     [TestCase("8.8.8.8")]
     public void TestVrcIPAddress(string ipAddress)
     {
-        string oldAddress = OscUtility.VrcIPAddress;
+        var oldAddress = OscUtility.VrcIPAddress;
 
         OscUtility.VrcIPAddress = ipAddress;
         Assert.That(OscUtility.VrcIPAddress, Is.EqualTo(ipAddress));
@@ -154,7 +156,7 @@ public class OscUtilityTests
     [TestCase("ipaddress")]
     public void TestVrcIPAddressInvalidFormat(string ipAddress)
     {
-        string oldAddress = OscUtility.VrcIPAddress;
+        var oldAddress = OscUtility.VrcIPAddress;
 
         Assert.Throws<FormatException>(() => OscUtility.VrcIPAddress = ipAddress);
         Assert.That(OscUtility.VrcIPAddress, Is.EqualTo(oldAddress));
@@ -163,7 +165,7 @@ public class OscUtilityTests
     [Test]
     public void TestClientIPAddressNull()
     {
-        string oldAddress = OscUtility.VrcIPAddress;
+        var oldAddress = OscUtility.VrcIPAddress;
 
         Assert.Throws<ArgumentNullException>(() => OscUtility.VrcIPAddress = null!);
         Assert.That(OscUtility.VrcIPAddress, Is.EqualTo(oldAddress));
@@ -172,10 +174,10 @@ public class OscUtilityTests
     [Test]
     public async Task TestRegisterMonitorCallback()
     {
-        int value = 0;
+        var value = 0;
         OscUtility.RegisterMonitorCallback((_, _) => value++);
 
-        int oldPort = OscUtility.ReceivePort;
+        var oldPort = OscUtility.ReceivePort;
 
         OscUtility.ReceivePort = 12345;
         using (var client = new OscClient("127.0.0.1", 12345))
@@ -203,7 +205,7 @@ public class OscUtilityTests
     [Test]
     public async Task TestSendPortWithSending()
     {
-        int oldPort = OscUtility.SendPort;
+        var oldPort = OscUtility.SendPort;
 
         OscUtility.SendPort = 12345;
         using (var client = new UdpClient(12345))
@@ -227,7 +229,7 @@ public class OscUtilityTests
     [Test]
     public async Task TestVrcIPAddressWithSending()
     {
-        string oldAddress = OscUtility.VrcIPAddress;
+        var oldAddress = OscUtility.VrcIPAddress;
 
         using (var client = new UdpClient(new IPEndPoint(
                 IPAddress.Parse("127.0.0.1"),

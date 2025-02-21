@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BuildSoft.OscCore;
+﻿using BuildSoft.OscCore;
 using BuildSoft.OscCore.UnityObjects;
 
 namespace BuildSoft.VRChat.Osc;

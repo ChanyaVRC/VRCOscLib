@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using BuildSoft.OscCore;
+﻿using BuildSoft.OscCore;
 using BuildSoft.VRChat.Osc.Avatar;
-using BuildSoft.VRChat.Osc.Test;
+using BuildSoft.VRChat.Osc.Test.Utility;
 using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Avatar.Test;
+namespace BuildSoft.VRChat.Osc.Test.Avatar;
 
 [TestOf(typeof(OscAvatarConfig))]
 public class OscAvatarConfigTests
@@ -33,15 +31,15 @@ public class OscAvatarConfigTests
             List<OscAvatarConfigJson> configs = [];
             List<OscAvatarParameterJson> parameters = [];
 
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
                 configs.Clear();
-                for (int j = 0; j < i; j++)
+                for (var j = 0; j < i; j++)
                 {
                     parameters.Clear();
 
-                    int parameterCount = SharedRandom.Next(0, 10);
-                    for (int k = 0; k < parameterCount; k++)
+                    var parameterCount = SharedRandom.Next(0, 10);
+                    for (var k = 0; k < parameterCount; k++)
                     {
                         parameters.Add(new OscAvatarParameterJson($"param{k}", OscType.Float));
                     }
@@ -56,13 +54,13 @@ public class OscAvatarConfigTests
     [SetUp]
     public void Setup()
     {
-        TestUtility.StashOscDirectory();
+        TestHelper.StashOscDirectory();
     }
 
     [TearDown]
     public void TearDown()
     {
-        TestUtility.RestoreOscDirectory();
+        TestHelper.RestoreOscDirectory();
     }
 
     [OneTimeSetUp]
@@ -95,7 +93,7 @@ public class OscAvatarConfigTests
         var directory = Path.Combine(OscUtility.VRChatOscPath, "Avatars");
         foreach (var config in configJsons)
         {
-            TestUtility.CreateConfigFileForTest(config, directory);
+            TestHelper.CreateConfigFileForTest(config, directory);
         }
 
         var result = OscAvatarConfig.CreateAll();
@@ -127,7 +125,7 @@ public class OscAvatarConfigTests
         using (var client = new OscClient("127.0.0.1", OscUtility.ReceivePort))
         {
             client.Send(OscConst.AvatarIdAddress, Id);
-            await TestUtility.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestUtility.LatencyTimeout);
+            await TestHelper.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestHelper.LatencyTimeout);
         }
 
         Assert.Throws<FileNotFoundException>(() => OscAvatarConfig.CreateAtCurrent());
@@ -139,9 +137,9 @@ public class OscAvatarConfigTests
         using (var client = new OscClient("127.0.0.1", OscUtility.ReceivePort))
         {
             client.Send(OscConst.AvatarIdAddress, Id);
-            await TestUtility.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestUtility.LatencyTimeout);
+            await TestHelper.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestHelper.LatencyTimeout);
         }
-        TestUtility.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
+        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
 
         var currentConfig = OscAvatarConfig.CreateAtCurrent();
 
@@ -155,7 +153,7 @@ public class OscAvatarConfigTests
     {
         Assert.Throws<FileNotFoundException>(() => OscAvatarConfig.Create(Id));
 
-        TestUtility.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
+        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
 
         var config = OscAvatarConfig.Create(Id);
 
@@ -167,7 +165,7 @@ public class OscAvatarConfigTests
     [Test]
     public async Task WaitAndCreateAtCurrentAsync_ForExceptions()
     {
-        TimeSpan timeout = TimeSpan.FromMilliseconds(1);
+        var timeout = TimeSpan.FromMilliseconds(1);
 
         await MakeCurrentAvatarIdToNull();
         Assert.ThrowsAsync<TimeoutException>(async () => await OscAvatarConfig.WaitAndCreateAtCurrentAsync().AsTask().WaitAsync(timeout));
@@ -175,11 +173,11 @@ public class OscAvatarConfigTests
         using (var client = new OscClient("127.0.0.1", OscUtility.ReceivePort))
         {
             client.Send(OscConst.AvatarIdAddress, Id);
-            await TestUtility.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestUtility.LatencyTimeout);
+            await TestHelper.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestHelper.LatencyTimeout);
         }
         Assert.ThrowsAsync<FileNotFoundException>(async () => await OscAvatarConfig.WaitAndCreateAtCurrentAsync().AsTask().WaitAsync(timeout));
 
-        TestUtility.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
+        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
         Assert.DoesNotThrowAsync(async () => await OscAvatarConfig.WaitAndCreateAtCurrentAsync().AsTask().WaitAsync(timeout));
     }
 
@@ -189,9 +187,9 @@ public class OscAvatarConfigTests
         using (var client = new OscClient("127.0.0.1", OscUtility.ReceivePort))
         {
             client.Send(OscConst.AvatarIdAddress, Id);
-            await TestUtility.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestUtility.LatencyTimeout);
+            await TestHelper.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != Id, TestHelper.LatencyTimeout);
         }
-        TestUtility.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
+        TestHelper.CreateConfigFileForTest(Id, Name, Path.Combine(OscUtility.VRChatOscPath, "Avatar"));
 
         var config = await OscAvatarConfig.WaitAndCreateAtCurrentAsync();
 
@@ -220,7 +218,7 @@ public class OscAvatarConfigTests
         {
             using var client = new OscClient("127.0.0.1", OscUtility.ReceivePort);
             client.SendNil(OscConst.AvatarIdAddress);
-            await TestUtility.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != null, TestUtility.LatencyTimeout);
+            await TestHelper.LoopWhile(() => OscAvatarUtility.CurrentAvatar.Id != null, TestHelper.LatencyTimeout);
         }
     }
 }

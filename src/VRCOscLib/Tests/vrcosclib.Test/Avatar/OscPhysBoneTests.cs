@@ -1,9 +1,9 @@
-﻿using System;
-using BuildSoft.OscCore;
-using BuildSoft.VRChat.Osc.Test;
+﻿using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Avatar;
+using BuildSoft.VRChat.Osc.Test.Utility;
 using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Avatar.Test;
+namespace BuildSoft.VRChat.Osc.Test.Avatar;
 
 [TestOf(typeof(OscPhysBone))]
 public class OscPhysBoneTests
@@ -16,9 +16,9 @@ public class OscPhysBoneTests
     [SetUp]
     public void Setup()
     {
-        TestUtility.StashOscDirectory();
+        TestHelper.StashOscDirectory();
 
-        TestUtility.CreateConfigFileForTest(AvatarId, "Test Avatar", TestUtility.GetAvatarConfigDirectory());
+        TestHelper.CreateConfigFileForTest(AvatarId, "Test Avatar", TestHelper.GetAvatarConfigDirectory());
         _avatar = OscAvatarConfig.Create(AvatarId)!;
 
 
@@ -28,7 +28,7 @@ public class OscPhysBoneTests
     [TearDown]
     public void TearDown()
     {
-        TestUtility.RestoreOscDirectory();
+        TestHelper.RestoreOscDirectory();
     }
 
     [OneTimeSetUp]
@@ -78,7 +78,7 @@ public class OscPhysBoneTests
         const string IsGrabbedParamName = PhysBoneParam + "_IsGrabbed";
         var parameters = _avatar.Parameters;
         var isGrabbedParam = parameters.Get(IsGrabbedParamName);
-        int passedCount = 0;
+        var passedCount = 0;
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {
@@ -112,7 +112,7 @@ public class OscPhysBoneTests
         const string IsPosedParamName = PhysBoneParam + "_IsPosed";
         var parameters = _avatar.Parameters;
         var IsPosedParam = parameters.Get(IsPosedParamName);
-        int passedCount = 0;
+        var passedCount = 0;
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {
@@ -146,7 +146,7 @@ public class OscPhysBoneTests
         const string AngleParamName = PhysBoneParam + "_Angle";
         var parameters = _avatar.Parameters;
         var angleParam = parameters.Get(AngleParamName);
-        int passedCount = 0;
+        var passedCount = 0;
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {
@@ -180,7 +180,7 @@ public class OscPhysBoneTests
         const string StretchParamName = PhysBoneParam + "_Stretch";
         var parameters = _avatar.Parameters;
         var stretchParam = parameters.Get(StretchParamName);
-        int passedCount = 0;
+        var passedCount = 0;
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {
@@ -214,7 +214,7 @@ public class OscPhysBoneTests
         const string SquishParamName = PhysBoneParam + "_Squish";
         var parameters = _avatar.Parameters;
         var squishParam = parameters.Get(SquishParamName);
-        int passedCount = 0;
+        var passedCount = 0;
 
         void Handler(OscAvatarParameter sender, ValueChangedEventArgs e)
         {

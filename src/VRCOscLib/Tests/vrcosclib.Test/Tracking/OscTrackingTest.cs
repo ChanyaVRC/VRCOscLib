@@ -1,9 +1,10 @@
 ﻿using BuildSoft.OscCore;
 using BuildSoft.OscCore.UnityObjects;
-using BuildSoft.VRChat.Osc.Test;
+using BuildSoft.VRChat.Osc.Test.Utility;
+using BuildSoft.VRChat.Osc.Tracking;
 using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Tracking.Test;
+namespace BuildSoft.VRChat.Osc.Test.Tracking;
 
 [TestOf(typeof(OscTracking))]
 public class OscTrackingTest
@@ -59,7 +60,7 @@ public class OscTrackingTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
 
         headTracker.Position = expected;
-        await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
 
         Assert.That(headTracker.Position, Is.EqualTo(expected));
         Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
@@ -79,7 +80,7 @@ public class OscTrackingTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
 
         headTracker.Rotation = expected;
-        await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
 
         Assert.That(headTracker.Rotation, Is.EqualTo(expected));
         Assert.That(value.ReadFloatElement(0), Is.EqualTo(expected.x));
@@ -101,7 +102,7 @@ public class OscTrackingTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
         _client.Send(headTracker.PositionAddress, expected);
 
-        await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
         Assert.That(headTracker.Position, Is.EqualTo(expected));
 
         OscUtility.Server.RemoveMethod(headTracker.PositionAddress, valueReadMethod);
@@ -120,7 +121,7 @@ public class OscTrackingTest
         var expected = new Vector3(10.1f, 20.2f, 30.3f);
         _client.Send(headTracker.RotationAddress, expected);
 
-        await TestUtility.LoopWhile(() => value == null, TestUtility.LatencyTimeout);
+        await TestHelper.LoopWhile(() => value == null, TestHelper.LatencyTimeout);
         Assert.That(headTracker.Rotation, Is.EqualTo(expected));
 
         OscUtility.Server.RemoveMethod(headTracker.RotationAddress, valueReadMethod);
@@ -136,7 +137,7 @@ public class OscTrackingTest
         Assert.That(trackers[0].PositionAddress, Is.EqualTo("/tracking/trackers/1/position"));
         Assert.That(trackers[0].RotationAddress, Is.EqualTo("/tracking/trackers/1/rotation"));
 
-        for (int i = 0; i < OscTracker.SupportedTrackerCount; i++)
+        for (var i = 0; i < OscTracker.SupportedTrackerCount; i++)
         {
             Assert.That(trackers[i].PositionAddress, Is.EqualTo($"/tracking/trackers/{i + 1}/position"));
             Assert.That(trackers[i].RotationAddress, Is.EqualTo($"/tracking/trackers/{i + 1}/rotation"));

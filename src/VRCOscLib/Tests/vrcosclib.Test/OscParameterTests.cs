@@ -1,14 +1,11 @@
 ﻿#nullable disable
 
-using System;
-using System.Net;
-using System.Threading.Tasks;
+using BuildSoft;
 using BuildSoft.OscCore;
 using BuildSoft.OscCore.UnityObjects;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-using static BuildSoft.VRChat.Osc.Test.TestUtility;
+using static BuildSoft.VRChat.Osc.Test.Utility.TestHelper;
 
 namespace BuildSoft.VRChat.Osc.Test;
 
@@ -267,7 +264,7 @@ public class OscParameterTests
     {
         const string Address = "/test/address";
         ParameterChangedEventArgs expected = null;
-        bool isCalledValueChanged = false;
+        var isCalledValueChanged = false;
 
         var parameters = OscParameter.Parameters;
         parameters.ValueChanged += valueChangedAssertion;

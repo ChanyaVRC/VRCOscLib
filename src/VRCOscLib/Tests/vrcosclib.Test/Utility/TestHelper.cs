@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using NUnit.Framework;
+﻿using Newtonsoft.Json;
 
-namespace BuildSoft.VRChat.Osc.Test;
+namespace BuildSoft.VRChat.Osc.Test.Utility;
 
-public static class TestUtility
+public static class TestHelper
 {
     public static readonly TimeSpan LatencyTimeout = TimeSpan.FromMilliseconds(2000);
     private static CancellationTokenSource? _canceledTokenSource;
@@ -49,7 +42,7 @@ public static class TestUtility
         {
             return path;
         }
-        string configJson = JsonConvert.SerializeObject(
+        var configJson = JsonConvert.SerializeObject(
             new OscAvatarConfigJson(avatarId, name, [
                 new("TestParam",                OscType.Int,   hasInput: true),
                 new("PhysBoneParam_IsGrabbed",  OscType.Bool,  hasInput: true),
@@ -118,7 +111,7 @@ public static class TestUtility
 
     public static async Task<T> WaitAsync<T>(this Task<T> task, TimeSpan timeout)
     {
-        await WaitAsync((Task)task, timeout);
+        await ((Task)task).WaitAsync(timeout);
         return task.Result;
     }
 

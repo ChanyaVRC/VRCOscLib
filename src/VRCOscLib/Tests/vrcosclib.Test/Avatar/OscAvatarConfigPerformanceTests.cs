@@ -1,7 +1,8 @@
-﻿using BuildSoft.VRChat.Osc.Test;
+﻿using BuildSoft.VRChat.Osc.Avatar;
+using BuildSoft.VRChat.Osc.Test.Utility;
 using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Avatar.Test;
+namespace BuildSoft.VRChat.Osc.Test.Avatar;
 
 [TestOf(typeof(OscAvatarConfig))]
 public class OscAvatarConfigPerformanceTests
@@ -12,11 +13,11 @@ public class OscAvatarConfigPerformanceTests
         {
             List<OscAvatarParameterJson> parameters = [];
 
-            for (int j = 0; j < 10000; j++)
+            for (var j = 0; j < 10000; j++)
             {
                 parameters.Clear();
 
-                for (int k = 0; k < 100; k++)
+                for (var k = 0; k < 100; k++)
                 {
                     parameters.Add(new OscAvatarParameterJson($"param{k}", OscType.Float));
                 }
@@ -43,19 +44,19 @@ public class OscAvatarConfigPerformanceTests
     {
         OscUtility.Initialize();
 
-        TestUtility.StashOscDirectory();
+        TestHelper.StashOscDirectory();
 
         var directory = Path.Combine(OscUtility.VRChatOscPath, "Avatars");
         foreach (var config in ConfigJsonsForPerformanceTest)
         {
-            TestUtility.CreateConfigFileForTest(config, directory);
+            TestHelper.CreateConfigFileForTest(config, directory);
         }
     }
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
     {
-        TestUtility.RestoreOscDirectory();
+        TestHelper.RestoreOscDirectory();
     }
 
 

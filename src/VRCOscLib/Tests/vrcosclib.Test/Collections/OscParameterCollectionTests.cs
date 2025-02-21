@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace BuildSoft.VRChat.Osc.Test;
+namespace BuildSoft.VRChat.Osc.Test.Collections;
 
 [TestOf(typeof(OscParameterCollection))]
 public class OscParameterCollectionTests
@@ -152,8 +152,8 @@ public class OscParameterCollectionTests
         const string Address1 = "/test/address1";
         const string Address2 = "/test/address2";
 
-        int calledCount = 0;
-        bool creatingTestSource = false;
+        var calledCount = 0;
+        var creatingTestSource = false;
 
         var parameters = CreateParameterCollectionForTest();
         parameters.ValueChanged += (sender, e) =>
@@ -219,7 +219,7 @@ public class OscParameterCollectionTests
 
         var parameters = CreateParameterCollectionForTest();
         ValueChangedEventArgs? expectedArgs = null;
-        int calledCount = 0;
+        var calledCount = 0;
         parameters.ValueChanged += (sender, e) =>
         {
             expectedArgs = e;
@@ -280,7 +280,7 @@ public class OscParameterCollectionTests
     public void OnValueChangedByAddress_IgnoreExceptionTest()
     {
         var parameters = CreateParameterCollectionForTest();
-        int calledCount = 0;
+        var calledCount = 0;
 
         const string Address = "/address/to/parameter";
         parameters.AddValueChangedEventByAddress(Address, (_, _) => calledCount++);

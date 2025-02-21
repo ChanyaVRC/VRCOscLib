@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace BuildSoft.VRChat.Osc.Avatar;
+﻿namespace BuildSoft.VRChat.Osc.Avatar;
 
 /// <summary>
 /// Represents a VRChat avatar, as identified by its unique ID.
