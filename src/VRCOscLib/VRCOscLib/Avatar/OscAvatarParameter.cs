@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace BuildSoft.VRChat.Osc.Avatar;
 
@@ -72,5 +73,52 @@ public record class OscAvatarParameter
         _name = name;
         _input = input;
         _output = output;
+    }
+
+    /// <summary>
+    /// Create a new instance of the <see cref="OscAvatarParameter"/> class.
+    /// </summary>
+    /// <param name="name">The name of the parameter.</param>
+    /// <param name="type">The type of the parameter.</param>
+    public static OscAvatarParameter Create(string name, OscType type)
+    {
+        var @interface = new OscAvatarParameterInterface(OscConst.AvatarParameterAddressSpace + name, type);
+        return new(name, @interface, @interface);
+    }
+
+    private OscAvatarParameterChangedEventHandler? _valueChanged;
+
+    /// <summary>
+    /// Occurs when the value of an avatar parameter contained in this instance changes.
+    /// </summary>
+    public event OscAvatarParameterChangedEventHandler ValueChanged
+    {
+        add
+        {
+            if (_valueChanged == null)
+            {
+                OscParameter.Parameters.AddValueChangedEventByAddress(ReadableAddress, CallValueChanged);
+            }
+            _valueChanged += value;
+        }
+        remove
+        {
+            if (_valueChanged == null)
+            {
+                return;
+            }
+
+            _valueChanged -= value;
+            if (_valueChanged == null)
+            {
+                OscParameter.Parameters.RemoveValueChangedEventByAddress(ReadableAddress, CallValueChanged);
+            }
+        }
+    }
+
+    private void CallValueChanged(IReadOnlyOscParameterCollection sender, ParameterChangedEventArgs e)
+    {
+        Debug.Assert(_valueChanged != null);
+        _valueChanged!.Invoke(this, e);
     }
 }

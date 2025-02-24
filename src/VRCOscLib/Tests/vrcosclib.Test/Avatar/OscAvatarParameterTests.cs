@@ -1,4 +1,6 @@
-﻿using BuildSoft.VRChat.Osc.Avatar;
+﻿using BuildSoft.OscCore;
+using BuildSoft.VRChat.Osc.Avatar;
+using BuildSoft.VRChat.Osc.Test;
 using NUnit.Framework;
 
 namespace BuildSoft.VRChat.Osc.Avatar.Test;
@@ -33,8 +35,80 @@ public class OscAvatarParameterTests
     }
 
     [Test]
+    public void CreateTest()
+    {
+        OscAvatarParameter parameter = OscAvatarParameter.Create("param", OscType.Int);
+
+        Assert.That(parameter.Name, Is.EqualTo("param"));
+        
+        Assert.That(parameter.Input, Is.Not.Null);
+        Assert.That(parameter.Input!.OscType, Is.EqualTo(OscType.Int));
+        Assert.That(parameter.Input!.Address, Is.EqualTo("/avatar/parameters/param"));
+
+        Assert.That(parameter.Output, Is.Not.Null);
+        Assert.That(parameter.Output!.OscType, Is.EqualTo(OscType.Int));
+        Assert.That(parameter.Output!.Address, Is.EqualTo("/avatar/parameters/param"));
+    }
+
+    [Test]
     public void Ctor_BothNullTest()
     {
         Assert.Throws<ArgumentException>(() => new OscAvatarParameter("param", null, null));
+    }
+
+    [Test]
+    public async Task ParameterChangedTest()
+    {
+        int newValue = -1;
+        string paramName = "";
+        bool isCalled;
+        var param1 = OscAvatarParameter.Create("param1", OscType.Int);
+        var param2 = OscAvatarParameter.Create("param2", OscType.Int);
+
+        param1.ValueChanged += Handler;
+
+        newValue = 100;
+        paramName = param1.Name;
+        isCalled = false;
+        using (var client = new OscClient("127.0.0.1", OscConnectionSettings.ReceivePort))
+        {
+            client.Send(OscConst.AvatarParameterAddressSpace + paramName, newValue);
+            await TestUtility.LoopWhile(() => !isCalled, TestUtility.LatencyTimeout);
+        }
+        Assert.That(isCalled);
+
+        param1.ValueChanged -= Handler;
+
+        param2.ValueChanged += Handler;
+        param1.ValueChanged -= Handler;
+
+        newValue = 200;
+        paramName = param2.Name;
+        isCalled = false;
+        using (var client = new OscClient("127.0.0.1", OscConnectionSettings.ReceivePort))
+        {
+            client.Send(OscConst.AvatarParameterAddressSpace + paramName, newValue);
+            await TestUtility.LoopWhile(() => !isCalled, TestUtility.LatencyTimeout);
+        }
+        Assert.That(isCalled);
+
+        param2.ValueChanged -= Handler;
+
+        isCalled = false;
+        using (var client = new OscClient("127.0.0.1", OscConnectionSettings.ReceivePort))
+        {
+            client.Send(OscConst.AvatarParameterAddressSpace + paramName, newValue);
+            Assert.ThrowsAsync<TimeoutException>(async () => await TestUtility.LoopWhile(() => !isCalled, TestUtility.LatencyTimeout));
+        }
+        Assert.That(!isCalled);
+
+
+        void Handler(OscAvatarParameter param, ValueChangedEventArgs e)
+        {
+            Assert.That(param.Name, Is.EqualTo(paramName));
+            Assert.That(e.OldValue, Is.Null);
+            Assert.That(e.NewValue, Is.EqualTo(newValue));
+            isCalled = true;
+        }
     }
 }
