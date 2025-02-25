@@ -1,0 +1,38 @@
+﻿<Window x:Class="ExpressionAvatarChanger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExpressionAvatarChanger"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        Loaded="Window_Loaded">
+    <StackPanel>
+        <Label Content="Expression Avatar Changer"/>
+        <StackPanel Margin="12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="2*" MaxWidth="300"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Active"/>
+                <Label Grid.Column="1" Content="Avatar ID"/>
+                <Label Grid.Column="2" Content="Avatar Name"/>
+                <Label Grid.Column="3" Content="Parameter Name"/>
+                <Label Grid.Column="4" Content="Type"/>
+                <Label Grid.Column="5" Content="Value"/>
+                <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Width="20" Height="20" Margin="2" Click="AddContentButton_Click">+</Button>
+                    <Button Width="20" Height="20" Margin="2" Click="RemoveContentButton_Click">-</Button>
+                </StackPanel>
+            </Grid>
+            <StackPanel x:Name="InputPanel">
+                <local:TriggerInputItem/>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>
