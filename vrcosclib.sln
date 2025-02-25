@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vrcosclib.OscUtilityInitial
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VRCOscLib", "VRCOscLib", "{0C3E0CF3-F434-462C-87AC-94906CFA45AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionAvatarChanger", "ExpressionAvatarChanger\ExpressionAvatarChanger.csproj", "{C3C90F97-6A8A-4E27-BE9C-A58EA51D8D24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionAvatarChanger", "src\Sample\ExpressionAvatarChanger\ExpressionAvatarChanger.csproj", "{C3C90F97-6A8A-4E27-BE9C-A58EA51D8D24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
