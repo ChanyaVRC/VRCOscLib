@@ -40,7 +40,7 @@ public class OscAvatarParameterTests
         OscAvatarParameter parameter = OscAvatarParameter.Create("param", OscType.Int);
 
         Assert.That(parameter.Name, Is.EqualTo("param"));
-        
+
         Assert.That(parameter.Input, Is.Not.Null);
         Assert.That(parameter.Input!.OscType, Is.EqualTo(OscType.Int));
         Assert.That(parameter.Input!.Address, Is.EqualTo("/avatar/parameters/param"));

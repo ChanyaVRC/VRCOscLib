@@ -119,8 +119,8 @@ public partial class TriggerInputItem : UserControl
 
     private static void OnThresholdChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        var item = (TriggerInputItem)d; 
-        
+        var item = (TriggerInputItem)d;
+
         if (item.ThresholdType == OscType.Bool)
         {
             item.ThresholdComboBox.SelectedIndex = (string)e.NewValue == bool.TrueString ? 0 : 1;

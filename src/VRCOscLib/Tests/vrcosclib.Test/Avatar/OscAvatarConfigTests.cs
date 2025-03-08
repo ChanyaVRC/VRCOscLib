@@ -45,7 +45,7 @@ public class OscAvatarConfigTests
                     {
                         parameters.Add(new OscAvatarParameterJson($"param{k}", OscType.Float));
                     }
-                    configs.Add(new OscAvatarConfigJson($"avtr_{j}", $"name{j}", [.. parameters]));
+                    configs.Add(new OscAvatarConfigJson($"avtr_{j}", $"name{j}", [..parameters]));
                 }
                 yield return configs.ToArray();
             }

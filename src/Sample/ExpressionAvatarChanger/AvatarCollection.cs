@@ -10,7 +10,7 @@ public class AvatarCollection : IList<Avatar>
 
     public AvatarCollection()
     {
-        
+
     }
 
     public AvatarCollection(IEnumerable<Avatar> collection) : this()
