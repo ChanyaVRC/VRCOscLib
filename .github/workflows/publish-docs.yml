@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  ubuntu-build:
+  publish-docs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
