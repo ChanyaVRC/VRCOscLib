@@ -15,6 +15,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.x
+    - run: dotnet tool update -g docfx
     - name: Test build docs
-      run: dotnet tool update -g docfx
       run: docfx docs/docfx.json --dryRun
