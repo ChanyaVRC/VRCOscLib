@@ -4,7 +4,7 @@
     {
       "src": [
         {
-          "src": "../src/VRCOscLib/",
+          "src": "../src/VRCOscLib/VRCOscLib/",
           "files": [
             "**/*.csproj"
           ]
